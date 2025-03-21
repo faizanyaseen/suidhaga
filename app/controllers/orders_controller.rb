@@ -50,9 +50,19 @@ class OrdersController < ApplicationController
         :price,
         :number_of_pieces,
         :_destroy,
-        images: [],
-        line_items_measurement_types_attributes: [:id, :measurement_type_id, :value, :_destroy]
+        { images: [] },
+        { line_items_measurement_types_attributes: [:id, :measurement_type_id, :value, :_destroy] }
       ]
-    )
+    ).tap do |whitelisted|
+      if whitelisted[:line_items_attributes].present?
+        whitelisted[:line_items_attributes].each do |_, line_item_params|
+          line_item_params[:images].reject!(&:blank?) if line_item_params[:images].present?
+          if line_item_params[:line_items_measurement_types_attributes].is_a?(Hash)
+            line_item_params[:line_items_measurement_types_attributes] = 
+              line_item_params[:line_items_measurement_types_attributes].values
+          end
+        end
+      end
+    end
   end
 end 

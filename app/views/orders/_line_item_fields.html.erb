@@ -12,21 +12,30 @@
     <div class="sm:col-span-2">
       <%= f.label :price, class: "block text-sm font-medium text-gray-700" %>
       <div class="mt-1">
-        <%= f.number_field :price, step: "0.01", min: 0, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+        <%= f.number_field :price, step: "0.01", min: 0, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5" %>
       </div>
     </div>
 
     <div class="sm:col-span-2">
       <%= f.label :number_of_pieces, class: "block text-sm font-medium text-gray-700" %>
       <div class="mt-1">
-        <%= f.number_field :number_of_pieces, min: 1, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+        <%= f.number_field :number_of_pieces, min: 1, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5" %>
       </div>
     </div>
 
-    <div class="sm:col-span-6">
+    <div class="sm:col-span-6" data-controller="image-upload">
       <%= f.label :images, class: "block text-sm font-medium text-gray-700" %>
       <div class="mt-1">
-        <%= f.file_field :images, multiple: true, accept: "image/*", class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300" %>
+        <%= f.file_field :images, multiple: true, accept: "image/*", 
+            class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 py-2.5",
+            data: { image_upload_target: "input" } %>
+      </div>
+      <div class="mt-2 grid grid-cols-2 gap-2" data-image-upload-target="preview">
+        <% if f.object.persisted? && f.object.images.attached? %>
+          <% f.object.images.each do |image| %>
+            <%= image_tag image, class: "h-32 w-full object-cover rounded-lg" %>
+          <% end %>
+        <% end %>
       </div>
     </div>
 
@@ -34,7 +43,7 @@
     <div class="sm:col-span-6">
       <div class="measurement-types" data-controller="nested-form">
         <template data-nested-form-target="template">
-          <%= f.fields_for :line_items_measurement_types, LineItemsMeasurementType.new, child_index: 'NEW_MT_RECORD' do |mt_form| %>
+          <%= f.fields_for :line_items_measurement_types, LineItemsMeasurementType.new do |mt_form| %>
             <div class="measurement-type-fields grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6 border-t pt-4 mt-4">
               <%= mt_form.hidden_field :_destroy %>
               
@@ -43,14 +52,14 @@
                 <div class="mt-1">
                   <%= mt_form.collection_select :measurement_type_id, @measurement_types, :id, :key,
                       { prompt: "Select a measurement type" },
-                      { class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" } %>
+                      { class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5" } %>
                 </div>
               </div>
 
               <div class="sm:col-span-2">
                 <%= mt_form.label :value, class: "block text-sm font-medium text-gray-700" %>
                 <div class="mt-1">
-                  <%= mt_form.text_field :value, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+                  <%= mt_form.text_field :value, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5" %>
                 </div>
               </div>
 
@@ -71,14 +80,14 @@
                 <div class="mt-1">
                   <%= mt_form.collection_select :measurement_type_id, @measurement_types, :id, :key,
                       { prompt: "Select a measurement type" },
-                      { class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" } %>
+                      { class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5" } %>
                 </div>
               </div>
 
               <div class="sm:col-span-2">
                 <%= mt_form.label :value, class: "block text-sm font-medium text-gray-700" %>
                 <div class="mt-1">
-                  <%= mt_form.text_field :value, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
+                  <%= mt_form.text_field :value, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5" %>
                 </div>
               </div>
 

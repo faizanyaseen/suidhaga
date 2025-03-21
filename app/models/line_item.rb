@@ -7,5 +7,6 @@ class LineItem < ApplicationRecord
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :number_of_pieces, presence: true, numericality: { only_integer: true, greater_than: 0 }
 
+  # validate :check_measurement_types_attributes
   accepts_nested_attributes_for :line_items_measurement_types, allow_destroy: true, reject_if: :all_blank
 end

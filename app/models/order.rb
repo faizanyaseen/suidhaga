@@ -31,6 +31,6 @@ class Order < ApplicationRecord
   end
 
   def calculate_total_price
-    self.total_price = line_items.sum { |item| item.price * item.number_of_pieces }
+    self.total_price = line_items.sum { |item| item.price }
   end
 end

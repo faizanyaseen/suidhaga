@@ -6,7 +6,20 @@ export default class extends Controller {
   add(event) {
     event.preventDefault()
     
-    const content = this.templateTarget.innerHTML.replace(/NEW_RECORD/g, new Date().getTime())
+    // Get current timestamp for unique ID
+    const timestamp = new Date().getTime()
+    
+    // Replace NEW_RECORD with timestamp for line items
+    let content = this.templateTarget.innerHTML.replace(/NEW_RECORD/g, timestamp)
+    
+    // Make sure measurement type indices are unique by counting existing fields
+    // and adding the count to each new field
+    const existingFields = this.targetTarget.querySelectorAll('.measurement-type-fields').length
+    
+    // Replace measurement type indices with incremented values
+    content = content.replace(/\[line_items_measurement_types_attributes\]\[(\d+|\w+)\]/g, 
+                         (match, p1) => `[line_items_measurement_types_attributes][${existingFields}]`)
+    
     this.targetTarget.insertAdjacentHTML('beforeend', content)
   }
 

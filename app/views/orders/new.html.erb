@@ -3,7 +3,7 @@
   <h3 class="text-2xl leading-6 font-medium text-gray-900">New Order</h3>
 </div>
 
-<%= form_with(model: @order, class: "mt-6") do |f| %>
+<%= form_with(model: @order, class: "mt-6", multipart: true) do |f| %>
   <% if @order.errors.any? %>
     <div class="rounded-md bg-red-50 p-4 mb-6">
       <div class="flex">
@@ -35,7 +35,7 @@
       <div class="mt-1 sm:mt-0 sm:col-span-2">
         <%= f.collection_select :customer_id, @customers, :id, ->(c) { "#{c.first_name} #{c.last_name}" }, 
             { prompt: "Select a customer" }, 
-            { class: "max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md" } %>
+            { class: "max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md py-2.5" } %>
       </div>
     </div>
 
@@ -56,7 +56,7 @@
               <label class="block text-sm font-medium text-gray-700">Price</label>
               <div class="mt-1">
                 <input type="number" name="order[line_items_attributes][NEW_RECORD][price]" step="0.01" min="0" 
-                       class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                       class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5">
               </div>
             </div>
 
@@ -64,16 +64,18 @@
               <label class="block text-sm font-medium text-gray-700">Number of Pieces</label>
               <div class="mt-1">
                 <input type="number" name="order[line_items_attributes][NEW_RECORD][number_of_pieces]" min="1" 
-                       class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                       class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5">
               </div>
             </div>
 
-            <div class="sm:col-span-6">
+            <div class="sm:col-span-6" data-controller="image-upload">
               <label class="block text-sm font-medium text-gray-700">Images</label>
               <div class="mt-1">
                 <input type="file" name="order[line_items_attributes][NEW_RECORD][images][]" multiple accept="image/*" 
-                       class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300">
+                       class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5"
+                       data-image-upload-target="input">
               </div>
+              <div class="mt-2 grid grid-cols-3 gap-3" data-image-upload-target="preview"></div>
             </div>
 
             <%# Measurement Types %>
@@ -84,8 +86,8 @@
                     <div class="sm:col-span-3">
                       <label class="block text-sm font-medium text-gray-700">Measurement Type</label>
                       <div class="mt-1">
-                        <select name="order[line_items_attributes][NEW_RECORD][line_items_measurement_types_attributes][NEW_MT_RECORD][measurement_type_id]" 
-                                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <select name="order[line_items_attributes][NEW_RECORD][line_items_measurement_types_attributes][][measurement_type_id]" 
+                                class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5">
                           <option value="">Select a measurement type</option>
                           <% @measurement_types.each do |mt| %>
                             <option value="<%= mt.id %>"><%= mt.key %></option>
@@ -97,8 +99,8 @@
                     <div class="sm:col-span-2">
                       <label class="block text-sm font-medium text-gray-700">Value</label>
                       <div class="mt-1">
-                        <input type="text" name="order[line_items_attributes][NEW_RECORD][line_items_measurement_types_attributes][NEW_MT_RECORD][value]" 
-                               class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                        <input type="text" name="order[line_items_attributes][NEW_RECORD][line_items_measurement_types_attributes][][value]" 
+                               class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5">
                       </div>
                     </div>
 
