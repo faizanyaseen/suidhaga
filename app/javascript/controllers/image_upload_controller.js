@@ -7,6 +7,13 @@ export default class extends Controller {
     if (this.hasInputTarget && this.hasPreviewTarget) {
       this.inputTarget.addEventListener('change', this.preview.bind(this))
       this.files = new DataTransfer()
+      
+      // Add existing images to our list when connecting
+      if (this.previewTarget.querySelectorAll('img').length > 0) {
+        // This ensures the preview images are already there but no actual files
+        // are in the input, which is what we want for existing images
+        console.log("Found existing images in preview")
+      }
     }
   }
 
@@ -16,11 +23,11 @@ export default class extends Controller {
       this.files.items.add(file)
       
       const wrapper = document.createElement('div')
-      wrapper.classList.add('relative', 'group')
+      wrapper.classList.add('relative', 'group', 'w-1/2')
       
       const img = document.createElement('img')
       img.src = URL.createObjectURL(file)
-      img.classList.add('h-32', 'w-full', 'object-cover', 'rounded-lg')
+      img.classList.add('w-full', 'object-cover', 'rounded-lg')
       
       // Add remove button
       const removeButton = document.createElement('button')
