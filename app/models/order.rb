@@ -5,7 +5,8 @@ class Order < ApplicationRecord
   enum :status, {
     received: 0,
     in_progress: 1,
-    delivered: 2
+    completed: 2,
+    delivered: 3
   }, default: :received
 
   validates :order_number, presence: true, uniqueness: true

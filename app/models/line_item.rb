@@ -9,4 +9,10 @@ class LineItem < ApplicationRecord
 
   # validate :check_measurement_types_attributes
   accepts_nested_attributes_for :line_items_measurement_types, allow_destroy: true, reject_if: :all_blank
+
+  enum :status, {
+    not_started: 0,
+    in_progress: 1,
+    completed: 2
+  }, default: :not_started
 end

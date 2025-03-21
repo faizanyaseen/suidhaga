@@ -39,16 +39,39 @@ class OrdersController < ApplicationController
     end
   end
 
+  def edit
+    @order = Order.includes(:line_items, :customer).find(params[:id])
+    @customers = Customer.all
+    @measurement_types = MeasurementType.all
+  end
+
+  def update
+    
+    @order = Order.find(params[:id])
+    
+    if @order.update(order_params)
+      redirect_to @order, notice: 'Order was successfully updated.'
+    else
+      @customers = Customer.all
+      @measurement_types = MeasurementType.all
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def order_params
     params.require(:order).permit(
       :customer_id,
       :total_price,
+      :status,
       line_items_attributes: [
         :id,
         :price,
         :number_of_pieces,
+        :name,
+        :description,
+        :status,
         :_destroy,
         { images: [] },
         { line_items_measurement_types_attributes: [:id, :measurement_type_id, :value, :_destroy] }
