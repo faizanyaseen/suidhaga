@@ -63,4 +63,17 @@ export default class extends Controller {
     // Update the input's files with our maintained list
     this.inputTarget.files = this.files.files
   }
+
+  removeExisting(event) {
+    const imageId = event.currentTarget.dataset.imageId;
+    const hiddenField = document.querySelector(`input[value="${imageId}"]`);
+    
+    if (hiddenField) {
+      // Remove the hidden field that tells the server to keep this image
+      hiddenField.remove();
+      
+      // Remove the image preview
+      event.currentTarget.closest('.relative').remove();
+    }
+  }
 } 
