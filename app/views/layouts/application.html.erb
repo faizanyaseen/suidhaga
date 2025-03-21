@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Store" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-gray-100">
+    <div class="min-h-screen flex">
+      <!-- Sidebar for desktop -->
+      <div class="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-y-0 bg-gray-800">
+        <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+          <div class="flex items-center flex-shrink-0 px-4">
+            <h1 class="text-white text-2xl font-bold">Store</h1>
+          </div>
+          <nav class="mt-5 flex-1 px-2 space-y-1">
+            <%= link_to customers_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(customers_path) ? 'bg-gray-900 text-white' : ''}" do %>
+              <svg class="mr-3 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+              Customers
+            <% end %>
+            
+            <%= link_to orders_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md #{current_page?(orders_path) ? 'bg-gray-900 text-white' : ''}" do %>
+              <svg class="mr-3 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+              Orders
+            <% end %>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <div class="fixed top-0 left-0 right-0 flex items-center justify-between px-4 py-3 bg-gray-800 z-10">
+          <h1 class="text-white text-xl font-bold">Store</h1>
+          <button type="button" class="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" data-action="click->mobile-menu#toggle">
+            <span class="sr-only">Open main menu</span>
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="fixed inset-0 flex z-40 hidden" data-mobile-menu-target="menu">
+          <div class="fixed inset-0 bg-gray-600 bg-opacity-75"></div>
+          <div class="relative flex-1 flex flex-col max-w-xs w-full bg-gray-800">
+            <div class="absolute top-0 right-0 -mr-12 pt-2">
+              <button type="button" class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" data-action="click->mobile-menu#toggle">
+                <span class="sr-only">Close sidebar</span>
+                <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div class="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
+              <nav class="mt-5 px-2 space-y-1">
+                <%= link_to customers_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-base font-medium rounded-md #{current_page?(customers_path) ? 'bg-gray-900 text-white' : ''}" do %>
+                  <svg class="mr-4 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                  Customers
+                <% end %>
+
+                <%= link_to orders_path, class: "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-base font-medium rounded-md #{current_page?(orders_path) ? 'bg-gray-900 text-white' : ''}" do %>
+                  <svg class="mr-4 flex-shrink-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
+                  Orders
+                <% end %>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main content -->
+      <div class="md:pl-64 flex flex-col flex-1">
+        <main class="flex-1">
+          <div class="py-6">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+              <%= yield %>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  </body>
+</html>
