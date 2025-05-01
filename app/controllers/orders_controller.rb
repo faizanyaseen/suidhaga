@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
   def index
-    @orders = Order.includes(:customer).order(created_at: :desc)
+    @orders = current_shop.orders.includes(:customer).order(created_at: :desc)
     
     if params[:search].present?
       search_term = "%#{params[:search].downcase}%"
@@ -17,13 +17,13 @@ class OrdersController < ApplicationController
   end
 
   def show
-    @order = Order.includes(:line_items, :customer).find(params[:id])
+    @order = current_shop.orders.includes(:line_items, :customer).find(params[:id])
   end
 
   def new
     @order = Order.new
     @order.line_items.build
-    @customers = Customer.all
+    @customers = current_shop.customers
     @measurement_types = MeasurementType.all
   end
 
@@ -33,26 +33,26 @@ class OrdersController < ApplicationController
     if @order.save
       redirect_to @order, notice: 'Order was successfully created.'
     else
-      @customers = Customer.all
+      @customers = current_shop.customers
       @measurement_types = MeasurementType.all
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
-    @order = Order.includes(:line_items, :customer).find(params[:id])
-    @customers = Customer.all
+    @order = current_shop.orders.includes(:line_items, :customer).find(params[:id])
+    @customers = current_shop.customers
     @measurement_types = MeasurementType.all
   end
 
   def update
     
-    @order = Order.find(params[:id])
+    @order = current_shop.orders.find(params[:id])
     
     if @order.update(order_params)
       redirect_to @order, notice: 'Order was successfully updated.'
     else
-      @customers = Customer.all
+      @customers = current_shop.customers
       @measurement_types = MeasurementType.all
       render :edit, status: :unprocessable_entity
     end
