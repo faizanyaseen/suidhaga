@@ -1,40 +1,61 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["template", "target"]
+  static targets = ["template", "container"]
+  static values = { wrapperClass: String }
+
+  connect() {
+    // Set default wrapper class if not provided
+    if (!this.hasWrapperClassValue) {
+      this.wrapperClassValue = "nested-fields"
+    }
+  }
 
   add(event) {
     event.preventDefault()
-    
-    // Get current timestamp for unique ID
+
+    // Generate a unique timestamp-based ID for the new record
     const timestamp = new Date().getTime()
+
+    // Clone the template content and replace NEW_RECORD with the timestamp
+    const content = this.templateTarget.innerHTML.replace(/NEW_RECORD/g, timestamp)
     
-    // Replace NEW_RECORD with timestamp for line items
-    let content = this.templateTarget.innerHTML.replace(/NEW_RECORD/g, timestamp)
-    
-    // Make sure measurement type indices are unique by counting existing fields
-    // and adding the count to each new field
-    const existingFields = this.targetTarget.querySelectorAll('.measurement-type-fields').length
-    
-    // Replace measurement type indices with incremented values
-    content = content.replace(/\[line_items_measurement_types_attributes\]\[(\d+|\w+)\]/g, 
-                         (match, p1) => `[line_items_measurement_types_attributes][${existingFields}]`)
-    
-    this.targetTarget.insertAdjacentHTML('beforeend', content)
+    // Insert the new content at the end of the container
+    this.containerTarget.insertAdjacentHTML('beforeend', content)
   }
 
   remove(event) {
     event.preventDefault()
+
+    // Find the closest wrapper element using the button's parent elements
+    const button = event.currentTarget
+    let item = button
+
+    // Get the wrapper class from the controller's data attribute
+    const wrapperClass = this.wrapperClassValue
+    // Traverse up the DOM until we find the wrapper element with the specified class
+    while (item && !item.classList.contains(wrapperClass)) {
+      item = item.parentElement
+    }
+
+    if (!item) {
+      console.error(`Could not find wrapper element with class '${wrapperClass}'`)
+      return
+    }
+
+    // Check if this is a persisted record (has an ID)
+    const idInput = item.querySelector("input[name*='[id]']")
     
-    const wrapper = event.target.closest('.line-item-fields, .measurement-type-fields')
-    
-    // If there's a hidden _destroy field, set it to 1, otherwise remove the field
-    const destroyField = wrapper.querySelector('input[name*="_destroy"]')
-    if (destroyField) {
-      destroyField.value = 1
-      wrapper.style.display = 'none'
+    if (idInput) {
+      // For existing records, hide the item and mark for destruction
+      item.style.display = 'none'
+      const destroyInput = item.querySelector("input[name*='[_destroy]']")
+      if (destroyInput) {
+        destroyInput.value = "1"
+      }
     } else {
-      wrapper.remove()
+      // For new records, simply remove from the DOM
+      item.remove()
     }
   }
 } 

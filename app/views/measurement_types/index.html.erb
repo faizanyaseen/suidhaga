@@ -1,0 +1,119 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8" data-controller="modal">
+  <div class="flex justify-between items-center">
+    <h1 class="text-2xl font-semibold text-gray-900">Measurement Types</h1>
+    <button
+      onclick="measurement_modal.showModal()"
+      data-action="click->modal#setupForCreate"
+      class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg> New Measurement Type
+    </button>
+  </div>
+
+  <div class="mt-8 flex flex-col">
+    <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+        <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+          <table class="min-w-full divide-y divide-gray-300">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Key</th>
+                <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                  <span class="sr-only">Actions</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <% if @measurement_types.any? %>
+                <% @measurement_types.each do |measurement_type| %>
+                  <tr>
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                      <%= measurement_type.key %>
+                    </td>
+                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                      <div class="flex justify-end space-x-4">
+                        <button
+                          onclick="measurement_modal.showModal()"
+                          data-action="click->modal#setupForEdit"
+                          data-modal-id="<%= measurement_type.id %>"
+                          data-modal-key="<%= measurement_type.key %>"
+                          class="text-indigo-600 hover:text-indigo-900">
+                          Edit
+                        </button>
+                        <%= button_to "Delete",
+                                      measurement_type_path(measurement_type),
+                                      method: :delete,
+                                      class: "text-red-600 hover:text-red-900",
+                                      data: { confirm: "Are you sure you want to delete this measurement type?" } %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              <% else %>
+                <tr>
+                  <td colspan="2" class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-500 text-center sm:pl-6">
+                    No measurement types found. Click "New Measurement Type" to create one.
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Example of a DaisyUI card component -->
+<div class="card w-96 bg-base-100 shadow-xl">
+  <figure><img src="/images/stock.jpg" alt="Shoes" /></figure>
+  <div class="card-body">
+    <h2 class="card-title">Shoes!</h2>
+    <p>If a dog chews shoes whose shoes does he choose?</p>
+    <div class="card-actions justify-end">
+      <button class="btn btn-primary">Buy Now</button>
+    </div>
+  </div>
+</div>
+  <button class="btn btn-primary">Hello daisyUI!</button>
+
+  <!-- DaisyUI Modal Dialog -->
+  <dialog id="measurement_modal" class="modal">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg" data-modal-target="title">Measurement Type</h3>
+
+      <form data-action="submit->modal#submit" data-modal-target="form" class="mt-4">
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Key</span>
+          </label>
+          <input
+            type="text"
+            name="measurement_type[key]"
+            id="measurement_type_key"
+            data-modal-target="keyInput"
+            class="input input-bordered w-full"
+            placeholder="e.g., Chest, Waist, Inseam">
+
+          <div class="text-error text-sm mt-2 hidden" data-modal-target="errors"></div>
+
+          <input type="hidden" name="_method" value="post" data-modal-target="method">
+          <input type="hidden" name="id" data-modal-target="idInput">
+        </div>
+
+        <div class="modal-action">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn" form="dialog-close-form">Cancel</button>
+        </div>
+      </form>
+
+      <form method="dialog" id="dialog-close-form">
+        <!-- This form is just for closing the modal -->
+      </form>
+    </div>
+
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
+</div>

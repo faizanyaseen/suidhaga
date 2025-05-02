@@ -34,6 +34,7 @@
             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Phone</th>
             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Address</th>
+            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Actions</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-gray-200 bg-white">
@@ -45,6 +46,9 @@
               <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= customer.phone %></td>
               <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= customer.email %></td>
               <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= customer.address %></td>
+              <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                <%= link_to 'Edit', edit_customer_path(customer), class: "text-indigo-600 hover:text-indigo-900", data: { turbo: false } %>
+              </td>
             </tr>
           <% end %>
         </tbody>
@@ -55,4 +59,4 @@
       <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
     </div>
   <% end %>
-</div> 
+</div>

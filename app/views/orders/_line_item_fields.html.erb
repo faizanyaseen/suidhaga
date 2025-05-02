@@ -1,5 +1,6 @@
 <div class="line-item-fields border rounded-lg p-4 mb-4 relative">
   <%= f.hidden_field :_destroy %>
+  <%= f.hidden_field :id if f.object.persisted? %>
   
   <button type="button" data-action="nested-form#remove" class="absolute top-2 right-2 text-gray-400 hover:text-gray-500">
     <span class="sr-only">Remove line item</span>
@@ -72,25 +73,34 @@
 
     <%# Measurement Types %>
     <div class="sm:col-span-6">
-      <div class="measurement-types" data-controller="nested-form">
+      <div class="measurement-types" data-controller="nested-form" data-nested-form-wrapper-class-value="measurement-type-fields">
         <template data-nested-form-target="template">
-          <%= f.fields_for :line_items_measurement_types, LineItemsMeasurementType.new do |mt_form| %>
-            <div class="measurement-type-fields grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6 border-t pt-4 mt-4">
+          <%= f.fields_for :line_items_measurement_types, LineItemsMeasurementType.new, child_index: "#{f.index}_NEW_MEASUREMENT" do |mt_form| %>
+            <div class="measurement-type-fields grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6 border-t pt-4 mt-4"
+                 data-controller="measurement-value"
+                 data-measurement-value-customer-id-value="<%= @order.customer_id %>">
               <%= mt_form.hidden_field :_destroy %>
-              
+
               <div class="sm:col-span-3">
                 <%= mt_form.label :measurement_type_id, "Measurement Type", class: "block text-sm font-medium text-gray-700" %>
                 <div class="mt-1">
                   <%= mt_form.collection_select :measurement_type_id, @measurement_types, :id, :key,
                       { prompt: "Select a measurement type" },
-                      { class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5" } %>
+                      { class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5",
+                        data: {
+                          measurement_value_target: "measurementTypeSelect",
+                          action: "change->measurement-value#fetchCustomerValue"
+                        }
+                      } %>
                 </div>
               </div>
 
               <div class="sm:col-span-2">
                 <%= mt_form.label :value, class: "block text-sm font-medium text-gray-700" %>
                 <div class="mt-1">
-                  <%= mt_form.text_field :value, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5" %>
+                  <%= mt_form.text_field :value,
+                      class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5",
+                      data: { measurement_value_target: "valueField" } %>
                 </div>
               </div>
 
@@ -101,24 +111,34 @@
           <% end %>
         </template>
 
-        <div data-nested-form-target="target">
+        <div data-nested-form-target="container">
           <%= f.fields_for :line_items_measurement_types do |mt_form| %>
-            <div class="measurement-type-fields grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6 border-t pt-4 mt-4">
+            <div class="measurement-type-fields grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6 border-t pt-4 mt-4"
+                 data-controller="measurement-value"
+                 data-measurement-value-customer-id-value="<%= @order.customer_id %>">
               <%= mt_form.hidden_field :_destroy %>
-              
+              <%= mt_form.hidden_field :id if mt_form.object.persisted? %>
+
               <div class="sm:col-span-3">
                 <%= mt_form.label :measurement_type_id, "Measurement Type", class: "block text-sm font-medium text-gray-700" %>
                 <div class="mt-1">
                   <%= mt_form.collection_select :measurement_type_id, @measurement_types, :id, :key,
                       { prompt: "Select a measurement type" },
-                      { class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5" } %>
+                      { class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5",
+                        data: {
+                          measurement_value_target: "measurementTypeSelect",
+                          action: "change->measurement-value#fetchCustomerValue"
+                        }
+                      } %>
                 </div>
               </div>
 
               <div class="sm:col-span-2">
                 <%= mt_form.label :value, class: "block text-sm font-medium text-gray-700" %>
                 <div class="mt-1">
-                  <%= mt_form.text_field :value, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5" %>
+                  <%= mt_form.text_field :value,
+                      class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5",
+                      data: { measurement_value_target: "valueField" } %>
                 </div>
               </div>
 

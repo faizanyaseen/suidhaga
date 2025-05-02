@@ -1,0 +1,150 @@
+<%= form_with(model: customer, class: "space-y-8 divide-y divide-gray-200") do |f| %>
+  <% if customer.errors.any? %>
+    <div class="rounded-md bg-red-50 p-4 mb-6">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800">
+            <%= pluralize(customer.errors.count, "error") %> prohibited this customer from being saved:
+          </h3>
+          <div class="mt-2 text-sm text-red-700">
+            <ul class="list-disc pl-5 space-y-1">
+              <% customer.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5">
+    <div class="space-y-6 sm:space-y-5">
+      <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
+        <label class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">First Name</label>
+        <div class="mt-1 sm:mt-0 sm:col-span-2">
+          <%= f.text_field :first_name, class: "block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5" %>
+        </div>
+      </div>
+
+      <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+        <label class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Last Name</label>
+        <div class="mt-1 sm:mt-0 sm:col-span-2">
+          <%= f.text_field :last_name, class: "block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5" %>
+        </div>
+      </div>
+
+      <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+        <label class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Phone</label>
+        <div class="mt-1 sm:mt-0 sm:col-span-2">
+          <%= f.telephone_field :phone, class: "block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5" %>
+        </div>
+      </div>
+
+      <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+        <label class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Email</label>
+        <div class="mt-1 sm:mt-0 sm:col-span-2">
+          <%= f.email_field :email, class: "block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5" %>
+        </div>
+      </div>
+
+      <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+        <label class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">Address</label>
+        <div class="mt-1 sm:mt-0 sm:col-span-2">
+          <%= f.text_area :address, rows: 3, class: "block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5" %>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-6 sm:pt-5" data-controller="nested-form" data-nested-form-wrapper-class-value="measurement-fields">
+      <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
+        <div class="col-span-3">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-medium leading-6 text-gray-900">Measurements</h3>
+            <button type="button"
+                    data-action="nested-form#add"
+                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Add Measurement
+            </button>
+          </div>
+        </div>
+
+        <div class="col-span-3 space-y-4" data-nested-form-target="container">
+          <% customer.customers_measurement_types.each do |measurement| %>
+            <%= f.fields_for :customers_measurement_types, measurement do |measurement_form| %>
+              <div class="measurement-fields flex items-center gap-4">
+                <%= measurement_form.hidden_field :_destroy %>
+                <div class="flex-1">
+                  <%= measurement_form.collection_select :measurement_type_id,
+                      MeasurementType.all,
+                      :id,
+                      :key,
+                      { prompt: "Select measurement type" },
+                      class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5" %>
+                </div>
+                <div class="flex-1">
+                  <%= measurement_form.number_field :value,
+                      step: "0.01",
+                      placeholder: "Value",
+                      class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5" %>
+                </div>
+                <div>
+                  <button type="button"
+                          data-action="nested-form#remove"
+                          class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+
+        <template data-nested-form-target="template">
+          <%= f.fields_for :customers_measurement_types, CustomersMeasurementType.new, child_index: 'NEW_RECORD' do |measurement_form| %>
+            <div class="measurement-fields flex items-center gap-4">
+              <%= measurement_form.hidden_field :_destroy %>
+              <div class="flex-1">
+                <%= measurement_form.collection_select :measurement_type_id,
+                    MeasurementType.all,
+                    :id,
+                    :key,
+                    { prompt: "Select measurement type" },
+                    class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5" %>
+              </div>
+              <div class="flex-1">
+                <%= measurement_form.number_field :value,
+                    step: "0.01",
+                    placeholder: "Value",
+                    class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5" %>
+              </div>
+              <div>
+                <button type="button"
+                        data-action="nested-form#remove"
+                        class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                  <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          <% end %>
+        </template>
+      </div>
+    </div>
+  </div>
+
+  <div class="pt-5">
+    <div class="flex justify-end">
+      <%= link_to "Cancel", customers_path, class: "rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+      <%= f.submit "Save", class: "ml-3 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" %>
+    </div>
+  </div>
+<% end %>

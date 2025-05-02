@@ -24,7 +24,7 @@ class OrdersController < ApplicationController
     @order = Order.new
     @order.line_items.build
     @customers = current_shop.customers
-    @measurement_types = MeasurementType.all
+    @measurement_types = current_shop.measurement_types
   end
 
   def create
@@ -41,12 +41,14 @@ class OrdersController < ApplicationController
 
   def edit
     @order = current_shop.orders.includes(:line_items, :customer).find(params[:id])
+    if @order.line_items.empty?
+      @order.line_items.build
+    end
     @customers = current_shop.customers
-    @measurement_types = MeasurementType.all
+    @measurement_types = current_shop.measurement_types
   end
 
   def update
-    
     @order = current_shop.orders.find(params[:id])
     
     if @order.update(order_params)
@@ -67,15 +69,20 @@ class OrdersController < ApplicationController
       :status,
       line_items_attributes: [
         :id,
-        :price,
-        :number_of_pieces,
         :name,
         :description,
+        :price,
+        :number_of_pieces,
         :status,
         :_destroy,
         { images: [] },
         { keep_images: [] },
-        { line_items_measurement_types_attributes: [:id, :measurement_type_id, :value, :_destroy] }
+        line_items_measurement_types_attributes: [
+          :id,
+          :measurement_type_id,
+          :value,
+          :_destroy
+        ]
       ]
     ).tap do |whitelisted|
       if whitelisted[:line_items_attributes].present?
