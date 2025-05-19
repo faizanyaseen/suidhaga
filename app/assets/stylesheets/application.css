@@ -17,3 +17,39 @@
 .pointer-events-none {
   pointer-events: none;
 }
+
+/* Dark mode specific styles */
+[data-theme="dark"] .card-title {
+  color: hsl(var(--pc));
+}
+
+[data-theme="dark"] .label {
+  color: hsl(var(--pc) / 0.8);
+}
+
+[data-theme="dark"] .divider {
+  color: hsl(var(--pc) / 0.7);
+}
+
+/* Light mode specific styles */
+[data-theme="light"] .card-title {
+  color: hsl(var(--n));
+}
+
+[data-theme="light"] .label {
+  color: hsl(var(--n) / 0.8);
+}
+
+[data-theme="light"] .divider {
+  color: hsl(var(--n) / 0.7);
+}
+
+/* Ensure form elements have proper contrast in both modes */
+.input, .textarea, .select {
+  background-color: hsl(var(--b1));
+  color: hsl(var(--bc));
+}
+
+.input::placeholder, .textarea::placeholder {
+  color: hsl(var(--bc) / 0.5);
+}

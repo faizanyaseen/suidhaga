@@ -9,150 +9,167 @@
     </svg>
   </button>
 
-  <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-    <div class="sm:col-span-3">
-      <%= f.label :name, class: "block text-sm font-medium text-gray-700" %>
-      <div class="mt-1">
-        <%= f.text_field :name, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5" %>
-      </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="form-control">
+      <%= f.label :name, class: "label" %>
+      <%= f.text_field :name, class: "input input-bordered w-full", placeholder: "Enter item name" %>
     </div>
-
-    <div class="sm:col-span-3">
-      <%= f.label :description, class: "block text-sm font-medium text-gray-700" %>
-      <div class="mt-1">
-        <%= f.text_area :description, rows: 2, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" %>
-      </div>
+    
+    <div class="form-control">
+      <%= f.label :description, class: "label" %>
+      <%= f.text_field :description, class: "input input-bordered w-full", placeholder: "Enter description" %>
     </div>
+  </div>
 
-    <div class="sm:col-span-2">
-      <%= f.label :price, class: "block text-sm font-medium text-gray-700" %>
-      <div class="mt-1">
-        <%= f.number_field :price, step: "0.01", min: 0, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5" %>
-      </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+    <div class="form-control">
+      <%= f.label :price, class: "label" %>
+      <%= f.number_field :price, step: "0.01", class: "input input-bordered w-full", placeholder: "Enter price" %>
     </div>
-
-    <div class="sm:col-span-2">
-      <%= f.label :number_of_pieces, class: "block text-sm font-medium text-gray-700" %>
-      <div class="mt-1">
-        <%= f.number_field :number_of_pieces, min: 1, class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5" %>
-      </div>
+    
+    <div class="form-control">
+      <%= f.label :number_of_pieces, class: "label" %>
+      <%= f.number_field :number_of_pieces, class: "input input-bordered w-full", placeholder: "Enter quantity" %>
     </div>
-
-    <div class="sm:col-span-2">
-      <%= f.label :status, class: "block text-sm font-medium text-gray-700" %>
-      <div class="mt-1">
-        <%= f.select :status, LineItem.statuses.keys.map { |s| [s.humanize, s] }, 
-            { prompt: "Select a status" }, 
-            { class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5" } %>
-      </div>
+    
+    <div class="form-control">
+      <%= f.label :status, class: "label" %>
+      <%= f.select :status, 
+          LineItem.statuses.keys.map { |s| [s.humanize, s] }, 
+          { prompt: "Select status" }, 
+          { class: "select select-bordered w-full" } %>
     </div>
+  </div>
 
-    <div class="sm:col-span-6" data-controller="image-upload">
-      <%= f.label :images, class: "block text-sm font-medium text-gray-700" %>
-      <div class="mt-1">
-        <%= f.file_field :images, multiple: true, accept: "image/*", 
-            class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 py-2.5",
-            data: { image_upload_target: "input" } %>
-      </div>
-      <div class="mt-2 grid grid-cols-2 gap-2" data-image-upload-target="preview">
-        <% if f.object.persisted? && f.object.images.attached? %>
-          <% f.object.images.each do |image| %>
-            <div class="relative group w-1/2">
-              <%= image_tag image, class: "w-full object-cover rounded-lg" %>
-              <%= hidden_field_tag "order[line_items_attributes][#{f.index}][keep_images][]", image.signed_id %>
-              <button type="button" class="absolute top-2 right-2 p-1 bg-white rounded-full shadow opacity-0 group-hover:opacity-100 transition-opacity text-gray-500 hover:text-gray-700" data-action="click->image-upload#removeExisting" data-image-id="<%= image.signed_id %>">
-                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-          <% end %>
+  <div class="form-control mt-4" data-controller="image-upload">
+    <%= f.label :images, class: "label" %>
+    <%= f.file_field :images, 
+        multiple: true, 
+        accept: "image/*", 
+        class: "file-input file-input-bordered w-full",
+        data: { image_upload_target: "input" } %>
+    
+    <div class="mt-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2" data-image-upload-target="preview">
+      <% if f.object.persisted? && f.object.images.attached? %>
+        <% f.object.images.each do |image| %>
+          <div class="relative group">
+            <%= image_tag image, class: "w-full h-32 object-cover rounded-lg" %>
+            <%= hidden_field_tag "order[line_items_attributes][#{f.index}][keep_images][]", image.signed_id %>
+            <button type="button" 
+                    class="absolute top-2 right-2 btn btn-circle btn-sm btn-error opacity-0 group-hover:opacity-100 transition-opacity" 
+                    data-action="click->image-upload#removeExisting" 
+                    data-image-id="<%= image.signed_id %>">
+              <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
         <% end %>
-      </div>
+      <% end %>
     </div>
+  </div>
 
-    <%# Measurement Types %>
-    <div class="sm:col-span-6">
-      <div class="measurement-types" data-controller="nested-form" data-nested-form-wrapper-class-value="measurement-type-fields">
-        <template data-nested-form-target="template">
-          <%= f.fields_for :line_items_measurement_types, LineItemsMeasurementType.new, child_index: "#{f.index}_NEW_MEASUREMENT" do |mt_form| %>
-            <div class="measurement-type-fields grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6 border-t pt-4 mt-4"
-                 data-controller="measurement-value"
-                 data-measurement-value-customer-id-value="<%= @order.customer_id %>">
-              <%= mt_form.hidden_field :_destroy %>
+  <!-- Measurement Types Section -->
+  <div class="divider mt-6">Measurements</div>
 
-              <div class="sm:col-span-3">
-                <%= mt_form.label :measurement_type_id, "Measurement Type", class: "block text-sm font-medium text-gray-700" %>
-                <div class="mt-1">
-                  <%= mt_form.collection_select :measurement_type_id, @measurement_types, :id, :key,
-                      { prompt: "Select a measurement type" },
-                      { class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5",
-                        data: {
-                          measurement_value_target: "measurementTypeSelect",
-                          action: "change->measurement-value#fetchCustomerValue"
-                        }
-                      } %>
-                </div>
-              </div>
-
-              <div class="sm:col-span-2">
-                <%= mt_form.label :value, class: "block text-sm font-medium text-gray-700" %>
-                <div class="mt-1">
-                  <%= mt_form.text_field :value,
-                      class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5",
-                      data: { measurement_value_target: "valueField" } %>
-                </div>
-              </div>
-
-              <div class="sm:col-span-1 flex items-end">
-                <button type="button" data-action="nested-form#remove" class="text-red-600 hover:text-red-700">Remove</button>
-              </div>
-            </div>
-          <% end %>
-        </template>
-
-        <div data-nested-form-target="container">
-          <%= f.fields_for :line_items_measurement_types do |mt_form| %>
-            <div class="measurement-type-fields grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6 border-t pt-4 mt-4"
-                 data-controller="measurement-value"
-                 data-measurement-value-customer-id-value="<%= @order.customer_id %>">
-              <%= mt_form.hidden_field :_destroy %>
-              <%= mt_form.hidden_field :id if mt_form.object.persisted? %>
-
-              <div class="sm:col-span-3">
-                <%= mt_form.label :measurement_type_id, "Measurement Type", class: "block text-sm font-medium text-gray-700" %>
-                <div class="mt-1">
-                  <%= mt_form.collection_select :measurement_type_id, @measurement_types, :id, :key,
-                      { prompt: "Select a measurement type" },
-                      { class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5",
-                        data: {
-                          measurement_value_target: "measurementTypeSelect",
-                          action: "change->measurement-value#fetchCustomerValue"
-                        }
-                      } %>
-                </div>
-              </div>
-
-              <div class="sm:col-span-2">
-                <%= mt_form.label :value, class: "block text-sm font-medium text-gray-700" %>
-                <div class="mt-1">
-                  <%= mt_form.text_field :value,
-                      class: "shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md py-2.5",
-                      data: { measurement_value_target: "valueField" } %>
-                </div>
-              </div>
-
-              <div class="sm:col-span-1 flex items-end">
-                <button type="button" data-action="nested-form#remove" class="text-red-600 hover:text-red-700">Remove</button>
-              </div>
-            </div>
-          <% end %>
+  <div data-controller="nested-form" data-nested-form-wrapper-class-value="measurement-type-fields">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-lg font-medium">Item Measurements</h3>
+      <button type="button"
+              data-action="nested-form#add"
+              class="btn btn-primary btn-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
+        Add Measurement
+      </button>
+    </div>
+    
+    <div class="space-y-4" data-nested-form-target="container">
+      <%= f.fields_for :line_items_measurement_types do |mt_form| %>
+        <div class="measurement-type-fields flex flex-col md:flex-row items-start md:items-center gap-4 p-4 border border-base-300 rounded-lg"
+             data-controller="measurement-value"
+             data-measurement-value-customer-id-value="<%= @order.customer_id %>">
+          <%= mt_form.hidden_field :_destroy %>
+          <%= mt_form.hidden_field :id if mt_form.object.persisted? %>
+          
+          <div class="form-control flex-1 w-full">
+            <%= mt_form.label :measurement_type_id, "Type", class: "label" %>
+            <%= mt_form.collection_select :measurement_type_id, 
+                @measurement_types, 
+                :id, 
+                :key,
+                { prompt: "Select a measurement type" },
+                { class: "select select-bordered w-full",
+                  data: {
+                    measurement_value_target: "measurementTypeSelect",
+                    action: "change->measurement-value#fetchCustomerValue"
+                  }
+                } %>
+          </div>
+          
+          <div class="form-control flex-1 w-full">
+            <%= mt_form.label :value, class: "label" %>
+            <%= mt_form.text_field :value,
+                class: "input input-bordered w-full",
+                placeholder: "Enter measurement value",
+                data: { measurement_value_target: "valueField" } %>
+          </div>
+          
+          <div class="mt-8">
+            <button type="button"
+                    data-action="nested-form#remove"
+                    class="btn btn-error btn-circle btn-sm">
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
         </div>
-
-        <button type="button" data-action="nested-form#add" class="mt-2 text-sm text-indigo-600 hover:text-indigo-500">
-          Add Measurement
-        </button>
-      </div>
+      <% end %>
     </div>
+    
+    <template data-nested-form-target="template">
+      <%= f.fields_for :line_items_measurement_types, LineItemsMeasurementType.new, child_index: "#{f.index}_NEW_MEASUREMENT" do |mt_form| %>
+        <div class="measurement-type-fields flex flex-col md:flex-row items-start md:items-center gap-4 p-4 border border-base-300 rounded-lg"
+             data-controller="measurement-value"
+             data-measurement-value-customer-id-value="<%= @order.customer_id %>">
+          <%= mt_form.hidden_field :_destroy %>
+          
+          <div class="form-control flex-1 w-full">
+            <%= mt_form.label :measurement_type_id, "Type", class: "label" %>
+            <%= mt_form.collection_select :measurement_type_id, 
+                @measurement_types, 
+                :id, 
+                :key,
+                { prompt: "Select a measurement type" },
+                { class: "select select-bordered w-full",
+                  data: {
+                    measurement_value_target: "measurementTypeSelect",
+                    action: "change->measurement-value#fetchCustomerValue"
+                  }
+                } %>
+          </div>
+          
+          <div class="form-control flex-1 w-full">
+            <%= mt_form.label :value, class: "label" %>
+            <%= mt_form.text_field :value,
+                class: "input input-bordered w-full",
+                placeholder: "Enter measurement value",
+                data: { measurement_value_target: "valueField" } %>
+          </div>
+          
+          <div class="mt-8">
+            <button type="button"
+                    data-action="nested-form#remove"
+                    class="btn btn-error btn-circle btn-sm">
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      <% end %>
+    </template>
   </div>
 </div> 

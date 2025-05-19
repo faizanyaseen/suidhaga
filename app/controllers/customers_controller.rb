@@ -27,11 +27,15 @@ class CustomersController < ApplicationController
 
   def create
     @customer = current_shop.customers.build(customer_params)
-    
-    if @customer.save
-      redirect_to customers_path, notice: 'Customer was successfully created.'
-    else
-      render :new, error: @customer.errors.full_messages, status: :unprocessable_entity
+
+    respond_to do |format|
+      if @customer.save
+        format.html { redirect_to customers_path, notice: "Customer was successfully created." }
+        format.json { render :show, status: :created, location: @customer }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @customer.errors, status: :unprocessable_entity }
+      end
     end
   end
 

@@ -1,80 +1,115 @@
-<%= form_with(model: @order, class: "mt-6", multipart: true) do |f| %>
-  <% if @order.errors.any? %>
-    <div class="rounded-md bg-red-50 p-4 mb-6">
-      <div class="flex">
-        <div class="flex-shrink-0">
-          <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-          </svg>
-        </div>
-        <div class="ml-3">
-          <h3 class="text-sm font-medium text-red-800">
-            <%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:
-          </h3>
-          <div class="mt-2 text-sm text-red-700">
-            <ul class="list-disc pl-5 space-y-1">
-              <% @order.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-              <% end %>
-            </ul>
+<div class="card bg-base-100 shadow-xl">
+  <div class="card-body">
+    <%= form_with(model: @order, class: "mt-6", multipart: true) do |f| %>
+      <% if @order.errors.any? %>
+        <div class="alert alert-error mb-4">
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <div>
+              <h2 class="font-medium">
+                <%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:
+              </h2>
+              <ul class="mt-2 list-disc list-inside text-sm">
+                <% @order.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  <% end %>
-
-  <div class="space-y-6 sm:space-y-5" data-controller="order-form">
-    <%# Customer Selection %>
-    <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
-      <%= f.label :customer_id, class: "block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2" %>
-      <div class="mt-1 sm:mt-0 sm:col-span-2">
-        <%= f.collection_select :customer_id, @customers, :id, ->(c) { "#{c.first_name} #{c.last_name}" },
-            { prompt: "Select a customer" },
-            { class: "max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md py-2.5",
-              data: { order_form_target: "customerSelect", action: "change->order-form#toggleLineItems" } } %>
-      </div>
-    </div>
-
-    <%# Order Status - Only show in edit mode %>
-    <% if @order.persisted? %>
-      <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
-        <%= f.label :status, class: "block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2" %>
-        <div class="mt-1 sm:mt-0 sm:col-span-2">
-          <%= f.select :status, Order.statuses.keys.map { |s| [s.humanize, s] },
-              { prompt: "Select a status" },
-              { class: "max-w-lg block focus:ring-indigo-500 focus:border-indigo-500 w-full shadow-sm sm:max-w-xs sm:text-sm border-gray-300 rounded-md py-2.5" } %>
+      <% end %>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="form-control">
+          <%= f.label :customer_id, class: "label" %>
+          <%= f.collection_select :customer_id, @customers, :id, ->(c) { "#{c.first_name} #{c.last_name}" },
+              { prompt: "Select a customer" },
+              { class: "select select-bordered w-full" } %>
+        </div>
+        
+        <div class="form-control">
+          <%= f.label :order_date, class: "label" %>
+          <%= f.date_field :order_date, class: "input input-bordered w-full", placeholder: "Select date" %>
         </div>
       </div>
-    <% end %>
-
-    <%# Line Items %>
-    <div class="mt-6" data-order-form-target="lineItemsSection">
-      <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Line Items</h3>
-
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <div class="form-control">
+          <%= f.label :delivery_date, class: "label" %>
+          <%= f.date_field :delivery_date, class: "input input-bordered w-full", placeholder: "Select date" %>
+        </div>
+        
+        <div class="form-control">
+          <%= f.label :status, class: "label" %>
+          <%= f.select :status, Order.statuses.keys.map { |s| [s.humanize, s] },
+              { prompt: "Select status" },
+              { class: "select select-bordered w-full" } %>
+        </div>
+      </div>
+      
+      <div class="form-control mt-4">
+        <%= f.label :notes, class: "label" %>
+        <%= f.text_area :notes, class: "textarea textarea-bordered w-full", rows: 3, placeholder: "Enter order notes" %>
+      </div>
+      
+      <!-- Line Items Section -->
+      <div class="divider">Line Items</div>
+      
       <div data-controller="nested-form" data-nested-form-wrapper-class-value="line-item-fields">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-medium">Items</h3>
+          <button type="button"
+                  data-action="nested-form#add"
+                  class="btn btn-primary btn-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            Add Item
+          </button>
+        </div>
+        
+        <div class="space-y-6" data-nested-form-target="container">
+          <%= f.fields_for :line_items do |line_item_form| %>
+            <div class="line-item-fields p-4 border border-base-300 rounded-lg">
+              <%= render 'line_item_fields', f: line_item_form %>
+              
+              <div class="flex justify-end mt-4">
+                <button type="button"
+                        data-action="nested-form#remove"
+                        class="btn btn-error btn-sm">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                  Remove Item
+                </button>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        
         <template data-nested-form-target="template">
-          <%= f.fields_for :line_items, LineItem.new, child_index: 'NEW_RECORD' do |line_item| %>
-            <%= render 'line_item_fields', f: line_item %>
+          <%= f.fields_for :line_items, LineItem.new, child_index: 'NEW_RECORD' do |line_item_form| %>
+            <div class="line-item-fields p-4 border border-base-300 rounded-lg">
+              <%= render 'line_item_fields', f: line_item_form %>
+              
+              <div class="flex justify-end mt-4">
+                <button type="button"
+                        data-action="nested-form#remove"
+                        class="btn btn-error btn-sm">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                  Remove Item
+                </button>
+              </div>
+            </div>
           <% end %>
         </template>
-
-        <div data-nested-form-target="container">
-          <%= f.fields_for :line_items do |line_item| %>
-            <%= render 'line_item_fields', f: line_item %>
-          <% end %>
-        </div>
-
-        <button type="button" data-action="nested-form#add" data-order-form-target="addLineItemButton" class="mt-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          Add Line Item
-        </button>
       </div>
-    </div>
+      
+      <div class="form-control mt-6">
+        <%= f.submit @order.new_record? ? "Create Order" : "Update Order", class: "btn btn-primary w-full" %>
+      </div>
+    <% end %>
   </div>
-
-  <div class="pt-5">
-    <div class="flex justify-end">
-      <%= link_to "Cancel", @order.persisted? ? order_path(@order) : orders_path, class: "bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
-      <%= f.submit @order.persisted? ? "Update Order" : "Create Order", class: "ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
-    </div>
-  </div>
-<% end %>
+</div>

@@ -1,94 +1,83 @@
 <%# Header %>
-<div class="pb-5 border-b border-gray-200 sm:flex sm:items-center sm:justify-between">
-  <h3 class="text-2xl leading-6 font-medium text-gray-900">Orders</h3>
-  <div class="mt-3 sm:mt-0 sm:ml-4">
-    <%= link_to new_order_path, class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
-      <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-      </svg>
-      New Order
-    <% end %>
-  </div>
-</div>
-
-<%# Search %>
-<div class="mt-4">
-  <%= form_with(url: orders_path, method: :get, data: { turbo_frame: "orders_list", turbo_action: "advance" }) do |f| %>
-    <div class="relative rounded-md shadow-sm">
-      <%= f.text_field :search, 
-          class: "block w-full rounded-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5",
-          placeholder: "Search by order number, customer name, phone, or email",
-          value: params[:search] %>
-      <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
+<div class="card bg-base-100 shadow-sm">
+  <div class="card-body">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+      <h2 class="card-title text-2xl font-bold">Orders</h2>
+      <%= link_to new_order_path, class: "btn btn-primary mt-4 sm:mt-0", data: { turbo: false } do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
         </svg>
-      </div>
+        New Order
+      <% end %>
     </div>
-  <% end %>
-</div>
+    
+    <div class="mb-4">
+      <%= form_with(url: orders_path, method: :get, data: { turbo_frame: "orders_list", turbo_action: "advance" }) do |f| %>
+        <div class="form-control">
+          <div class="input-group flex">
+            <%= f.text_field :search, placeholder: "Search orders...", class: "input input-bordered w-full", value: params[:search] %>
+            <button class="btn btn-square">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      <% end %>
+    </div>
 
-<%# Orders Table %>
-<div class="mt-8 flex flex-col">
-  <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-    <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-      <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-        <table class="min-w-full divide-y divide-gray-300">
-          <thead class="bg-gray-50">
+    <%= turbo_frame_tag "orders_list" do %>
+      <div class="overflow-x-auto">
+        <table class="table table-zebra w-full">
+          <thead>
             <tr>
-              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Order Number</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Customer</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Total Price</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Created At</th>
-              <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                <span class="sr-only">Actions</span>
-              </th>
+              <th>Order Number#</th>
+              <th>Customer</th>
+              <th>Status</th>
+              <th>Total</th>
+              <th>Actions</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-200 bg-white">
+          <tbody>
             <% @orders.each do |order| %>
               <tr>
-                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                  <%= order.order_number %>
-                </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  <%= "#{order.customer.first_name} #{order.customer.last_name}" %>
-                </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  <%= number_to_currency(order.total_price) %>
-                </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= 
-                    case order.status
-                    when 'delivered'
-                      'bg-green-100 text-green-800'
-                    when 'in_progress'
-                      'bg-yellow-100 text-yellow-800'
-                    else
-                      'bg-blue-100 text-blue-800'
-                    end
-                  %>">
+                <td><%= order.order_number %></td>
+                <td><%= "#{order.customer.first_name} #{order.customer.last_name}" %></td>
+                <td>
+                  <div class="badge <%= order_status_color(order.status) %>">
                     <%= order.status.humanize %>
-                  </span>
+                  </div>
                 </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                  <%= order.created_at.strftime("%B %d, %Y") %>
-                </td>
-                <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                  <%= link_to "View", order_path(order), class: "text-indigo-600 hover:text-indigo-900 mr-4" %>
-                  <%= link_to "Edit", edit_order_path(order), class: "text-blue-600 hover:text-blue-900" %>
+                <td><%= number_to_currency(order.total_price) %></td>
+                <td>
+                  <div class="flex space-x-2">
+                    <%= link_to edit_order_path(order), class: "btn btn-sm btn-outline", data: { turbo: false } do %>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    <% end %>
+                    <%= link_to order_path(order), class: "btn btn-sm btn-outline", data: { turbo: false } do %>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    <% end %>
+                  </div>
                 </td>
               </tr>
             <% end %>
           </tbody>
         </table>
       </div>
-    </div>
+
+      <div class="mt-4">
+        <%#== pagy_nav(@pagy) if @pagy.pages > 1 %>
+      </div>
+    <% end %>
   </div>
 </div>
 
 <%# Pagination %>
 <div class="mt-4">
   <%= paginate @orders %>
-</div> 
+</div>

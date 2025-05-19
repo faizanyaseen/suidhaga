@@ -8,6 +8,7 @@ class Customer < ApplicationRecord
   accepts_nested_attributes_for :customers_measurement_types, allow_destroy: true
 
   validates :first_name, presence: true
-  validates :phone, presence: true
+  validates :phone, presence: true, uniqueness: true
+  validates :email, uniqueness: true, allow_blank: true
   validates :shop, presence: true
 end 
