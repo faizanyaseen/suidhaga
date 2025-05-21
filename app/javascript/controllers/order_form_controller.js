@@ -1,10 +1,24 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["customerSelect", "lineItemsSection", "addLineItemButton"]
+  static targets = ["customerSelect", "lineItemsSection", "addLineItemButton", "dependentField"]
 
   connect() {
+    console.log("Order form controller connected")
+    this.toggleFieldsState()
     this.toggleLineItems()
+  }
+
+  toggleFieldsState() {
+    const customerSelected = this.customerSelectTarget.value !== ""
+
+    this.dependentFieldTargets.forEach(field => {
+      field.disabled = !customerSelected
+    })
+  }
+
+  customerChanged() {
+    this.toggleFieldsState()
   }
 
   toggleLineItems() {

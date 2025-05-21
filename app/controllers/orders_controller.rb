@@ -21,7 +21,8 @@ class OrdersController < ApplicationController
   end
 
   def new
-    @order = Order.new
+    @order = current_shop.orders.new
+    @order.customer_id = params[:customer_id] if params[:customer_id].present?
     @order.line_items.build
     @customers = current_shop.customers
     @measurement_types = current_shop.measurement_types
@@ -55,7 +56,7 @@ class OrdersController < ApplicationController
       redirect_to @order, notice: 'Order was successfully updated.'
     else
       @customers = current_shop.customers
-      @measurement_types = MeasurementType.all
+      @measurement_types = current_shop.measurement_types
       render :edit, status: :unprocessable_entity
     end
   end

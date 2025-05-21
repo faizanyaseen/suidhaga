@@ -1,5 +1,6 @@
 class CustomersController < ApplicationController
-  before_action :set_customer, only: [:edit, :update]
+  before_action :set_customer, only: [:edit, :update, :show]
+  before_action :set_measurement_types, only: [:new, :create, :edit, :update]
 
   def index
     @customers = current_shop.customers.order(created_at: :desc)
@@ -15,27 +16,21 @@ class CustomersController < ApplicationController
 
   def new
     @customer = current_shop.customers.new
-    @measurement_types = current_shop.measurement_types
   end
 
   def edit
     @customer = current_shop.customers.find(params[:id])
     # Add some debugging
     Rails.logger.debug "Editing customer: #{@customer.id}"
-    @measurement_types = current_shop.measurement_types
   end
 
   def create
-    @customer = current_shop.customers.build(customer_params)
+    @customer = current_shop.customers.new(customer_params)
 
-    respond_to do |format|
-      if @customer.save
-        format.html { redirect_to customers_path, notice: "Customer was successfully created." }
-        format.json { render :show, status: :created, location: @customer }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @customer.errors, status: :unprocessable_entity }
-      end
+    if @customer.save
+      redirect_to customers_path, notice: 'Customer was successfully created.'
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -43,7 +38,7 @@ class CustomersController < ApplicationController
     if @customer.update(customer_params)
       redirect_to customers_path, notice: 'Customer was successfully updated.'
     else
-      render :edit, error: @customer.errors.full_messages, status: :unprocessable_entity
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -60,10 +55,18 @@ class CustomersController < ApplicationController
     end
   end
 
+  def show
+    @orders = @customer.orders.includes(:line_items).order(created_at: :desc)
+  end
+
   private
 
   def set_customer
     @customer = current_shop.customers.find(params[:id])
+  end
+
+  def set_measurement_types
+    @measurement_types = current_shop.measurement_types
   end
 
   def customer_params
@@ -73,7 +76,12 @@ class CustomersController < ApplicationController
       :phone,
       :email,
       :address,
-      customers_measurement_types_attributes: [:id, :measurement_type_id, :value, :_destroy]
+      customers_measurement_types_attributes: [
+        :id,
+        :measurement_type_id,
+        :value,
+        :_destroy
+      ]
     )
   end
 end

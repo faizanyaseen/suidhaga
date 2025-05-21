@@ -84,15 +84,13 @@
     </style>
     
     <script>
-      // Initialize theme from localStorage or system preference
       document.addEventListener('DOMContentLoaded', () => {
         const storedTheme = localStorage.getItem('theme')
         const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
         const theme = storedTheme || systemTheme
         
         document.documentElement.setAttribute('data-theme', theme)
-        
-        // Update theme icons
+
         if (theme === 'dark') {
           document.querySelector('.theme-light-icon')?.classList.add('hidden')
           document.querySelector('.theme-dark-icon')?.classList.remove('hidden')

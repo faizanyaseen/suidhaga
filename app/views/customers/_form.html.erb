@@ -42,7 +42,10 @@
         
         <div class="form-control">
           <%= f.label :email, class: "label" %>
-          <%= f.email_field :email, class: "input input-bordered w-full", placeholder: "Enter email address" %>
+          <%= f.email_field :email, class: "input input-bordered w-full #{'input-error' if customer.errors[:email].any?}", placeholder: "Enter email address" %>
+          <% if customer.errors[:email].any? %>
+            <div class="text-error text-sm mt-1"><%= customer.errors[:email].join(', ') %></div>
+          <% end %>
         </div>
       </div>
       
@@ -68,48 +71,47 @@
         </div>
         
         <div class="space-y-4" data-nested-form-target="container">
-          <% customer.customers_measurement_types.each do |measurement| %>
-            <%= f.fields_for :customers_measurement_types, measurement do |measurement_form| %>
-              <div class="measurement-fields flex flex-col md:flex-row items-start md:items-center gap-4 p-4 border border-base-300 rounded-lg">
-                <%= measurement_form.hidden_field :_destroy %>
-                <div class="form-control flex-1 w-full">
-                  <%= measurement_form.label :measurement_type_id, "Type", class: "label" %>
-                  <%= measurement_form.collection_select :measurement_type_id,
-                      MeasurementType.all,
-                      :id,
-                      :key,
-                      { prompt: "Select measurement type" },
-                      class: "select select-bordered w-full" %>
-                </div>
-                <div class="form-control flex-1 w-full">
-                  <%= measurement_form.label :value, class: "label" %>
-                  <%= measurement_form.number_field :value,
-                      step: "0.01",
-                      placeholder: "Enter measurement value",
-                      class: "input input-bordered w-full" %>
-                </div>
-                <div class="mt-8">
-                  <button type="button"
-                          data-action="nested-form#remove"
-                          class="btn btn-error btn-circle btn-sm">
-                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                  </button>
-                </div>
+          <%= f.fields_for :customers_measurement_types do |measurement_form| %>
+            <div class="measurement-fields flex flex-col md:flex-row items-start md:items-center gap-4 p-4 border border-base-300 rounded-lg">
+              <%= measurement_form.hidden_field :id if measurement_form.object.persisted? %>
+              <%= measurement_form.hidden_field :_destroy %>
+              <div class="form-control flex-1 w-full">
+                <%= measurement_form.label :measurement_type_id, "Type", class: "label" %>
+                <%= measurement_form.collection_select :measurement_type_id,
+                    @measurement_types,
+                    :id,
+                    :key,
+                    { prompt: "Select measurement type" },
+                    class: "select select-bordered w-full" %>
               </div>
-            <% end %>
+              <div class="form-control flex-1 w-full">
+                <%= measurement_form.label :value, class: "label" %>
+                <%= measurement_form.number_field :value,
+                    step: "0.01",
+                    placeholder: "Enter measurement value",
+                    class: "input input-bordered w-full" %>
+              </div>
+              <div class="mt-8">
+                <button type="button"
+                        data-action="nested-form#remove"
+                        class="btn btn-error btn-circle btn-sm">
+                  <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+            </div>
           <% end %>
         </div>
         
         <template data-nested-form-target="template">
           <%= f.fields_for :customers_measurement_types, CustomersMeasurementType.new, child_index: 'NEW_RECORD' do |measurement_form| %>
             <div class="measurement-fields flex flex-col md:flex-row items-start md:items-center gap-4 p-4 border border-base-300 rounded-lg">
-              <%= measurement_form.hidden_field :_destroy %>
+              <%= measurement_form.hidden_field :_destroy, value: "false" %>
               <div class="form-control flex-1 w-full">
                 <%= measurement_form.label :measurement_type_id, "Type", class: "label" %>
                 <%= measurement_form.collection_select :measurement_type_id,
-                    MeasurementType.all,
+                    @measurement_types,
                     :id,
                     :key,
                     { prompt: "Select measurement type" },

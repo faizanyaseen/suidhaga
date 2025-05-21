@@ -1,6 +1,6 @@
 <div class="card bg-base-100 shadow-xl">
   <div class="card-body">
-    <%= form_with(model: @order, class: "mt-6", multipart: true) do |f| %>
+    <%= form_with(model: @order, class: "mt-6", multipart: true, data: { controller: "order-form" }) do |f| %>
       <% if @order.errors.any? %>
         <div class="alert alert-error mb-4">
           <div>
@@ -24,32 +24,41 @@
           <%= f.label :customer_id, class: "label" %>
           <%= f.collection_select :customer_id, @customers, :id, ->(c) { "#{c.first_name} #{c.last_name}" },
               { prompt: "Select a customer" },
-              { class: "select select-bordered w-full" } %>
+              {
+                class: "select select-bordered w-full",
+                data: {
+                  order_form_target: "customerSelect",
+                  action: "change->order-form#customerChanged"
+                }
+              } %>
         </div>
         
         <div class="form-control">
           <%= f.label :order_date, class: "label" %>
-          <%= f.date_field :order_date, class: "input input-bordered w-full", placeholder: "Select date" %>
+          <%= f.date_field :order_date, class: "input input-bordered w-full", placeholder: "Select date", data: { order_form_target: "dependentField" } %>
         </div>
       </div>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         <div class="form-control">
           <%= f.label :delivery_date, class: "label" %>
-          <%= f.date_field :delivery_date, class: "input input-bordered w-full", placeholder: "Select date" %>
+          <%= f.date_field :delivery_date, class: "input input-bordered w-full", placeholder: "Select date", data: { order_form_target: "dependentField" } %>
         </div>
         
         <div class="form-control">
           <%= f.label :status, class: "label" %>
           <%= f.select :status, Order.statuses.keys.map { |s| [s.humanize, s] },
               { prompt: "Select status" },
-              { class: "select select-bordered w-full" } %>
+              { 
+                class: "select select-bordered w-full",
+                data: { order_form_target: "dependentField" }
+              } %>
         </div>
       </div>
       
       <div class="form-control mt-4">
         <%= f.label :notes, class: "label" %>
-        <%= f.text_area :notes, class: "textarea textarea-bordered w-full", rows: 3, placeholder: "Enter order notes" %>
+        <%= f.text_area :notes, class: "textarea textarea-bordered w-full", rows: 3, placeholder: "Enter order notes", data: { order_form_target: "dependentField" } %>
       </div>
       
       <!-- Line Items Section -->
@@ -60,7 +69,8 @@
           <h3 class="text-lg font-medium">Items</h3>
           <button type="button"
                   data-action="nested-form#add"
-                  class="btn btn-primary btn-sm">
+                  class="btn btn-primary btn-sm"
+                  data-order-form-target="dependentField">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
@@ -71,12 +81,13 @@
         <div class="space-y-6" data-nested-form-target="container">
           <%= f.fields_for :line_items do |line_item_form| %>
             <div class="line-item-fields p-4 border border-base-300 rounded-lg">
-              <%= render 'line_item_fields', f: line_item_form %>
+              <%= render 'line_item_fields', f: line_item_form, disabled: true %>
               
               <div class="flex justify-end mt-4">
                 <button type="button"
                         data-action="nested-form#remove"
-                        class="btn btn-error btn-sm">
+                        class="btn btn-error btn-sm"
+                        data-order-form-target="dependentField">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
@@ -90,12 +101,13 @@
         <template data-nested-form-target="template">
           <%= f.fields_for :line_items, LineItem.new, child_index: 'NEW_RECORD' do |line_item_form| %>
             <div class="line-item-fields p-4 border border-base-300 rounded-lg">
-              <%= render 'line_item_fields', f: line_item_form %>
+              <%= render 'line_item_fields', f: line_item_form, disabled: true %>
               
               <div class="flex justify-end mt-4">
                 <button type="button"
                         data-action="nested-form#remove"
-                        class="btn btn-error btn-sm">
+                        class="btn btn-error btn-sm"
+                        data-order-form-target="dependentField">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
@@ -108,7 +120,7 @@
       </div>
       
       <div class="form-control mt-6">
-        <%= f.submit @order.new_record? ? "Create Order" : "Update Order", class: "btn btn-primary w-full" %>
+        <%= f.submit @order.new_record? ? "Create Order" : "Update Order", class: "btn btn-primary w-full", data: { order_form_target: "dependentField" } %>
       </div>
     <% end %>
   </div>
