@@ -34,7 +34,8 @@
               <th>Order Number#</th>
               <th>Customer</th>
               <th>Status</th>
-              <th>Total</th>
+              <th>Delivery Date</th>
+              <th>Total Price</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -47,6 +48,9 @@
                   <div class="badge <%= order_status_color(order.status) %>">
                     <%= order.status.humanize %>
                   </div>
+                </td>
+                <td>
+                  <%= order.delivery_date %>
                 </td>
                 <td><%= number_to_currency(order.total_price) %></td>
                 <td>

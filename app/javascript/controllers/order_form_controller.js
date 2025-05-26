@@ -19,6 +19,7 @@ export default class extends Controller {
 
   customerChanged() {
     this.toggleFieldsState()
+    this.toggleLineItems()
   }
 
   toggleLineItems() {
@@ -26,10 +27,14 @@ export default class extends Controller {
 
     if (customerSelected) {
       this.lineItemsSectionTarget.classList.remove("opacity-50", "pointer-events-none")
-      this.addLineItemButtonTarget.disabled = false
+      if (this.hasAddLineItemButtonTarget) {
+        this.addLineItemButtonTarget.disabled = false
+      }
     } else {
       this.lineItemsSectionTarget.classList.add("opacity-50", "pointer-events-none")
-      this.addLineItemButtonTarget.disabled = true
+      if (this.hasAddLineItemButtonTarget) {
+        this.addLineItemButtonTarget.disabled = true
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   def index
     @orders = current_shop.orders.includes(:customer).order(created_at: :desc)
-    
+
     if params[:search].present?
       search_term = "%#{params[:search].downcase}%"
       @orders = @orders.joins(:customer)
@@ -17,7 +17,7 @@ class OrdersController < ApplicationController
   end
 
   def show
-    @order = current_shop.orders.includes(:line_items, :customer).find(params[:id])
+    @order = current_shop.orders.includes(:customer, line_items: { images_attachments: :blob }).find(params[:id])
   end
 
   def new
@@ -30,7 +30,7 @@ class OrdersController < ApplicationController
 
   def create
     @order = Order.new(order_params)
-    
+
     if @order.save
       redirect_to @order, notice: 'Order was successfully created.'
     else
@@ -51,13 +51,34 @@ class OrdersController < ApplicationController
 
   def update
     @order = current_shop.orders.find(params[:id])
-    
+
     if @order.update(order_params)
       redirect_to @order, notice: 'Order was successfully updated.'
     else
       @customers = current_shop.customers
       @measurement_types = current_shop.measurement_types
       render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def mark_complete
+    @order = current_shop.orders.find(params[:id])
+
+    begin
+      ActiveRecord::Base.transaction do
+        @order.update!(status: :completed)
+        @order.line_items.update_all(status: LineItem.statuses[:completed])
+      end
+
+      respond_to do |format|
+        format.json { render json: { status: 'success', message: 'Order marked as complete!' } }
+        format.html { redirect_to @order, notice: 'Order marked as complete!' }
+      end
+    rescue => e
+      respond_to do |format|
+        format.json { render json: { status: 'error', message: 'Failed to mark order as complete.' } }
+        format.html { redirect_to @order, alert: 'Failed to mark order as complete.' }
+      end
     end
   end
 
@@ -68,6 +89,7 @@ class OrdersController < ApplicationController
       :customer_id,
       :total_price,
       :status,
+      :delivery_date,
       line_items_attributes: [
         :id,
         :name,

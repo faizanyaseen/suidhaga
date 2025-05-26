@@ -18,7 +18,11 @@ Rails.application.routes.draw do
       get :measurement_value
     end
   end
-  resources :orders
+  resources :orders do
+    member do
+      patch :mark_complete
+    end
+  end
   resources :measurement_types
   root "customers#index"
 end
