@@ -10,7 +10,15 @@ export default class extends Controller {
 
   fetchCustomerValue() {
     const measurementTypeId = this.measurementTypeSelectTarget.value
-    const customerId = this.customerIdValue
+    let customerId = this.customerIdValue
+
+    // If no customer ID is set (new order), try to get it from the customer select
+    if (!customerId) {
+      const customerSelect = document.querySelector('[data-order-form-target="customerSelect"]')
+      if (customerSelect && customerSelect.value) {
+        customerId = parseInt(customerSelect.value)
+      }
+    }
 
     if (!measurementTypeId || measurementTypeId === "" || !customerId) {
       return

@@ -91,7 +91,7 @@
               </div>
             </div>
             <% if item.description.present? %>
-              <p><strong>Notes:</strong> <%#= item.description %></p>
+              <p><strong>Notes:</strong> <%= item.description %></p>
             <% end %>
             <% if item.images.attached? %>
               <div class="divider">Images</div>
@@ -120,4 +120,4 @@
       <% end %>
     </div>
   </div>
-</div> 
+</div>

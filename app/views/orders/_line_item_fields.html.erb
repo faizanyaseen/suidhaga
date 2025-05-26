@@ -131,8 +131,7 @@
     <template data-nested-form-target="template">
       <%= f.fields_for :line_items_measurement_types, LineItemsMeasurementType.new, child_index: 'NEW_RECORD' do |mt_form| %>
         <div class="measurement-type-fields flex flex-col md:flex-row items-start md:items-center gap-4 p-4 border border-base-300 rounded-lg"
-             data-controller="measurement-value"
-             data-measurement-value-customer-id-value="<%= @order.customer_id %>">
+             data-controller="measurement-value">
 
           <%= mt_form.hidden_field :_destroy %>
 

@@ -8,4 +8,16 @@ class MeasurementType < ApplicationRecord
 
   validates :key, presence: true
   validates :key, uniqueness: { scope: :shop_id }
+
+  def usage_count
+    line_items_measurement_types.count + customers_measurement_types.count
+  end
+
+  def line_items_count
+    line_items_measurement_types.count
+  end
+
+  def customers_count
+    customers_measurement_types.count
+  end
 end

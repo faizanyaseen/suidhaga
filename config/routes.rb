@@ -23,6 +23,10 @@ Rails.application.routes.draw do
       patch :mark_complete
     end
   end
-  resources :measurement_types
+  resources :measurement_types do
+    member do
+      get :usage_info
+    end
+  end
   root "customers#index"
 end
