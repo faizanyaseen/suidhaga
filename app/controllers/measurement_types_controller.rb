@@ -3,6 +3,12 @@ class MeasurementTypesController < ApplicationController
 
   def index
     @measurement_types = current_shop.measurement_types.order(:key)
+
+    if params[:search].present?
+      @measurement_types = @measurement_types.where("key ILIKE ?", "%#{params[:search]}%")
+    end
+
+    @measurement_types = @measurement_types.page(params[:page]).per(10)
   end
 
   def show

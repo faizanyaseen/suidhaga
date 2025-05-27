@@ -2,6 +2,7 @@ class OrdersController < ApplicationController
   def index
     @orders = current_shop.orders.includes(:customer).order(created_at: :desc)
 
+    # Search filter
     if params[:search].present?
       search_term = "%#{params[:search].downcase}%"
       @orders = @orders.joins(:customer)
@@ -11,6 +12,33 @@ class OrdersController < ApplicationController
                              LOWER(customers.phone) LIKE ? OR 
                              LOWER(customers.email) LIKE ?", 
                              search_term, search_term, search_term, search_term, search_term)
+    end
+
+    # Status filter
+    if params[:status].present?
+      @orders = @orders.where(status: params[:status])
+    end
+
+    # Customer filter
+    if params[:customer_id].present?
+      @orders = @orders.where(customer_id: params[:customer_id])
+    end
+
+    if params[:date_range].present?
+      case params[:date_range]
+      when 'last_week'
+        @orders = @orders.where(created_at: 1.week.ago.beginning_of_week..1.week.ago.end_of_week)
+      when 'last_month'
+        @orders = @orders.where(created_at: 1.month.ago.beginning_of_month..1.month.ago.end_of_month)
+      when 'last_year'
+        @orders = @orders.where(created_at: 1.year.ago.beginning_of_year..1.year.ago.end_of_year)
+      when 'custom'
+        if params[:start_date].present? && params[:end_date].present?
+          start_date = Date.parse(params[:start_date]).beginning_of_day
+          end_date = Date.parse(params[:end_date]).end_of_day
+          @orders = @orders.where(created_at: start_date..end_date)
+        end
+      end
     end
 
     @orders = @orders.page(params[:page]).per(10)
@@ -110,23 +138,18 @@ class OrdersController < ApplicationController
     ).tap do |whitelisted|
       if whitelisted[:line_items_attributes].present?
         whitelisted[:line_items_attributes].each do |_, line_item_params|
-          # Process new images
           line_item_params[:images].reject!(&:blank?) if line_item_params[:images].present?
-          
-          # Handle keeping existing images
+
           if line_item_params[:keep_images].present?
             keep_images = line_item_params.delete(:keep_images)
             if line_item_params[:id].present?
               line_item = LineItem.find(line_item_params[:id])
               
-              # Always keep old images, and append new ones if they exist
               if line_item_params[:images].present? && !line_item_params[:images].empty?
-                # Combine keep_images with any new uploaded images
                 combined_images = keep_images.dup
                 line_item_params[:images].each { |image| combined_images << image }
                 line_item_params[:images] = combined_images
               else
-                # No new images, just keep the old ones
                 line_item_params[:images] = keep_images
               end
             end

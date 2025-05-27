@@ -1,4 +1,3 @@
-<%# Header %>
 <div class="card bg-base-100 shadow-sm">
   <div class="card-body">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
@@ -11,16 +10,110 @@
       <% end %>
     </div>
     
-    <div class="mb-4">
+    <!-- Search and Filters -->
+    <div class="mb-6" data-controller="filters">
       <%= form_with(url: orders_path, method: :get, data: { turbo_frame: "orders_list", turbo_action: "advance" }) do |f| %>
-        <div class="form-control">
+        <!-- Search Bar -->
+        <div class="form-control mb-4">
           <div class="input-group flex">
-            <%= f.text_field :search, placeholder: "Search orders...", class: "input input-bordered w-full", value: params[:search] %>
+            <%= f.text_field :search, placeholder: "Search orders, customers, phone, email...", class: "input input-bordered w-full", value: params[:search] %>
             <button class="btn btn-square">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </button>
+          </div>
+        </div>
+
+        <!-- Filter Toggle Button -->
+        <div class="mb-4">
+          <button type="button"
+                  class="btn btn-outline btn-sm"
+                  data-action="click->filters#toggle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+            </svg>
+            Filters
+            <span data-filters-target="activeCount" class="badge badge-primary badge-sm ml-2 hidden">0</span>
+          </button>
+        </div>
+
+        <!-- Filters Panel -->
+        <div class="collapse" data-filters-target="panel">
+          <div class="collapse-content">
+            <div class="card bg-base-200">
+              <div class="card-body">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                  <!-- Status Filter -->
+                  <div class="form-control">
+                    <%= f.label :status, "Status", class: "label label-text font-medium" %>
+                    <%= f.select :status,
+                        options_for_select([['All Statuses', '']] + Order.statuses.keys.map { |s| [s.humanize, s] }, params[:status]),
+                        {},
+                        { class: "select select-bordered select-sm w-full", data: { action: "change->filters#updateCount" } } %>
+                  </div>
+
+                  <!-- Date Range Filter -->
+                  <div class="form-control">
+                    <%= f.label :date_range, "Date Range", class: "label label-text font-medium" %>
+                    <%= f.select :date_range,
+                        options_for_select([
+                          ['All Time', ''],
+                          ['Last Week', 'last_week'],
+                          ['Last Month', 'last_month'],
+                          ['Last Year', 'last_year'],
+                          ['Custom Range', 'custom']
+                        ], params[:date_range]),
+                        {},
+                        { class: "select select-bordered select-sm w-full", data: { action: "change->filters#toggleCustomDate change->filters#updateCount" } } %>
+                  </div>
+
+                  <!-- Customer Filter -->
+                  <div class="form-control">
+                    <%= f.label :customer_id, "Customer", class: "label label-text font-medium" %>
+                    <%= f.select :customer_id,
+                        options_for_select([['All Customers', '']] + current_shop.customers.order(:first_name).map { |c| ["#{c.first_name} #{c.last_name}", c.id] }, params[:customer_id]),
+                        {},
+                        { class: "select select-bordered select-sm w-full", data: { action: "change->filters#updateCount" } } %>
+                  </div>
+                </div>
+
+                <!-- Custom Date Range -->
+                <div class="mt-4 hidden" data-filters-target="customDateRange">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-control">
+                      <%= f.label :start_date, "Start Date", class: "label label-text font-medium" %>
+                      <%= f.date_field :start_date, class: "input input-bordered input-sm w-full", value: params[:start_date], data: { action: "change->filters#updateCount" } %>
+                    </div>
+                    <div class="form-control">
+                      <%= f.label :end_date, "End Date", class: "label label-text font-medium" %>
+                      <%= f.date_field :end_date, class: "input input-bordered input-sm w-full", value: params[:end_date], data: { action: "change->filters#updateCount" } %>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Filter Actions -->
+                <div class="flex justify-between items-center mt-6">
+                  <button type="button"
+                          class="btn btn-ghost btn-sm"
+                          data-action="click->filters#clearAll">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    Clear All Filters
+                  </button>
+                  <div class="flex gap-2">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                      </svg>
+                      Apply Filters
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       <% end %>
@@ -40,32 +133,47 @@
             </tr>
           </thead>
           <tbody>
-            <% @orders.each do |order| %>
+            <% if @orders.any? %>
+              <% @orders.each do |order| %>
+                <tr>
+                  <td><%= order.order_number %></td>
+                  <td><%= "#{order.customer.first_name} #{order.customer.last_name}" %></td>
+                  <td>
+                    <div class="badge <%= order_status_color(order.status) %>">
+                      <%= order.status.humanize %>
+                    </div>
+                  </td>
+                  <td>
+                    <%= order.delivery_date&.strftime("%b %d, %Y") %>
+                  </td>
+                  <td><%= number_to_currency(order.total_price) %></td>
+                  <td>
+                    <div class="flex gap-2 items-center">
+                      <%= link_to edit_order_path(order), class: "flex items-center", data: { turbo: false } do %>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                      <% end %>
+
+                      <%= link_to order_path(order), class: "flex items-center", data: { turbo: false } do %>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            <% else %>
               <tr>
-                <td><%= order.order_number %></td>
-                <td><%= "#{order.customer.first_name} #{order.customer.last_name}" %></td>
-                <td>
-                  <div class="badge <%= order_status_color(order.status) %>">
-                    <%= order.status.humanize %>
-                  </div>
-                </td>
-                <td>
-                  <%= order.delivery_date %>
-                </td>
-                <td><%= number_to_currency(order.total_price) %></td>
-                <td>
-                  <div class="flex space-x-2">
-                    <%= link_to edit_order_path(order), class: "btn btn-sm btn-outline", data: { turbo: false } do %>
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                      </svg>
-                    <% end %>
-                    <%= link_to order_path(order), class: "btn btn-sm btn-outline", data: { turbo: false } do %>
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      </svg>
-                    <% end %>
+                <td colspan="6" class="text-center py-8">
+                  <div class="flex flex-col items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-base-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <p class="text-base-content/60">No orders found</p>
+                    <p class="text-sm text-base-content/40">Try adjusting your search or filters</p>
                   </div>
                 </td>
               </tr>
@@ -75,13 +183,8 @@
       </div>
 
       <div class="mt-4">
-        <%#== pagy_nav(@pagy) if @pagy.pages > 1 %>
+        <%= paginate @orders %>
       </div>
     <% end %>
   </div>
-</div>
-
-<%# Pagination %>
-<div class="mt-4">
-  <%= paginate @orders %>
 </div>
