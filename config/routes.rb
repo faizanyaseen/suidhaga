@@ -28,5 +28,5 @@ Rails.application.routes.draw do
       get :usage_info
     end
   end
-  root "customers#index"
+  root 'dashboard#index'
 end
