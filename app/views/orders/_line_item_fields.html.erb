@@ -3,7 +3,7 @@
   <%= f.hidden_field :id if f.object.persisted? %>
   
   <button type="button" data-action="nested-form#remove" class="absolute top-2 right-2 text-gray-400 hover:text-gray-500">
-    <span class="sr-only">Remove line item</span>
+    <span class="sr-only"><%= t('orders.line_items.remove_item') %></span>
     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
     </svg>
@@ -11,38 +11,50 @@
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <div class="form-control">
-      <%= f.label :name, class: "label" %>
-      <%= f.text_field :name, class: "input input-bordered w-full", placeholder: "Enter item name" %>
+      <%= f.label :name, t('orders.line_items.name'), class: "label" %>
+      <%= f.text_field :name,
+          class: "input input-bordered w-full",
+          placeholder: t('placeholders.order.item_name')
+        %>
     </div>
     
     <div class="form-control">
-      <%= f.label :description, class: "label" %>
-      <%= f.text_field :description, class: "input input-bordered w-full", placeholder: "Enter description" %>
+      <%= f.label :description, t('orders.line_items.description'), class: "label" %>
+      <%= f.text_field :description,
+          class: "input input-bordered w-full",
+          placeholder: t('placeholders.order.description') %>
     </div>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
     <div class="form-control">
-      <%= f.label :price, class: "label" %>
-      <%= f.number_field :price, step: "0.01", class: "input input-bordered w-full", placeholder: "Enter price" %>
+      <%= f.label :price, t('orders.line_items.price'), class: "label" %>
+      <%= f.number_field :price,
+          class: "input input-bordered w-full",
+          step: "0.01",
+          placeholder: t('placeholders.order.price')
+        %>
     </div>
 
     <div class="form-control">
-      <%= f.label :number_of_pieces, class: "label" %>
-      <%= f.number_field :number_of_pieces, class: "input input-bordered w-full", placeholder: "Enter quantity" %>
+      <%= f.label :number_of_pieces, t('orders.line_items.quantity'), class: "label" %>
+      <%= f.number_field :number_of_pieces,
+          class: "input input-bordered w-full",
+          placeholder: t('placeholders.order.quantity')
+        %>
     </div>
 
     <div class="form-control">
-      <%= f.label :status, class: "label" %>
+      <%= f.label :status, t('orders.line_items.status'), class: "label" %>
       <%= f.select :status, 
-          LineItem.statuses.keys.map { |s| [s.humanize, s] }, 
+          LineItem.statuses.keys.map { |s| [t("orders.line_items.statuses.#{s}"), s] },
           {},
           { class: "select select-bordered w-full" } %>
     </div>
   </div>
 
   <div class="form-control mt-4" data-controller="image-upload">
-    <%= f.label :images, class: "label" %>
+    <%= f.label :images, t('orders.line_items.images'), class: "label" %>
     <%= f.file_field :images, 
         multiple: true, 
         accept: "image/*", 
@@ -58,7 +70,8 @@
             <button type="button" 
                     class="absolute top-2 right-2 btn btn-circle btn-sm btn-error opacity-0 group-hover:opacity-100 transition-opacity" 
                     data-action="click->image-upload#removeExisting" 
-                    data-image-id="<%= image.signed_id %>">
+                    data-image-id="<%= image.signed_id %>"
+                    title="<%= t('orders.line_items.image_actions.remove') %>">
               <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -72,14 +85,14 @@
   <!-- Measurement Types Section -->
   <div data-controller="nested-form" data-nested-form-wrapper-class-value="measurement-type-fields" class="mt-6">
     <div class="flex justify-between items-center mb-4">
-      <h3 class="text-lg font-medium">Item Measurements</h3>
+      <h3 class="text-lg font-medium"><%= t('orders.line_items.measurements') %></h3>
       <button type="button"
               data-action="nested-form#add"
               class="btn btn-primary btn-sm">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
         </svg>
-        Add Measurement
+        <%= t('orders.line_items.add_measurement') %>
       </button>
     </div>
 
@@ -93,12 +106,12 @@
           <%= mt_form.hidden_field :_destroy %>
 
           <div class="form-control flex-1 w-full">
-            <%= mt_form.label :measurement_type_id, "Type", class: "label" %>
+            <%= mt_form.label :measurement_type_id, t('orders.line_items.measurement_type'), class: "label" %>
             <%= mt_form.collection_select :measurement_type_id, 
                 @measurement_types, 
                 :id, 
                 :key,
-                { prompt: "Select a measurement type" },
+                { prompt: t('orders.line_items.select_measurement_type') },
                 { class: "select select-bordered w-full",
                   data: {
                     measurement_value_target: "measurementTypeSelect",
@@ -108,17 +121,18 @@
           </div>
 
           <div class="form-control flex-1 w-full">
-            <%= mt_form.label :value, class: "label" %>
+            <%= mt_form.label :value, t('orders.line_items.measurement_value'), class: "label" %>
             <%= mt_form.text_field :value,
                 class: "input input-bordered w-full",
-                placeholder: "Enter measurement value",
+                placeholder: t('placeholders.order.measurement_value'),
                 data: { measurement_value_target: "valueField" } %>
           </div>
 
           <div class="mt-8">
             <button type="button"
                     data-action="nested-form#remove"
-                    class="btn btn-error btn-circle btn-sm">
+                    class="btn btn-error btn-circle btn-sm"
+                    title="<%= t('orders.line_items.remove_measurement') %>">
               <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
               </svg>

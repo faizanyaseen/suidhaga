@@ -28,4 +28,161 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  app_name: "Suidhaga"
+  navigation:
+    dashboard: "Dashboard"
+    customers: "Customers"
+
+  actions:
+    edit: "Edit"
+    delete: "Delete"
+    back: "Back"
+    update: "Update"
+    create: "Create"
+    cancel: "Cancel"
+
+  confirmations:
+    delete: "Are you sure you want to delete?"
+
+  notices:
+    created: "%{model} was successfully created"
+    updated: "%{model} was successfully updated"
+    deleted: "%{model} was successfully deleted"
+
+  orders:
+    statuses:
+      received: "Received"
+      in_progress: "In Progress"
+      completed: "Completed"
+      delivered: "Delivered"
+    actions:
+      create: "Create Order"
+      update: "Update Order"
+    select_customer: "Select a customer"
+    select_status: "Select status"
+    line_items:
+      title: "Line Items"
+      items: "Items"
+      add_item: "Add Item"
+      remove_item: "Remove Item"
+      name: "Item Name"
+      price: "Price"
+      quantity: "Quantity"
+      total: "Total"
+      description: "Description"
+      status: "Status"
+      images: "Images"
+      measurements: "Item Measurements"
+      add_measurement: "Add Measurement"
+      remove_measurement: "Remove Measurement"
+      measurement_type: "Measurement Type"
+      measurement_value: "Value"
+      select_measurement_type: "Select a measurement type"
+      statuses:
+        not_started: "Not Started"
+        in_progress: "In Progress"
+        completed: "Completed"
+        delivered: "Delivered"
+        cancelled: "Cancelled"
+      image_actions:
+        remove: "Remove image"
+        upload: "Upload images"
+
+  activerecord:
+    models:
+      customer: "Customer"
+      order: "Order"
+    attributes:
+      customer:
+        first_name: "First Name"
+        last_name: "Last Name"
+        phone: "Phone"
+        email: "Email"
+        address: "Address"
+      order:
+        order_number: "Order Number"
+        total_price: "Total Price"
+        status: "Status"
+        created_at: "Order Date"
+        delivery_date: "Delivery Date"
+      line_item:
+        name: "Name"
+        price: "Price"
+        number_of_pieces: "Number of Pieces"
+
+  customers:
+    actions:
+      create: "Create Customer"
+      update: "Update Customer"
+    measurements:
+      title: "Measurements"
+      add_measurement: "Add Measurement"
+      type: "Type"
+      value: "Value"
+      select_type: "Select measurement type"
+      remove: "Remove measurement"
+
+  placeholders:
+    customer:
+      first_name: "Enter first name"
+      last_name: "Enter last name"
+      phone: "Enter phone number"
+      email: "Enter email address"
+      address: "Enter customer address"
+    measurement:
+      value: "Enter measurement value"
+    order:
+      select_date: "Select date"
+      item_name: "Enter item name"
+      price: "Enter price"
+      quantity: "Enter quantity"
+      description: "Enter item description"
+      measurement_value: "Enter measurement value"
+    measurement_type:
+      key_en: "e.g., Chest, Waist, Inseam"
+      key_ur: "مثال: چھاتی، کمر، اندرونی لمبائی"
+
+  errors:
+    template:
+      header:
+        one: "1 error prohibited this %{model} from being saved"
+        other: "%{count} errors prohibited this %{model} from being saved"
+
+  measurement_types:
+    title: "Measurement Types"
+    new: "New Measurement Type"
+    table:
+      key: "Key"
+      usage: "Usage"
+      actions: "Actions"
+    form:
+      title: "Measurement Type"
+      key_en: "Key (English)"
+      key_ur: "Key (Urdu)"
+      title_new: "New Measurement Type"
+      title_edit: "Edit Measurement Type"
+      search_placeholder: "Search measurement types..."
+    search: "Search measurement types..."
+    no_results: "No measurement types found."
+    create_prompt: "Click \"New Measurement Type\" to create one."
+    usage_count:
+      zero: "Not used"
+      one: "1 usage"
+      other: "%{count} usages"
+    delete:
+      title: "Confirm Deletion"
+      warning: "Warning!"
+      confirm_message: "Are you sure you want to delete the measurement type"
+      usage_warning: "This measurement type is currently being used:"
+      line_items_usage: "In %{count} line item(s)"
+      customers_usage: "In %{count} customer(s)"
+      deletion_warning: "Deleting this will remove it from all associated records."
+      confirm_button: "Yes, Delete"
+    notices:
+      deleted: "Measurement type '%{key}' was successfully deleted."
+      deleted_with_usage: "Measurement type '%{key}' was successfully deleted. It was removed from %{line_items_count} line item(s) and %{customers_count} customer(s)."
+    actions:
+      save: "Save"
+    errors:
+      key_en_taken: "English key has already been taken"
+      key_ur_taken: "Urdu key has already been taken"

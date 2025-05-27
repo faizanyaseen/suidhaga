@@ -21,6 +21,10 @@ class Order < ApplicationRecord
   before_save :calculate_total_price
   before_validation :set_default_status
 
+  def status_i18n
+    I18n.t("orders.statuses.#{status}")
+  end
+
   private
 
   def generate_order_number

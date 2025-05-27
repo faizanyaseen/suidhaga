@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_25_031007) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_27_110902) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -91,11 +91,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_25_031007) do
   end
 
   create_table "measurement_types", force: :cascade do |t|
-    t.string "key", null: false
+    t.string "key_en", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "shop_id"
-    t.index ["shop_id", "key"], name: "index_measurement_types_on_shop_id_and_key", unique: true
+    t.string "key_ur"
+    t.index ["shop_id", "key_en"], name: "index_measurement_types_on_shop_id_and_key_en", unique: true
+    t.index ["shop_id", "key_ur"], name: "index_measurement_types_on_shop_id_and_key_ur", unique: true
     t.index ["shop_id"], name: "index_measurement_types_on_shop_id"
   end
 

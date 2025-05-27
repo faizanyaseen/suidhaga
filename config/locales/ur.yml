@@ -1,0 +1,157 @@
+ur:
+  app_name: "سودھاگا"
+  navigation:
+    dashboard: "ڈیش بورڈ"
+    customers: "گاہک"
+
+  actions:
+    edit: "ترمیم"
+    delete: "حذف کریں"
+    back: "واپس"
+    update: "اپ ڈیٹ"
+    create: "بنائیں"
+    cancel: "منسوخ"
+
+  confirmations:
+    delete: "کیا آپ واقعی حذف کرنا چاہتے ہیں؟"
+
+  notices:
+    created: "%{model} کامیابی سے بنایا گیا"
+    updated: "%{model} کامیابی سے اپ ڈیٹ ہوا"
+    deleted: "%{model} کامیابی سے حذف ہوا"
+
+  orders:
+    statuses:
+      received: "موصول ہوا"
+      in_progress: "جاری ہے"
+      completed: "مکمل"
+      delivered: "پہنچا دیا گیا"
+    actions:
+      create: "نیا آرڈر بنائیں"
+      update: "آرڈر اپ ڈیٹ کریں"
+    select_customer: "گاہک منتخب کریں"
+    select_status: "حالت منتخب کریں"
+    line_items:
+      title: "آئٹمز"
+      items: "سامان"
+      add_item: "آئٹم شامل کریں"
+      remove_item: "آئٹم ہٹائیں"
+      name: "آئٹم کا نام"
+      price: "قیمت"
+      quantity: "تعداد"
+      total: "کل"
+      description: "تفصیل"
+      status: "حالت"
+      images: "تصاویر"
+      measurements: "آئٹم کی پیمائش"
+      add_measurement: "پیمائش شامل کریں"
+      remove_measurement: "پیمائش ہٹائیں"
+      measurement_type: "پیمائش کی قسم"
+      measurement_value: "مقدار"
+      select_measurement_type: "پیمائش کی قسم منتخب کریں"
+      statuses:
+        not_started: "شروع نہیں ہوا"
+        in_progress: "جاری ہے"
+        completed: "مکمل"
+        delivered: "پہنچا دیا گیا"
+        cancelled: "منسوخ"
+      image_actions:
+        remove: "تصویر ہٹائیں"
+        upload: "تصاویر اپ لوڈ کریں"
+
+  activerecord:
+    models:
+      customer: "گاہک"
+      order: "آرڈر"
+    attributes:
+      customer:
+        first_name: "پہلا نام"
+        last_name: "آخری نام"
+        phone: "فون نمبر"
+        email: "ای میل"
+        address: "پتہ"
+      order:
+        order_number: "آرڈر نمبر"
+        total_price: "کل قیمت"
+        status: "حالت"
+        customer: "گاہک"
+        created_at: "آرڈر کی تاریخ"
+        delivery_date: "ترسیل کی تاریخ"
+      line_item:
+        name: "نام"
+        price: "قیمت"
+        number_of_pieces: "ٹکڑوں کی تعداد"
+
+  customers:
+    actions:
+      create: "نیا گاہک بنائیں"
+      update: "گاہک کی معلومات اپ ڈیٹ کریں"
+    measurements:
+      title: "پیمائش"
+      add_measurement: "پیمائش شامل کریں"
+      type: "قسم"
+      value: "مقدار"
+      select_type: "پیمائش کی قسم منتخب کریں"
+      remove: "پیمائش ہٹائیں"
+
+  placeholders:
+    customer:
+      first_name: "پہلا نام درج کریں"
+      last_name: "آخری نام درج کریں"
+      phone: "فون نمبر درج کریں"
+      email: "ای میل ایڈریس درج کریں"
+      address: "گاہک کا پتہ درج کریں"
+    measurement:
+      value: "پیمائش کی مقدار درج کریں"
+    order:
+      select_date: "تاریخ منتخب کریں"
+      item_name: "آئٹم کا نام درج کریں"
+      price: "قیمت درج کریں"
+      quantity: "تعداد درج کریں"
+      description: "آئٹم کی تفصیل درج کریں"
+      measurement_value: "پیمائش کی مقدار درج کریں"
+    measurement_type:
+      key_en: "مثال: Chest, Waist, Inseam"
+      key_ur: "مثال: چھاتی، کمر، اندرونی لمبائی"
+
+  measurement_types:
+    title: "پیمائش کی اقسام"
+    new: "نئی پیمائش کی قسم"
+    table:
+      key: "کلید"
+      usage: " استعمال ہوا"
+      actions: "اعمال"
+    form:
+      title_new: "نئی پیمائش کی قسم"
+      title_edit: "پیمائش کی قسم میں ترمیم"
+      search_placeholder: "پیمائش کی اقسام تلاش کریں..."
+    search: "پیمائش کی اقسام تلاش کریں..."
+    no_results: "کوئی پیمائش کی قسم نہیں ملی۔"
+    create_prompt: "نئی پیمائش کی قسم بنانے کے لیے \"نئی پیمائش کی قسم\" پر کلک کریں۔"
+    usage_count:
+      zero: "0"
+      one: "جگہ ١"
+      other: "جگہ %{count}"
+    delete:
+      title: "حذف کی تصدیق"
+      warning: "انتباہ!"
+      confirm_message: "کیا آپ واقعی پیمائش کی قسم حذف کرنا چاہتے ہیں"
+      usage_warning: "یہ پیمائش کی قسم فی الحال استعمال میں ہے:"
+      line_items_usage: "%{count} آئٹم(ز) میں"
+      customers_usage: "%{count} گاہک(وں) میں"
+      deletion_warning: "اسے حذف کرنے سے یہ تمام متعلقہ ریکارڈز سے ہٹ جائے گا۔"
+      confirm_button: "ہاں، حذف کریں"
+    notices:
+      deleted: "پیمائش کی قسم '%{key}' کامیابی سے حذف کر دی گئی۔"
+      deleted_with_usage: "پیمائش کی قسم '%{key}' کامیابی سے حذف کر دی گئی۔ یہ %{line_items_count} آئٹم(ز) اور %{customers_count} گاہک(وں) سے ہٹا دی گئی۔"
+    actions:
+      save: "محفوظ کریں"
+    errors:
+      key_en_taken: "انگریزی کلید پہلے سے موجود ہے"
+      key_ur_taken: "اردو کلید پہلے سے موجود ہے"
+
+  errors:
+    template:
+      header:
+        one: "ایک غلطی کی وجہ سے یہ %{model} محفوظ نہیں کیا جا سکا"
+        other: "%{count} غلطیوں کی وجہ سے یہ %{model} محفوظ نہیں کیا جا سکا"

@@ -14,12 +14,14 @@ export default class extends Controller {
   confirmDelete(event) {
     const button = event.currentTarget
     const id = button.dataset.measurementDeleteId
-    const key = button.dataset.measurementDeleteKey
+    const keyEn = button.dataset.modalKeyEn
+    const keyUr = button.dataset.modalKeyUr
 
-    this.keyDisplayTarget.textContent = key
+    const locale = document.documentElement.lang
+    this.keyDisplayTarget.textContent = locale === 'ur' ? keyUr : keyEn
+
     this.deleteFormTarget.action = `/measurement_types/${id}`
 
-    // Fetch usage information
     fetch(`/measurement_types/${id}/usage_info`)
       .then(response => response.json())
       .then(data => {
@@ -40,14 +42,14 @@ export default class extends Controller {
 
       if (data.line_items_count > 0) {
         this.lineItemsUsageTarget.classList.remove("hidden")
-        this.lineItemsCountTarget.textContent = data.line_items_count
+        this.lineItemsUsageTarget.innerHTML = this.lineItemsUsageTarget.innerHTML.replace('0', data.line_items_count)
       } else {
         this.lineItemsUsageTarget.classList.add("hidden")
       }
 
       if (data.customers_count > 0) {
         this.customersUsageTarget.classList.remove("hidden")
-        this.customersCountTarget.textContent = data.customers_count
+        this.customersUsageTarget.innerHTML = this.customersUsageTarget.innerHTML.replace('0', data.customers_count)
       } else {
         this.customersUsageTarget.classList.add("hidden")
       }

@@ -14,6 +14,19 @@
     <a href="/" class="btn btn-ghost text-xl">Suidhaga</a>
   </div>
   <div class="navbar-end">
+    <!-- Language Switcher -->
+    <div class="dropdown dropdown-end">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+        </svg>
+      </div>
+      <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+        <%= link_to "English", { locale: :en }, class: "btn btn-ghost #{'btn-active' if I18n.locale == :en}" %>
+        <%= link_to "اردو", { locale: :ur }, class: "btn btn-ghost #{'btn-active' if I18n.locale == :ur}" %>
+      </ul>
+    </div>
+
     <!-- Theme toggle button -->
     <button id="theme-toggle" class="btn btn-ghost btn-circle" data-action="click->theme#toggle">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 theme-light-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">

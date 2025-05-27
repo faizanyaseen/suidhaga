@@ -13,7 +13,9 @@ class LineItem < ApplicationRecord
   enum :status, {
     not_started: 0,
     in_progress: 1,
-    completed: 2
+    completed: 2,
+    delivered: 3,
+    cancelled: 4
   }, default: :not_started
 
   before_validation :set_default_status
@@ -21,6 +23,6 @@ class LineItem < ApplicationRecord
   private
 
   def set_default_status
-    self.status ||= 'pending'
+    self.status ||= :not_started
   end
 end
