@@ -1,12 +1,12 @@
 <div class="card bg-base-100 shadow-sm">
   <div class="card-body">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-      <h2 class="card-title text-2xl font-bold">Orders</h2>
+      <h2 class="card-title text-2xl font-bold"><%= t('orders.title') %></h2>
       <%= link_to new_order_path, class: "btn btn-primary mt-4 sm:mt-0", data: { turbo: false } do %>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
         </svg>
-        New Order
+        <%= t('orders.new') %>
       <% end %>
     </div>
     
@@ -16,7 +16,10 @@
         <!-- Search Bar -->
         <div class="form-control mb-4">
           <div class="input-group flex">
-            <%= f.text_field :search, placeholder: "Search orders, customers, phone, email...", class: "input input-bordered w-full", value: params[:search] %>
+            <%= f.text_field :search,
+                placeholder: t('orders.search.placeholder'),
+                class: "input input-bordered w-full",
+                value: params[:search] %>
             <button class="btn btn-square">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -33,7 +36,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
             </svg>
-            Filters
+            <%= t('orders.filters.button') %>
             <span data-filters-target="activeCount" class="badge badge-primary badge-sm ml-2 hidden">0</span>
           </button>
         </div>
@@ -47,16 +50,18 @@
 
                   <!-- Status Filter -->
                   <div class="form-control">
-                    <%= f.label :status, "Status", class: "label label-text font-medium" %>
+                    <%= f.label :status, t('orders.filters.status'), class: "label label-text font-medium" %>
                     <%= f.select :status,
-                        options_for_select([['All Statuses', '']] + Order.statuses.keys.map { |s| [s.humanize, s] }, params[:status]),
+                        options_for_select([
+                          [t('orders.filters.all_statuses'), '']
+                        ] + Order.statuses.keys.map { |s| [t("orders.statuses.#{s}"), s] }, params[:status]),
                         {},
                         { class: "select select-bordered select-sm w-full", data: { action: "change->filters#updateCount" } } %>
                   </div>
 
                   <!-- Date Range Filter -->
                   <div class="form-control">
-                    <%= f.label :date_range, "Date Range", class: "label label-text font-medium" %>
+                    <%= f.label :date_range, t('orders.filters.date_range'), class: "label label-text font-medium" %>
                     <%= f.select :date_range,
                         options_for_select([
                           ['All Time', ''],
@@ -71,7 +76,7 @@
 
                   <!-- Customer Filter -->
                   <div class="form-control">
-                    <%= f.label :customer_id, "Customer", class: "label label-text font-medium" %>
+                    <%= f.label :customer_id, t('orders.filters.customer'), class: "label label-text font-medium" %>
                     <%= f.select :customer_id,
                         options_for_select([['All Customers', '']] + current_shop.customers.order(:first_name).map { |c| ["#{c.first_name} #{c.last_name}", c.id] }, params[:customer_id]),
                         {},
@@ -83,11 +88,11 @@
                 <div class="mt-4 hidden" data-filters-target="customDateRange">
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="form-control">
-                      <%= f.label :start_date, "Start Date", class: "label label-text font-medium" %>
+                      <%= f.label :start_date, t('orders.filters.start_date'), class: "label label-text font-medium" %>
                       <%= f.date_field :start_date, class: "input input-bordered input-sm w-full", value: params[:start_date], data: { action: "change->filters#updateCount" } %>
                     </div>
                     <div class="form-control">
-                      <%= f.label :end_date, "End Date", class: "label label-text font-medium" %>
+                      <%= f.label :end_date, t('orders.filters.end_date'), class: "label label-text font-medium" %>
                       <%= f.date_field :end_date, class: "input input-bordered input-sm w-full", value: params[:end_date], data: { action: "change->filters#updateCount" } %>
                     </div>
                   </div>
@@ -101,14 +106,14 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
-                    Clear All Filters
+                    <%= t('orders.filters.clear') %>
                   </button>
                   <div class="flex gap-2">
                     <button type="submit" class="btn btn-primary btn-sm">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                       </svg>
-                      Apply Filters
+                      <%= t('orders.filters.apply') %>
                     </button>
                   </div>
                 </div>
@@ -124,12 +129,12 @@
         <table class="table table-zebra w-full">
           <thead>
             <tr>
-              <th>Order Number#</th>
-              <th>Customer</th>
-              <th>Status</th>
-              <th>Delivery Date</th>
-              <th>Total Price</th>
-              <th>Actions</th>
+              <th><%= t('orders.table.order_number') %></th>
+              <th><%= t('orders.table.customer') %></th>
+              <th><%= t('orders.table.status') %></th>
+              <th><%= t('orders.table.delivery_date') %></th>
+              <th><%= t('orders.table.total_price') %></th>
+              <th><%= t('orders.table.actions') %></th>
             </tr>
           </thead>
           <tbody>
@@ -140,7 +145,7 @@
                   <td><%= "#{order.customer.first_name} #{order.customer.last_name}" %></td>
                   <td>
                     <div class="badge <%= order_status_color(order.status) %>">
-                      <%= order.status.humanize %>
+                      <%= t("orders.statuses.#{order.status}") %>
                     </div>
                   </td>
                   <td>
@@ -172,8 +177,8 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-base-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
-                    <p class="text-base-content/60">No orders found</p>
-                    <p class="text-sm text-base-content/40">Try adjusting your search or filters</p>
+                    <p class="text-base-content/60"><%= t('orders.no_results.title') %></p>
+                    <p class="text-sm text-base-content/40"><%= t('orders.no_results.message') %></p>
                   </div>
                 </td>
               </tr>

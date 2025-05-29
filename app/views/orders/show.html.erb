@@ -3,16 +3,16 @@
     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
     </svg>
-    Back to Orders
+    <%= t('actions.back') %> <%= t('orders.title') %>
   <% end %>
 </div>
 <div class="card bg-base-100 shadow-xl">
   <div class="card-body">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
       <div class="flex gap-2 items-center">
-        <h2 class="card-title text-2xl font-bold">Order #<%= @order.id %></h2>
+        <h2 class="card-title text-2xl font-bold"><%= t('orders.table.order_number') %><%= @order.id %></h2>
         <div class="badge badge-sm <%= order_status_color(@order.status) %> mt-2 sm:mt-0" data-line-item-status>
-          <%= @order.status.humanize %>
+          <%= t("orders.statuses.#{@order.status}") %>
         </div>
       </div>
       <div class="flex gap-2">
@@ -20,9 +20,8 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
           </svg>
-          Edit Order
+          <%= t('orders.actions.edit') %>
         <% end %>
-        <!-- Mark as Complete Button - only show if order is not already completed -->
         <% unless @order.completed? %>
           <div data-controller="order-complete" data-order-complete-order-id-value="<%= @order.id %>">
             <button type="button"
@@ -32,7 +31,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              Mark as Complete
+              <%= t('orders.actions.mark_complete') %>
             </button>
           </div>
         <% end %>
@@ -41,30 +40,30 @@
     
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
-        <h3 class="text-lg font-medium mb-2">Customer Information</h3>
+        <h3 class="text-lg font-medium"><%= t('orders.customer_info') %></h3>
         <div class="card bg-base-200">
           <div class="card-body p-4">
-            <p><strong>Name:</strong> <%= "#{@order.customer.first_name} #{@order.customer.last_name}" %></p>
-            <p><strong>Phone:</strong> <%= @order.customer.phone %></p>
-            <p><strong>Email:</strong> <%= @order.customer.email %></p>
-            <p><strong>Address:</strong> <%= @order.customer.address %></p>
+            <p><strong><%= t('activerecord.attributes.customer.name') %> : </strong> <%= "#{@order.customer.first_name} #{@order.customer.last_name}" %></p>
+            <p><strong><%= t('activerecord.attributes.customer.phone') %> : </strong> <%= @order.customer.phone %></p>
+            <p><strong><%= t('activerecord.attributes.customer.email') %> : </strong> <%= @order.customer.email %></p>
+            <p><strong><%= t('activerecord.attributes.customer.address') %> : </strong> <%= @order.customer.address %></p>
           </div>
         </div>
       </div>
       
       <div>
-        <h3 class="text-lg font-medium mb-2">Order Details</h3>
+        <h3 class="text-lg font-medium"><%= t('orders.order_details') %></h3>
         <div class="card bg-base-200">
           <div class="card-body p-4">
-            <p><strong>Order Date:</strong> <%= @order.created_at&.strftime("%B %d, %Y") %></p>
-            <p><strong>Delivery Date:</strong> <%= @order.delivery_date&.strftime("%B %d, %Y") %></p>
-            <p><strong>Total:</strong> <%= number_to_currency(@order.total_price) %></p>
+            <p><strong><%= t('activerecord.attributes.order.created_at') %> : </strong> <%= @order.created_at.strftime("%B %d, %Y") %></p>
+            <p><strong><%= t('activerecord.attributes.order.delivery_date') %> : </strong> <%= @order.delivery_date.strftime("%B %d, %Y") if @order.delivery_date %></p>
+            <p><strong><%= t('activerecord.attributes.order.total_price') %> : </strong> <%= number_to_currency(@order.total_price, :unit => "Rs ", :precision => 0) %></p>
           </div>
         </div>
       </div>
     </div>
     
-    <div class="divider">Line Items</div>
+    <div class="divider"><%= t('orders.line_items.title') %></div>
     
     <div class="space-y-6">
       <% @order.line_items.each do |item| %>
@@ -73,7 +72,7 @@
             <div class="flex flex-col md:flex-row md:items-center md:justify-between">
               <h4 class="card-title"><%= item.name %></h4>
               <div class="badge badge-sm <%= order_status_color(item.status) %> mt-2 md:mt-0" data-line-item-status>
-                <%= item.status.humanize %>
+                <%= t("orders.line_items.statuses.#{item.status}") %>
               </div>
             </div>
             
@@ -81,20 +80,22 @@
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
               <div>
-                <p><strong>Price:</strong> <%= number_to_currency(item.price) %></p>
+                <p><strong><%= t('orders.line_items.price') %>:</strong> <%= number_to_currency(item.price, :unit => "Rs ", :precision => 0) %></p>
               </div>
               <div>
-                <p><strong>Quantity:</strong> <%= item.number_of_pieces %></p>
+                <p><strong><%= t('orders.line_items.quantity') %>:</strong> <%= item.number_of_pieces %></p>
               </div>
               <div>
-                <p><strong>Subtotal:</strong> <%= number_to_currency(item.price * item.number_of_pieces) %></p>
+                <p><strong><%= t('orders.line_items.total_price') %>:</strong> <%= number_to_currency(item.price * item.number_of_pieces, :unit => "Rs ", :precision => 0) %></p>
               </div>
             </div>
+
             <% if item.description.present? %>
-              <p><strong>Notes:</strong> <%= item.description %></p>
+              <p><strong><%= t('orders.line_items.description') %>:</strong> <%= item.description %></p>
             <% end %>
+
             <% if item.images.attached? %>
-              <div class="divider">Images</div>
+              <div class="divider"><%= t('orders.line_items.images') %></div>
               <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                 <% item.images.each do |image| %>
                   <div class="relative">
@@ -105,7 +106,7 @@
             <% end %>
             
             <% if item.line_items_measurement_types.any? %>
-              <div class="divider">Measurements</div>
+              <div class="divider"><%= t('orders.line_items.measurements') %></div>
               <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 <% item.line_items_measurement_types.each do |measurement| %>
                   <div class="bg-base-100 p-3 rounded-lg">

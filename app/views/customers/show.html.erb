@@ -6,7 +6,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
         </svg>
-        New Order
+        <%= t('orders.actions.new') %>
       <% end %>
     </div>
 
@@ -63,10 +63,10 @@
                   <p><strong>Order Date:</strong> <%#= order.order_date&.strftime("%b %d, %Y") %></p>
                 </div>
                 <div>
-                  <p><strong>Delivery Date:</strong> <%#= order.delivery_date&.strftime("%b %d, %Y") %></p>
+                  <p><strong> Delivery Date : </strong> <%#= order.delivery_date&.strftime("%b %d, %Y") %></p>
                 </div>
                 <div>
-                  <p><strong>Total:</strong> <%= number_to_currency(order.total_price) %></p>
+                  <p><strong>Total Price : </strong> <%= number_to_currency(order.total_price, :unit => "Rs ", :precision => 0) %></p>
                 </div>
               </div>
 
@@ -84,13 +84,13 @@
                     <p class="mt-2"><%= item.description %></p>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
                       <div>
-                        <p><strong>Price:</strong> <%= number_to_currency(item.price) %></p>
+                        <p><strong>Price : </strong> <%= number_to_currency(item.price, :unit => "Rs ", :precision => 0) %></p>
                       </div>
                       <div>
                         <p><strong>Quantity:</strong> <%= item.number_of_pieces %></p>
                       </div>
                       <div>
-                        <p><strong>Subtotal:</strong> <%= number_to_currency(item.price * item.number_of_pieces) %></p>
+                        <p><strong>Subtotal : </strong> <%= number_to_currency(item.price * item.number_of_pieces, :unit => "Rs ", :precision => 0) %></p>
                       </div>
                     </div>
                   </div>

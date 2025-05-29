@@ -21,14 +21,44 @@ ur:
     deleted: "%{model} کامیابی سے حذف ہوا"
 
   orders:
+    title: "آرڈرز"
+    new: "نیا آرڈر"
+    search:
+      placeholder: "آرڈرز، گاہک، فون، ای میل تلاش کریں..."
+    filters:
+      button: "فلٹرز"
+      status: "حالت"
+      all_statuses: "تمام حالات"
+      date_range: "تاریخ کی حد"
+      date_options:
+        all_time: "تمام وقت"
+        last_week: "پچھلا ہفتہ"
+        last_month: "پچھلا مہینہ"
+        last_year: "پچھلا سال"
+        custom: "مخصوص تاریخ"
+      customer: "گاہک"
+      all_customers: "تمام گاہک"
+      start_date: "شروع کی تاریخ"
+      end_date: "آخری تاریخ"
+      clear: "تمام فلٹرز صاف کریں"
+      apply: "فلٹرز لاگو کریں"
+    table:
+      order_number: "آرڈر نمبر#"
+      customer: "گاہک"
+      status: "حالت"
+      delivery_date: "ترسیل کی تاریخ"
+      total_price: "کل قیمت"
+      actions: "اقدامات"
+    no_results:
+      title: "کوئی آرڈر نہیں ملا"
+      message: "اپنی تلاش یا فلٹرز کو ایڈجسٹ کرنے کی کوشش کریں"
     statuses:
-      received: "موصول ہوا"
+      pending: "زیر التواء"
       in_progress: "جاری ہے"
       completed: "مکمل"
+      cancelled: "منسوخ"
       delivered: "پہنچا دیا گیا"
-    actions:
-      create: "نیا آرڈر بنائیں"
-      update: "آرڈر اپ ڈیٹ کریں"
+      received: "موصول ہوا"
     select_customer: "گاہک منتخب کریں"
     select_status: "حالت منتخب کریں"
     line_items:
@@ -49,6 +79,7 @@ ur:
       measurement_type: "پیمائش کی قسم"
       measurement_value: "مقدار"
       select_measurement_type: "پیمائش کی قسم منتخب کریں"
+      total_price: "کل قیمت"
       statuses:
         not_started: "شروع نہیں ہوا"
         in_progress: "جاری ہے"
@@ -58,6 +89,14 @@ ur:
       image_actions:
         remove: "تصویر ہٹائیں"
         upload: "تصاویر اپ لوڈ کریں"
+    customer_info: "گاہک کی معلومات"
+    order_details: "آرڈر کی تفصیلات"
+    actions:
+      mark_complete: "مکمل کریں"
+      edit: "آرڈر میں ترمیم کریں"
+      view: "آرڈر دیکھیں"
+      create: "آرڈر بنائیں"
+      update: "آرڈر کی معلومات اپ ڈیٹ کریں"
 
   activerecord:
     models:
@@ -65,6 +104,7 @@ ur:
       order: "آرڈر"
     attributes:
       customer:
+        name: "نام"
         first_name: "پہلا نام"
         last_name: "آخری نام"
         phone: "فون نمبر"
