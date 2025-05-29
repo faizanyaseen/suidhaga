@@ -34,17 +34,12 @@
         </div>
 
         <div class="form-control">
-          <%= f.label :created_at, t('activerecord.attributes.order.created_at'), class: "label" %>
-          <%= f.date_field :created_at, class: "input input-bordered w-full", placeholder: t('placeholders.order.select_date'), data: { order_form_target: "dependentField" } %>
+          <%= f.label :delivery_date, t('activerecord.attributes.order.delivery_date'), class: "label" %>
+          <%= f.date_field :delivery_date, class: "input input-bordered w-full", placeholder: t('placeholders.order.select_date'), required: true, data: { order_form_target: "dependentField" } %>
         </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-        <div class="form-control">
-          <%= f.label :delivery_date, t('activerecord.attributes.order.delivery_date'), class: "label" %>
-          <%= f.date_field :delivery_date, class: "input input-bordered w-full", placeholder: t('placeholders.order.select_date'), data: { order_form_target: "dependentField" } %>
-        </div>
-
         <div class="form-control">
           <%= f.label :status, t('activerecord.attributes.order.status'), class: "label" %>
           <%= f.select :status, Order.statuses.keys.map { |s| [t("orders.statuses.#{s}"), s] },
@@ -78,9 +73,7 @@
         <div class="space-y-6" data-nested-form-target="container">
           <%= f.fields_for :line_items do |line_item_form| %>
             <div class="line-item-fields p-4 border border-base-300 rounded-lg">
-              <%= render 'line_item_fields', f: line_item_form, disabled: true %>
-              
-              <div class="flex justify-end mt-4">
+              <div class="flex justify-end my-4">
                 <button type="button"
                         data-action="nested-form#remove"
                         class="btn btn-error btn-sm"
@@ -91,16 +84,15 @@
                   <%= t('orders.line_items.remove_item') %>
                 </button>
               </div>
+              <%= render 'line_item_fields', f: line_item_form, disabled: true %>
             </div>
           <% end %>
         </div>
-        
+
         <template data-nested-form-target="template">
           <%= f.fields_for :line_items, LineItem.new, child_index: 'NEW_RECORD' do |line_item_form| %>
             <div class="line-item-fields p-4 border border-base-300 rounded-lg">
-              <%= render 'line_item_fields', f: line_item_form, disabled: true %>
-              
-              <div class="flex justify-end mt-4">
+              <div class="flex justify-end my-4">
                 <button type="button"
                         data-action="nested-form#remove"
                         class="btn btn-error btn-sm"
@@ -111,11 +103,11 @@
                   <%= t('orders.line_items.remove_item') %>
                 </button>
               </div>
+              <%= render 'line_item_fields', f: line_item_form, disabled: true %>
             </div>
           <% end %>
         </template>
       </div>
-      
       <div class="form-control mt-6">
         <%= f.submit @order.new_record? ? t('orders.actions.create') : t('orders.actions.update'),
             class: "btn btn-primary w-full",

@@ -14,11 +14,13 @@ ur:
 
   confirmations:
     delete: "کیا آپ واقعی حذف کرنا چاہتے ہیں؟"
+    mark_delivered: 'کیا آپ واقعی اس آرڈر کو پہنچا دیا گیا نشان زد کرنا چاہتے ہیں؟'
 
   notices:
     created: "%{model} کامیابی سے بنایا گیا"
     updated: "%{model} کامیابی سے اپ ڈیٹ ہوا"
     deleted: "%{model} کامیابی سے حذف ہوا"
+    marked_delivered: "آرڈر کامیابی سے پہنچا دیا گیا"
 
   orders:
     title: "آرڈرز"
@@ -97,6 +99,7 @@ ur:
       view: "آرڈر دیکھیں"
       create: "آرڈر بنائیں"
       update: "آرڈر کی معلومات اپ ڈیٹ کریں"
+      mark_delivered: "پہنچا دیا گیا"
 
   activerecord:
     models:
@@ -123,9 +126,37 @@ ur:
         number_of_pieces: "ٹکڑوں کی تعداد"
 
   customers:
+    title: "گاہک"
+    new: "نیا گاہک"
+    search:
+      placeholder: "گاہکوں کو تلاش کریں..."
+    table:
+      name: "نام"
+      phone: "فون"
+      email: "ای میل"
+      address: "پتہ"
+      actions: "اقدامات"
+    show:
+      title: "گاہک کی تفصیلات"
+      customer_info: "گاہک کی معلومات"
+      orders: "آرڈرز"
+      no_orders: "کوئی آرڈر نہیں ملا"
+      order_details: "آرڈر کی تفصیلات"
+      order_number: "آرڈر نمبر #"
+      order_date: "آرڈر کی تاریخ"
+      delivery_date: "ترسیل کی تاریخ"
+      total_price: "کل قیمت"
+      line_items: "آئٹمز"
+      price: "قیمت"
+      quantity: "تعداد"
+      subtotal: "ذیلی کل"
+      view_details: "تفصیلات دیکھیں"
     actions:
       create: "نیا گاہک بنائیں"
       update: "گاہک کی معلومات اپ ڈیٹ کریں"
+      edit: "ترمیم"
+      orders: "آرڈرز"
+      add_order: "آرڈر شامل کریں"
     measurements:
       title: "پیمائش"
       add_measurement: "پیمائش شامل کریں"
@@ -195,3 +226,32 @@ ur:
       header:
         one: "ایک غلطی کی وجہ سے یہ %{model} محفوظ نہیں کیا جا سکا"
         other: "%{count} غلطیوں کی وجہ سے یہ %{model} محفوظ نہیں کیا جا سکا"
+
+  dashboard:
+    welcome: "خوش آمدید! آج آپ کے کاروبار میں کیا ہو رہا ہے۔"
+    stats:
+      total_orders: "کل آرڈرز"
+      pending_orders: "زیر التواء آرڈرز"
+      tomorrow_deliveries: "کل کی ڈیلیوریاں"
+      late_orders: "تاخیر شدہ آرڈرز"
+      total_customers: "کل گاہک"
+      this_month_revenue: "اس ماہ کی آمدنی"
+    revenue_chart:
+      title: "آمدنی کا رجحان (گزشتہ 12 ماہ)"
+    recent_orders:
+      title: "حالیہ آرڈرز"
+      view_all: "سب دیکھیں"
+      no_orders: "کوئی حالیہ آرڈر نہیں"
+    late_orders:
+      title: "تاخیر شدہ آرڈرز"
+      view_all: "سب دیکھیں"
+      days_late: "%{count} دن تاخیر"
+      due_date: "مقررہ تاریخ: %{date}"
+      no_late_orders: "کوئی تاخیر شدہ آرڈر نہیں!"
+      all_on_track: "تمام آرڈرز ٹریک پر ہیں"
+    quick_actions:
+      title: "فوری اقدامات"
+      new_order: "نیا آرڈر"
+      add_customer: "گاہک شامل کریں"
+      view_pending: "زیر التواء دیکھیں"
+      measurements: "پیمائشیں"

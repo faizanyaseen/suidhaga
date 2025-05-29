@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   resources :orders do
     member do
       patch :mark_complete
+      patch :mark_delivered
     end
   end
   resources :measurement_types do

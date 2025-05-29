@@ -1,7 +1,7 @@
 <div class="container mx-auto px-4">
   <div class="mb-6">
-    <h1 class="text-3xl font-bold">Dashboard</h1>
-    <p class="text-base-content/60 mt-2">Welcome back! Here's what's happening with your business today.</p>
+    <h1 class="text-3xl font-bold"><%= t('navigation.dashboard') %></h1>
+    <p class="text-base-content/60 mt-2"><%= t('dashboard.welcome') %></p>
   </div>
 
   <!-- Stats Cards -->
@@ -11,7 +11,7 @@
       <div class="card-body">
         <div class="flex items-center justify-between">
           <div>
-            <h2 class="card-title text-white/90 text-sm font-medium">Total Orders</h2>
+            <h2 class="card-title text-white/90 text-sm font-medium"><%= t('dashboard.stats.total_orders') %></h2>
             <p class="text-3xl font-bold"><%= @stats[:total_orders] %></p>
           </div>
           <div class="bg-white/20 p-3 rounded-full">
@@ -28,7 +28,7 @@
       <div class="card-body">
         <div class="flex items-center justify-between">
           <div>
-            <h2 class="card-title text-white/90 text-sm font-medium">Pending Orders</h2>
+            <h2 class="card-title text-white/90 text-sm font-medium"><%= t('dashboard.stats.pending_orders') %></h2>
             <p class="text-3xl font-bold"><%= @stats[:pending_orders] %></p>
           </div>
           <div class="bg-white/20 p-3 rounded-full">
@@ -45,7 +45,7 @@
       <div class="card-body">
         <div class="flex items-center justify-between">
           <div>
-            <h2 class="card-title text-white/90 text-sm font-medium">Tomorrow Deliveries</h2>
+            <h2 class="card-title text-white/90 text-sm font-medium"><%= t('dashboard.stats.tomorrow_deliveries') %></h2>
             <p class="text-3xl font-bold"><%= @stats[:tomorrow_deliveries] %></p>
           </div>
           <div class="bg-white/20 p-3 rounded-full">
@@ -62,7 +62,7 @@
       <div class="card-body">
         <div class="flex items-center justify-between">
           <div>
-            <h2 class="card-title text-white/90 text-sm font-medium">Late Orders</h2>
+            <h2 class="card-title text-white/90 text-sm font-medium"><%= t('dashboard.stats.late_orders') %></h2>
             <p class="text-3xl font-bold"><%= @stats[:late_orders] %></p>
           </div>
           <div class="bg-white/20 p-3 rounded-full">
@@ -81,7 +81,7 @@
     <div class="lg:col-span-2">
       <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
-          <h2 class="card-title mb-4">Revenue Trend (Last 12 Months)</h2>
+          <h2 class="card-title mb-4"><%= t('dashboard.revenue_chart.title') %></h2>
           <div class="h-80">
             <canvas id="revenueChart"
                     data-controller="revenue-chart"
@@ -100,7 +100,7 @@
         <div class="card-body">
           <div class="flex items-center justify-between">
             <div>
-              <h2 class="card-title text-base-content/70 text-sm font-medium">Total Customers</h2>
+              <h2 class="card-title text-base-content/70 text-sm font-medium"><%= t('dashboard.stats.total_customers') %></h2>
               <p class="text-3xl font-bold text-primary"><%= @stats[:total_customers] %></p>
             </div>
             <div class="bg-primary/10 p-3 rounded-full">
@@ -117,7 +117,7 @@
         <div class="card-body">
           <div class="flex items-center justify-between">
             <div>
-              <h2 class="card-title text-base-content/70 text-sm font-medium">This Month Revenue</h2>
+              <h2 class="card-title text-base-content/70 text-sm font-medium"><%= t('dashboard.stats.this_month_revenue') %></h2>
               <p class="text-3xl font-bold text-success"><%= number_to_currency(@stats[:this_month_revenue]) %></p>
             </div>
             <div class="bg-success/10 p-3 rounded-full">
@@ -137,9 +137,9 @@
     <div class="card bg-base-100 shadow-xl">
       <div class="card-body">
         <div class="flex items-center justify-between mb-4">
-          <h2 class="card-title">Recent Orders</h2>
+          <h2 class="card-title"><%= t('dashboard.recent_orders.title') %></h2>
           <%= link_to orders_path, class: "btn btn-sm btn-outline" do %>
-            View All
+            <%= t('dashboard.recent_orders.view_all') %>
           <% end %>
         </div>
 
@@ -153,7 +153,7 @@
                 </div>
                 <div class="text-right">
                   <div class="badge <%= order_status_color(order.status) %> badge-sm">
-                    <%= order.status.humanize %>
+                    <%= t("orders.statuses.#{order.status}").humanize %>
                   </div>
                   <p class="text-sm font-medium mt-1"><%= number_to_currency(order.total_price) %></p>
                 </div>
@@ -165,7 +165,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-base-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
-            <p class="text-base-content/60">No recent orders</p>
+            <p class="text-base-content/60"><%= t('dashboard.recent_orders.no_orders') %></p>
           </div>
         <% end %>
       </div>
@@ -175,10 +175,10 @@
     <div class="card bg-base-100 shadow-xl">
       <div class="card-body">
         <div class="flex items-center justify-between mb-4">
-          <h2 class="card-title text-error">Late Orders</h2>
+          <h2 class="card-title text-error"><%= t('dashboard.late_orders.title') %></h2>
           <% if @stats[:late_orders] > 0 %>
             <%= link_to orders_path(date_range: 'overdue'), class: "btn btn-sm btn-outline btn-error" do %>
-              View All
+              <%= t('dashboard.late_orders.view_all') %>
             <% end %>
           <% end %>
         </div>
@@ -190,11 +190,11 @@
                 <div>
                   <p class="font-medium">#<%= order.order_number %></p>
                   <p class="text-sm text-base-content/60"><%= order.customer.first_name %> <%= order.customer.last_name %></p>
-                  <p class="text-xs text-error">Due: <%= order.delivery_date.strftime("%b %d, %Y") %></p>
+                  <p class="text-xs text-error"><%= t('dashboard.late_orders.due_date', date: order.delivery_date.strftime("%b %d, %Y")) %></p>
                 </div>
                 <div class="text-right">
                   <div class="badge badge-error badge-sm">
-                    <%= pluralize((Date.current - order.delivery_date).to_i, 'day') %> late
+                    <%= pluralize((Date.current - order.delivery_date).to_i, t('dashboard.late_orders.days_late', count: (Date.current - order.delivery_date).to_i)) %>
                   </div>
                   <p class="text-sm font-medium mt-1"><%= number_to_currency(order.total_price) %></p>
                 </div>
@@ -206,8 +206,8 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-success mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <p class="text-success font-medium">No late orders!</p>
-            <p class="text-sm text-base-content/60">All orders are on track</p>
+            <p class="text-success font-medium"><%= t('dashboard.late_orders.no_late_orders') %></p>
+            <p class="text-sm text-base-content/60"><%= t('dashboard.late_orders.all_on_track') %></p>
           </div>
         <% end %>
       </div>
@@ -218,34 +218,34 @@
   <div class="mt-8">
     <div class="card bg-base-100 shadow-xl">
       <div class="card-body">
-        <h2 class="card-title mb-4">Quick Actions</h2>
+        <h2 class="card-title mb-4"><%= t('dashboard.quick_actions.title') %></h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <%= link_to new_order_path, class: "btn btn-primary", data: { turbo: false } do %>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
-            New Order
+            <%= t('dashboard.quick_actions.new_order') %>
           <% end %>
 
           <%= link_to new_customer_path, class: "btn btn-secondary", data: { turbo: false } do %>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
             </svg>
-            Add Customer
+            <%= t('dashboard.quick_actions.add_customer') %>
           <% end %>
 
           <%= link_to orders_path(status: 'pending'), class: "btn btn-accent" do %>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
-            View Pending
+            <%= t('dashboard.quick_actions.view_pending') %>
           <% end %>
 
           <%= link_to measurement_types_path, class: "btn btn-info" do %>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
             </svg>
-            Measurements
+            <%= t('dashboard.quick_actions.measurements') %>
           <% end %>
         </div>
       </div>

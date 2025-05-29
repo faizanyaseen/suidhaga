@@ -1,13 +1,6 @@
 <div class="line-item-fields border rounded-lg p-4 mb-4 relative">
   <%= f.hidden_field :_destroy %>
   <%= f.hidden_field :id if f.object.persisted? %>
-  
-  <button type="button" data-action="nested-form#remove" class="absolute top-2 right-2 text-gray-400 hover:text-gray-500">
-    <span class="sr-only"><%= t('orders.line_items.remove_item') %></span>
-    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-    </svg>
-  </button>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <div class="form-control">
@@ -155,7 +148,7 @@
                 @measurement_types, 
                 :id, 
                 :key,
-                { prompt: "Select a measurement type" },
+                { prompt: t('orders.line_items.select_measurement_type') },
                 { class: "select select-bordered w-full",
                   data: {
                     measurement_value_target: "measurementTypeSelect",

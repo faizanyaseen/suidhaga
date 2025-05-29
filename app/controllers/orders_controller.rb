@@ -110,6 +110,15 @@ class OrdersController < ApplicationController
     end
   end
 
+  def mark_delivered
+    @order = Order.find(params[:id])
+    if @order.update(status: :delivered, delivered_at: Time.current)
+      render json: { status: :ok, message: t('orders.notices.marked_delivered') }
+    else
+      render json: { status: :unprocessable_entity, message: @order.errors.full_messages.join(', ') }
+    end
+  end
+
   private
 
   def order_params

@@ -1,12 +1,12 @@
 <div class="card bg-base-100 shadow-sm">
   <div class="card-body">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-      <h2 class="card-title text-2xl font-bold">Customers</h2>
+      <h2 class="card-title text-2xl font-bold"><%= t('customers.title') %></h2>
       <%= link_to new_customer_path, class: "btn btn-primary mt-4 sm:mt-0", data: { turbo: false } do %>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
         </svg>
-        New Customer
+        <%= t('customers.new') %>
       <% end %>
     </div>
     
@@ -14,7 +14,10 @@
       <%= form_with(url: customers_path, method: :get, data: { turbo_frame: "customers_list", turbo_action: "advance" }) do |f| %>
         <div class="form-control">
           <div class="input-group flex">
-            <%= f.text_field :search, placeholder: "Search customers...", class: "input input-bordered w-full", value: params[:search] %>
+            <%= f.text_field :search,
+                placeholder: t('customers.search.placeholder'),
+                class: "input input-bordered w-full",
+                value: params[:search] %>
             <button class="btn btn-square">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -30,11 +33,11 @@
         <table class="table table-zebra w-full">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Phone</th>
-              <th>Email</th>
-              <th>Address</th>
-              <th>Actions</th>
+              <th><%= t('customers.table.name') %></th>
+              <th><%= t('customers.table.phone') %></th>
+              <th><%= t('customers.table.email') %></th>
+              <th><%= t('customers.table.address') %></th>
+              <th><%= t('customers.table.actions') %></th>
             </tr>
           </thead>
           <tbody>
@@ -56,14 +59,14 @@
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                       </svg>
-                      <span class="hidden sm:inline ml-1">Orders</span>
+                      <span class="hidden sm:inline ml-1"><%= t('customers.actions.orders') %></span>
                     <% end %>
 
                     <%= link_to new_order_path(customer_id: customer.id), class: "btn btn-sm btn-outline btn-success", data: { turbo: false } do %>
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      <span class="hidden sm:inline ml-1">Add Order</span>
+                      <span class="hidden sm:inline ml-1"><%= t('customers.actions.add_order') %></span>
                     <% end %>
                   </div>
                 </td>

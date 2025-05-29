@@ -1,105 +1,96 @@
 <div class="card bg-base-100 shadow-xl">
   <div class="card-body">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-      <h2 class="card-title text-2xl font-bold"><%= @customer.first_name %> <%= @customer.last_name %></h2>
-      <%= link_to new_order_path(customer_id: @customer.id), class: "btn btn-primary mt-4 sm:mt-0", data: { turbo: false } do %>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-        </svg>
-        <%= t('orders.actions.new') %>
-      <% end %>
-    </div>
+      <h2 class="card-title text-2xl font-bold"><%= t('customers.show.customer_info') %></h2>
+      <div class="flex gap-2 mt-4 sm:mt-0">
+        <%= link_to edit_customer_path(@customer), class: "btn btn-primary", data: { turbo: false } do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+          <%= t('customers.actions.edit') %>
+        <% end %>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div>
-        <h3 class="text-lg font-medium mb-2">Customer Information</h3>
-        <div class="card bg-base-200">
-          <div class="card-body p-4">
-            <p><strong>Name:</strong> <%= @customer.first_name %> <%= @customer.last_name %></p>
-            <p><strong>Phone:</strong> <%= @customer.phone %></p>
-            <p><strong>Email:</strong> <%= @customer.email %></p>
-            <p><strong>Address:</strong> <%= @customer.address %></p>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <h3 class="text-lg font-medium mb-2">Measurements</h3>
-        <div class="card bg-base-200">
-          <div class="card-body p-4">
-            <% if @customer.customers_measurement_types.any? %>
-              <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                <% @customer.customers_measurement_types.each do |measurement| %>
-                  <div class="bg-base-100 p-3 rounded-lg">
-                    <p class="font-medium"><%= measurement.measurement_type.key %></p>
-                    <p class="text-lg"><%= measurement.value %></p>
-                  </div>
-                <% end %>
-              </div>
-            <% else %>
-              <p>No measurements recorded.</p>
-            <% end %>
-          </div>
-        </div>
+        <%= link_to new_order_path(customer_id: @customer.id), class: "btn btn-success", data: { turbo: false } do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <%= t('customers.actions.add_order') %>
+        <% end %>
       </div>
     </div>
 
-    <div class="divider">Orders</div>
-    
+    <div class="card bg-base-200">
+      <div class="card-body p-4">
+        <p><strong><%= t('activerecord.attributes.customer.name') %>:</strong> <%= "#{@customer.first_name} #{@customer.last_name}" %></p>
+        <p><strong><%= t('activerecord.attributes.customer.phone') %>:</strong> <%= @customer.phone %></p>
+        <p><strong><%= t('activerecord.attributes.customer.email') %>:</strong> <%= @customer.email %></p>
+        <p><strong><%= t('activerecord.attributes.customer.address') %>:</strong> <%= @customer.address %></p>
+      </div>
+    </div>
+
+    <div class="divider"><%= t('customers.show.orders') %></div>
+
     <% if @orders.any? %>
       <div class="space-y-6">
         <% @orders.each do |order| %>
           <div class="card bg-base-200">
             <div class="card-body p-4">
               <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                <h4 class="card-title">Order #<%= order.id %></h4>
+                <h4 class="card-title"><%= t('customers.show.order_number') %><%= order.id %></h4>
                 <div class="badge <%= order_status_color(order.status) %> mt-2 md:mt-0">
-                  <%= order.status.humanize %>
+                  <%= t("orders.statuses.#{order.status}") %>
                 </div>
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                 <div>
-                  <p><strong>Order Date:</strong> <%#= order.order_date&.strftime("%b %d, %Y") %></p>
+                  <p><strong><%= t('customers.show.order_date') %>:</strong> <%= order.created_at&.strftime("%b %d, %Y") %></p>
                 </div>
                 <div>
-                  <p><strong> Delivery Date : </strong> <%#= order.delivery_date&.strftime("%b %d, %Y") %></p>
+                  <p><strong> <%= t('customers.show.delivery_date') %> : </strong> <%= order.delivery_date&.strftime("%b %d, %Y") %></p>
                 </div>
                 <div>
-                  <p><strong>Total Price : </strong> <%= number_to_currency(order.total_price, :unit => "Rs ", :precision => 0) %></p>
+                  <p><strong><%= t('customers.show.total_price') %>:</strong> <%= number_to_currency(order.total_price) %></p>
                 </div>
               </div>
 
-              <div class="divider">Line Items</div>
+              <div class="divider"><%= t('customers.show.line_items') %></div>
 
-              <div class="space-y-4">
-                <% order.line_items.each do |item| %>
-                  <div class="bg-base-100 p-3 rounded-lg">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                      <h5 class="font-medium"><%= item.name %></h5>
-                      <div class="badge <%= order_status_color(item.status) %> mt-2 md:mt-0">
-                        <%= item.status.humanize %>
-                      </div>
-                    </div>
-                    <p class="mt-2"><%= item.description %></p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
-                      <div>
-                        <p><strong>Price : </strong> <%= number_to_currency(item.price, :unit => "Rs ", :precision => 0) %></p>
-                      </div>
-                      <div>
-                        <p><strong>Quantity:</strong> <%= item.number_of_pieces %></p>
-                      </div>
-                      <div>
-                        <p><strong>Subtotal : </strong> <%= number_to_currency(item.price * item.number_of_pieces, :unit => "Rs ", :precision => 0) %></p>
-                      </div>
-                    </div>
-                  </div>
-                <% end %>
+              <div class="overflow-x-auto">
+                <table class="table table-compact w-full">
+                  <thead>
+                    <tr>
+                      <th><%= t('orders.line_items.name') %></th>
+                      <th><%= t('customers.show.price') %></th>
+                      <th><%= t('customers.show.quantity') %></th>
+                      <th><%= t('customers.show.subtotal') %></th>
+                      <th><%= t('orders.line_items.status') %></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% order.line_items.each do |item| %>
+                      <tr>
+                        <td><%= item.name %></td>
+                        <td><%= number_to_currency(item.price) %></td>
+                        <td><%= item.number_of_pieces %></td>
+                        <td><%= number_to_currency(item.price * item.number_of_pieces) %></td>
+                        <td>
+                          <div class="badge <%= order_status_color(item.status) %>">
+                            <%= t("orders.line_items.statuses.#{item.status}") %>
+                          </div>
+                        </td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
               </div>
 
               <div class="flex justify-end mt-4">
                 <%= link_to order_path(order), class: "btn btn-sm btn-outline", data: { turbo: false } do %>
-                  View Details
+                  <%= t('customers.show.view_details') %>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
                 <% end %>
               </div>
             </div>
@@ -107,28 +98,18 @@
         <% end %>
       </div>
     <% else %>
-      <div class="alert alert-info">
-        <div>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          <span>No orders found for this customer.</span>
-        </div>
+      <div class="text-center py-8 text-gray-500">
+        <p><%= t('customers.show.no_orders') %></p>
       </div>
     <% end %>
-
-    <div class="flex justify-between mt-6">
-      <%= link_to customers_path, class: "btn btn-ghost", data: { turbo: false } do %>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-        </svg>
-        Back to Customers
-      <% end %>
-
-      <%= link_to edit_customer_path(@customer), class: "btn btn-primary", data: { turbo: false } do %>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-        </svg>
-        Edit Customer
-      <% end %>
-    </div>
   </div>
+</div>
+
+<div class="flex justify-between mt-6">
+  <%= link_to customers_path, class: "btn btn-ghost" do %>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+    </svg>
+    <%= t('actions.back') %> <%= t('customers.title') %>
+  <% end %>
 </div>

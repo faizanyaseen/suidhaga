@@ -22,7 +22,26 @@
           </svg>
           <%= t('orders.actions.edit') %>
         <% end %>
-        <% unless @order.completed? %>
+
+        <% if @order.completed? && !@order.delivered? %>
+          <div data-controller="order-delivered"
+               data-order-delivered-order-id-value="<%= @order.id %>"
+               data-action="order-delivered#markDelivered"
+               data-order-delivered-target="button"
+               class="btn btn-info">
+            <button type="button"
+                    data-action="order-delivered#markDelivered"
+                    data-order-delivered-target="button"
+                    class="btn btn-info">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <%= t('orders.actions.mark_delivered') %>
+            </button>
+          </div>
+        <% end %>
+
+        <% unless @order.completed? || @order.delivered? %>
           <div data-controller="order-complete" data-order-complete-order-id-value="<%= @order.id %>">
             <button type="button"
                     data-action="order-complete#markComplete"

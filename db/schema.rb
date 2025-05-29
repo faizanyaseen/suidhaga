@@ -109,7 +109,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_27_110902) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.date "delivery_date"
-    t.datetime "received_at"
+    t.datetime "delivered_at"
     t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["order_number"], name: "index_orders_on_order_number", unique: true
   end

@@ -43,11 +43,13 @@ en:
 
   confirmations:
     delete: "Are you sure you want to delete?"
+    mark_delivered: 'Are you sure you want to mark this order as delivered?'
 
   notices:
     created: "%{model} was successfully created"
     updated: "%{model} was successfully updated"
     deleted: "%{model} was successfully deleted"
+    marked_delivered: "Order was successfully marked as delivered"
 
   orders:
     title: "Orders"
@@ -86,6 +88,8 @@ en:
       view: "View Order"
       create: "Create Order"
       update: "Update Order"
+      mark_complete: "Mark as Complete"
+      mark_delivered: "Mark as Delivered"
     statuses:
       received: "Received"
       in_progress: "In Progress"
@@ -125,8 +129,6 @@ en:
         upload: "Upload images"
     customer_info: "Customer Information"
     order_details: "Order Details"
-    actions:
-      mark_complete: "Mark as Complete"
 
   activerecord:
     models:
@@ -152,9 +154,37 @@ en:
         number_of_pieces: "Number of Pieces"
 
   customers:
+    title: "Customers"
+    new: "New Customer"
+    search:
+      placeholder: "Search customers..."
+    table:
+      name: "Name"
+      phone: "Phone"
+      email: "Email"
+      address: "Address"
+      actions: "Actions"
+    show:
+      title: "Customer Details"
+      customer_info: "Customer Information"
+      orders: "Orders"
+      no_orders: "No orders found"
+      order_details: "Order Details"
+      order_number: "Order #"
+      order_date: "Order Date"
+      delivery_date: "Delivery Date"
+      total_price: "Total Price"
+      line_items: "Line Items"
+      price: "Price"
+      quantity: "Quantity"
+      subtotal: "Subtotal"
+      view_details: "View Details"
     actions:
       create: "Create Customer"
       update: "Update Customer"
+      edit: "Edit"
+      orders: "Orders"
+      add_order: "Add Order"
     measurements:
       title: "Measurements"
       add_measurement: "Add Measurement"
@@ -227,3 +257,32 @@ en:
     errors:
       key_en_taken: "English key has already been taken"
       key_ur_taken: "Urdu key has already been taken"
+
+  dashboard:
+    welcome: "Welcome back! Here's what's happening with your business today."
+    stats:
+      total_orders: "Total Orders"
+      pending_orders: "Pending Orders"
+      tomorrow_deliveries: "Tomorrow Deliveries"
+      late_orders: "Late Orders"
+      total_customers: "Total Customers"
+      this_month_revenue: "This Month Revenue"
+    revenue_chart:
+      title: "Revenue Trend (Last 12 Months)"
+    recent_orders:
+      title: "Recent Orders"
+      view_all: "View All"
+      no_orders: "No recent orders"
+    late_orders:
+      title: "Late Orders"
+      view_all: "View All"
+      days_late: "%{count} days late"
+      due_date: "Due: %{date}"
+      no_late_orders: "No late orders!"
+      all_on_track: "All orders are on track"
+    quick_actions:
+      title: "Quick Actions"
+      new_order: "New Order"
+      add_customer: "Add Customer"
+      view_pending: "View Pending"
+      measurements: "Measurements"
