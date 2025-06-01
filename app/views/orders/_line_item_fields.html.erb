@@ -115,8 +115,10 @@
 
           <div class="form-control flex-1 w-full">
             <%= mt_form.label :value, t('orders.line_items.measurement_value'), class: "label" %>
-            <%= mt_form.text_field :value,
+            <%= mt_form.number_field :value,
                 class: "input input-bordered w-full",
+                step: "0.01",
+                min: "0",
                 placeholder: t('placeholders.order.measurement_value'),
                 data: { measurement_value_target: "valueField" } %>
           </div>
@@ -159,9 +161,11 @@
 
           <div class="form-control flex-1 w-full">
             <%= mt_form.label :value, class: "label" %>
-            <%= mt_form.text_field :value,
+            <%= mt_form.number_field :value,
                 class: "input input-bordered w-full",
-                placeholder: "Enter measurement value",
+                step: "0.01",
+                min: "0",
+                placeholder: t('placeholders.order.measurement_value'),
                 data: { measurement_value_target: "valueField" } %>
           </div>
 
