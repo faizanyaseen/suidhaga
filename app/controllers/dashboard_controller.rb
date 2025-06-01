@@ -17,7 +17,7 @@ class DashboardController < ApplicationController
         status: ['pending', 'in_progress', 'ready']
       ).count,
       late_orders: orders.where(
-        'delivery_date < ? AND received_at IS NULL',
+        'delivery_date < ? AND delivered_at IS NULL',
         Date.current
       ).where.not(status: 'cancelled').count,
       total_customers: current_shop.customers.count,
@@ -27,7 +27,7 @@ class DashboardController < ApplicationController
       ).sum(:total_price),
       recent_orders: orders.order(created_at: :desc).limit(5),
       late_orders_list: orders.where(
-        'delivery_date < ? AND received_at IS NULL',
+        'delivery_date < ? AND delivered_at IS NULL',
         Date.current
       ).where.not(status: 'cancelled').order(:delivery_date).limit(10)
     }

@@ -286,3 +286,26 @@ en:
       add_customer: "Add Customer"
       view_pending: "View Pending"
       measurements: "Measurements"
+  profile:
+    title: "Profile Settings"
+    shop_settings: "Shop Settings"
+    user_settings: "User Settings"
+    shop:
+      name: "Shop Name"
+      logo: "Shop Logo"
+      update_success: "Shop settings updated successfully"
+    user:
+      name: "Your Name"
+      email: "Email Address"
+      current_password: "Current Password"
+      new_password: "New Password"
+      password_confirmation: "Confirm New Password"
+      password_hint: "Leave blank if you don't want to change"
+      current_password_hint: "We need your current password to confirm changes"
+      update_success: "Profile updated successfully"
+    actions:
+      update_shop: "Update Shop Settings"
+      update_profile: "Update Profile"
+      change_password: "Change Password"
+      upload_logo: "Upload Logo"
+      remove_logo: "Remove Logo"

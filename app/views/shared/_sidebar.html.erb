@@ -3,7 +3,12 @@
   <ul class="menu bg-base-200 text-base-content w-64 p-4 h-full overflow-y-auto">
     <!-- Shop name/logo -->
     <li class="mb-4">
-      <h2 class="text-xl font-bold px-4 py-2"><%= @shop.name %></h2>
+      <div class="flex flex-col items-center py-4">
+        <% if current_shop&.logo&.attached? %>
+          <%= image_tag current_shop.logo, class: "w-16 h-16 rounded-lg sidebar-logo mb-2" %>
+        <% end %>
+        <h2 class="text-lg font-semibold shop-name"><%= current_shop&.name %></h2>
+      </div>
     </li>
 
     <!-- Sidebar content here -->

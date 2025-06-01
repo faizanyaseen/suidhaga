@@ -1,0 +1,73 @@
+<div data-inline-edit-target="viewMode">
+  <div class="card-body">
+    <div class="flex justify-between items-center">
+      <h2 class="card-title"><%= t('profile.user_settings') %></h2>
+      <button class="btn btn-ghost btn-sm" data-action="inline-edit#toggleEdit">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+        </svg>
+      </button>
+    </div>
+    
+    <div class="space-y-4 mt-4">
+      <p><strong><%#= t('profile.user.name') %>:</strong> <span data-inline-edit-target="nameDisplay"><%#= user.name %></span></p>
+      <p><strong><%= t('profile.user.email') %>:</strong> <span data-inline-edit-target="emailDisplay"><%= user.email %></span></p>
+    </div>
+  </div>
+</div>
+
+<div data-inline-edit-target="editMode" class="hidden">
+  <%= form_with(model: user, url: profiles_path, data: { inline_edit_target: "form", action: "submit->inline-edit#submitForm" }) do |f| %>
+    <div class="card-body">
+      <div class="flex justify-between items-center">
+        <h2 class="card-title"><%= t('profile.user_settings') %></h2>
+        <button type="button" class="btn btn-ghost btn-sm" data-action="inline-edit#toggleEdit">
+          <%= t('actions.cancel') %>
+        </button>
+      </div>
+
+      <div class="space-y-4 mt-4">
+        <div class="form-control">
+          <%= f.label :name, t('profile.user.name'), class: "label" %>
+          <%= f.text_field :name, class: "input input-bordered" %>
+        </div>
+
+        <div class="form-control">
+          <%= f.label :email, t('profile.user.email'), class: "label" %>
+          <%= f.email_field :email, class: "input input-bordered" %>
+        </div>
+
+        <div class="divider"><%= t('profile.actions.change_password') %></div>
+
+        <div class="form-control">
+          <%= f.label :current_password, t('profile.user.current_password'), class: "label" %>
+          <%= f.password_field :current_password, class: "input input-bordered" %>
+          <label class="label">
+            <span class="label-text-alt text-base-content/60">
+              <%= t('profile.user.current_password_hint') %>
+            </span>
+          </label>
+        </div>
+
+        <div class="form-control">
+          <%= f.label :password, t('profile.user.new_password'), class: "label" %>
+          <%= f.password_field :password, class: "input input-bordered" %>
+          <label class="label">
+            <span class="label-text-alt text-base-content/60">
+              <%= t('profile.user.password_hint') %>
+            </span>
+          </label>
+        </div>
+
+        <div class="form-control">
+          <%= f.label :password_confirmation, t('profile.user.password_confirmation'), class: "label" %>
+          <%= f.password_field :password_confirmation, class: "input input-bordered" %>
+        </div>
+
+        <div class="card-actions justify-end">
+          <%= f.submit t('profile.actions.update_profile'), class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div> 
