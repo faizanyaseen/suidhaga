@@ -1,119 +1,143 @@
-<%# Order Summary %>
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-    <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
-      <h3 class="text-lg leading-6 font-medium text-gray-900">Order Details</h3>
-      <%= link_to edit_order_path(@order), class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" do %>
-        <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-        </svg>
-        Edit Order
-      <% end %>
-    </div>
-    <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
-      <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3">
-        <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">Order Total</dt>
-          <dd class="mt-1 text-sm text-gray-900"><%= number_to_currency(@order.total_price) %></dd>
+<div class="flex justify-between mt-6">
+  <%= link_to orders_path, class: "btn btn-ghost" do %>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+    </svg>
+    <%= t('actions.back') %> <%= t('orders.title') %>
+  <% end %>
+</div>
+<div class="card bg-base-100 shadow-xl">
+  <div class="card-body">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+      <div class="flex gap-2 items-center">
+        <h2 class="card-title text-2xl font-bold"><%= t('orders.table.order_number') %><%= @order.id %></h2>
+        <div class="badge badge-sm <%= order_status_color(@order.status) %> mt-2 sm:mt-0" data-line-item-status>
+          <%= t("orders.statuses.#{@order.status}") %>
         </div>
-        <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">Status</dt>
-          <dd class="mt-1 text-sm text-gray-900">
-            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= @order.status == 'delivered' ? 'bg-green-100 text-green-800' : (@order.status == 'in_progress' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800') %>">
-              <%= @order.status.humanize %>
-            </span>
-          </dd>
-        </div>
-        <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">Created At</dt>
-          <dd class="mt-1 text-sm text-gray-900"><%= @order.created_at.strftime("%B %d, %Y") %></dd>
-        </div>
-      </dl>
-    </div>
-  </div>
+      </div>
+      <div class="flex gap-2">
+        <%= link_to edit_order_path(@order), class: "btn btn-primary" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+          <%= t('orders.actions.edit') %>
+        <% end %>
 
-  <%# Line Items %>
-  <div class="mt-8">
-    <h4 class="text-lg font-medium text-gray-900 mb-4">Line Items</h4>
+        <% if @order.completed? && !@order.delivered? %>
+          <div data-controller="order-delivered"
+               data-order-delivered-order-id-value="<%= @order.id %>"
+               data-action="order-delivered#markDelivered"
+               data-order-delivered-target="button"
+               class="btn btn-info">
+            <button type="button"
+                    data-action="order-delivered#markDelivered"
+                    data-order-delivered-target="button"
+                    class="btn btn-info">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <%= t('orders.actions.mark_delivered') %>
+            </button>
+          </div>
+        <% end %>
+
+        <% unless @order.completed? || @order.delivered? %>
+          <div data-controller="order-complete" data-order-complete-order-id-value="<%= @order.id %>">
+            <button type="button"
+                    data-action="order-complete#markComplete"
+                    data-order-complete-target="button"
+                    class="btn btn-success">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <%= t('orders.actions.mark_complete') %>
+            </button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <h3 class="text-lg font-medium"><%= t('orders.customer_info') %></h3>
+        <div class="card bg-base-200">
+          <div class="card-body p-4">
+            <p><strong><%= t('activerecord.attributes.customer.name') %> : </strong> <%= "#{@order.customer.first_name} #{@order.customer.last_name}" %></p>
+            <p><strong><%= t('activerecord.attributes.customer.phone') %> : </strong> <%= @order.customer.phone %></p>
+            <p><strong><%= t('activerecord.attributes.customer.email') %> : </strong> <%= @order.customer.email %></p>
+            <p><strong><%= t('activerecord.attributes.customer.address') %> : </strong> <%= @order.customer.address %></p>
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <h3 class="text-lg font-medium"><%= t('orders.order_details') %></h3>
+        <div class="card bg-base-200">
+          <div class="card-body p-4">
+            <p><strong><%= t('activerecord.attributes.order.created_at') %> : </strong> <%= @order.created_at.strftime("%B %d, %Y") %></p>
+            <p><strong><%= t('activerecord.attributes.order.delivery_date') %> : </strong> <%= @order.delivery_date.strftime("%B %d, %Y") if @order.delivery_date %></p>
+            <p><strong><%= t('activerecord.attributes.order.total_price') %> : </strong> <%= number_to_currency(@order.total_price, :unit => "Rs ", :precision => 0) %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="divider"><%= t('orders.line_items.title') %></div>
+    
     <div class="space-y-6">
-      <% @order.line_items.each do |line_item| %>
-        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-          <div class="px-4 py-5 sm:p-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <%# Images %>
-              <div class="col-span-1">
-                <% if line_item.images.attached? %>
-                  <div class="grid grid-cols-2 gap-2">
-                    <% line_item.images.each do |image| %>
-                      <%= image_tag image, class: "h-32 w-full object-cover rounded-lg" %>
-                    <% end %>
-                  </div>
-                <% else %>
-                  <div class="h-32 w-full bg-gray-100 flex items-center justify-center rounded-lg">
-                    <p class="text-gray-500 text-sm">No images</p>
+      <% @order.line_items.each do |item| %>
+        <div class="card bg-base-200">
+          <div class="card-body p-4">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+              <h4 class="card-title"><%= item.name %></h4>
+              <div class="badge badge-sm <%= order_status_color(item.status) %> mt-2 md:mt-0" data-line-item-status>
+                <%= t("orders.line_items.statuses.#{item.status}") %>
+              </div>
+            </div>
+            
+            <p class="mt-2"><%= item.description %></p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+              <div>
+                <p><strong><%= t('orders.line_items.price') %>:</strong> <%= number_to_currency(item.price, :unit => "Rs ", :precision => 0) %></p>
+              </div>
+              <div>
+                <p><strong><%= t('orders.line_items.quantity') %>:</strong> <%= item.number_of_pieces %></p>
+              </div>
+              <div>
+                <p><strong><%= t('orders.line_items.total_price') %>:</strong> <%= number_to_currency(item.price * item.number_of_pieces, :unit => "Rs ", :precision => 0) %></p>
+              </div>
+            </div>
+
+            <% if item.description.present? %>
+              <p><strong><%= t('orders.line_items.description') %>:</strong> <%= item.description %></p>
+            <% end %>
+
+            <% if item.images.attached? %>
+              <div class="divider"><%= t('orders.line_items.images') %></div>
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                <% item.images.each do |image| %>
+                  <div class="relative">
+                    <%= link_to image_tag(image, class: "w-full h-32 object-cover rounded-lg"), url_for(image), target: "_blank" %>
                   </div>
                 <% end %>
               </div>
-
-              <%# Details %>
-              <div class="col-span-2">
-                <dl class="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">
-                  <div class="sm:col-span-2">
-                    <dt class="text-sm font-medium text-gray-500">Name</dt>
-                    <dd class="mt-1 text-sm text-gray-900 font-medium"><%= line_item.name.presence || "No name provided" %></dd>
+            <% end %>
+            
+            <% if item.line_items_measurement_types.any? %>
+              <div class="divider"><%= t('orders.line_items.measurements') %></div>
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                <% item.line_items_measurement_types.each do |measurement| %>
+                  <div class="bg-base-100 p-3 rounded-lg">
+                    <p class="font-medium"><%= measurement.measurement_type.key %></p>
+                    <p class="text-lg"><%= measurement.value %></p>
                   </div>
-
-                  <div class="sm:col-span-2">
-                    <dt class="text-sm font-medium text-gray-500">Description</dt>
-                    <dd class="mt-1 text-sm text-gray-900"><%= line_item.description.presence || "No description provided" %></dd>
-                  </div>
-
-                  <div class="sm:col-span-1">
-                    <dt class="text-sm font-medium text-gray-500">Price</dt>
-                    <dd class="mt-1 text-sm text-gray-900"><%= number_to_currency(line_item.price) %></dd>
-                  </div>
-                  <div class="sm:col-span-1">
-                    <dt class="text-sm font-medium text-gray-500">Number of Pieces</dt>
-                    <dd class="mt-1 text-sm text-gray-900"><%= line_item.number_of_pieces %></dd>
-                  </div>
-                  
-                  <div class="sm:col-span-1">
-                    <dt class="text-sm font-medium text-gray-500">Status</dt>
-                    <dd class="mt-1 text-sm text-gray-900">
-                      <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                        <%= line_item.status == 'completed' ? 'bg-green-100 text-green-800' : 
-                            (line_item.status == 'in_progress' ? 'bg-yellow-100 text-yellow-800' : 
-                             'bg-blue-100 text-blue-800') %>">
-                        <%= line_item.status.humanize %>
-                      </span>
-                    </dd>
-                  </div>
-                  
-                  <%# Measurement Types %>
-                  <div class="sm:col-span-2">
-                    <dt class="text-sm font-medium text-gray-500 mb-2">Measurements</dt>
-                    <dd class="mt-1">
-                      <div class="grid grid-cols-2 gap-4">
-                        <% line_item.line_items_measurement_types.each do |measurement| %>
-                          <div class="text-sm text-gray-900">
-                            <span class="font-medium"><%= measurement.measurement_type.key %>:</span>
-                            <%= measurement.value %>
-                          </div>
-                        <% end %>
-                      </div>
-                    </dd>
-                  </div>
-                </dl>
+                <% end %>
               </div>
-            </div>
+            <% end %>
           </div>
         </div>
       <% end %>
     </div>
   </div>
-
-  <%# Back button %>
-  <div class="mt-8">
-    <%= link_to 'Back to Orders', orders_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
-  </div>
-</div> 
+</div>

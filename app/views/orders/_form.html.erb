@@ -1,0 +1,118 @@
+<div class="card bg-base-100 shadow-xl">
+  <div class="card-body">
+    <%= form_with(model: @order, class: "mt-6", multipart: true, data: { controller: "order-form" }) do |f| %>
+      <% if @order.errors.any? %>
+        <div class="alert alert-error mb-4">
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <div>
+              <h2 class="font-medium">
+                <%= t('errors.template.header', count: @order.errors.count, model: Order.model_name.human.downcase) %>
+              </h2>
+              <ul class="mt-2 list-disc list-inside text-sm">
+                <% @order.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="form-control">
+          <%= f.label :customer_id, t('activerecord.attributes.order.customer'), class: "label" %>
+          <%= f.collection_select :customer_id, @customers, :id, ->(c) { "#{c.first_name} #{c.last_name}" },
+              { prompt: t('orders.select_customer') },
+              {
+                class: "select select-bordered w-full",
+                data: {
+                  order_form_target: "customerSelect",
+                  action: "change->order-form#customerChanged"
+                }
+              } %>
+        </div>
+
+        <div class="form-control">
+          <%= f.label :delivery_date, t('activerecord.attributes.order.delivery_date'), class: "label" %>
+          <%= f.date_field :delivery_date, class: "input input-bordered w-full", placeholder: t('placeholders.order.select_date'), required: true, data: { order_form_target: "dependentField" } %>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <div class="form-control">
+          <%= f.label :status, t('activerecord.attributes.order.status'), class: "label" %>
+          <%= f.select :status, Order.statuses.keys.map { |s| [t("orders.statuses.#{s}"), s] },
+              { prompt: t('orders.select_status') },
+              { 
+                class: "select select-bordered w-full",
+                data: { order_form_target: "dependentField" }
+              } %>
+        </div>
+      </div>
+
+      <!-- Line Items Section -->
+      <div class="divider"><%= t('orders.line_items.title') %></div>
+
+      <div data-controller="nested-form"
+           data-nested-form-wrapper-class-value="line-item-fields"
+           data-order-form-target="lineItemsSection">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-medium"><%= t('orders.line_items.items') %></h3>
+          <button type="button"
+                  data-action="nested-form#add"
+                  class="btn btn-primary btn-sm"
+                  data-order-form-target="dependentField addLineItemButton">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            <%= t('orders.line_items.add_item') %>
+          </button>
+        </div>
+        
+        <div class="space-y-6" data-nested-form-target="container">
+          <%= f.fields_for :line_items do |line_item_form| %>
+            <div class="line-item-fields p-4 border border-base-300 rounded-lg">
+              <div class="flex justify-end my-4">
+                <button type="button"
+                        data-action="nested-form#remove"
+                        class="btn btn-error btn-sm"
+                        data-order-form-target="dependentField">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                  <%= t('orders.line_items.remove_item') %>
+                </button>
+              </div>
+              <%= render 'line_item_fields', f: line_item_form, disabled: true %>
+            </div>
+          <% end %>
+        </div>
+
+        <template data-nested-form-target="template">
+          <%= f.fields_for :line_items, LineItem.new, child_index: 'NEW_RECORD' do |line_item_form| %>
+            <div class="line-item-fields p-4 border border-base-300 rounded-lg">
+              <div class="flex justify-end my-4">
+                <button type="button"
+                        data-action="nested-form#remove"
+                        class="btn btn-error btn-sm"
+                        data-order-form-target="dependentField">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                  <%= t('orders.line_items.remove_item') %>
+                </button>
+              </div>
+              <%= render 'line_item_fields', f: line_item_form, disabled: true %>
+            </div>
+          <% end %>
+        </template>
+      </div>
+      <div class="form-control mt-6">
+        <%= f.submit @order.new_record? ? t('orders.actions.create') : t('orders.actions.update'),
+            class: "btn btn-primary w-full",
+            data: { order_form_target: "dependentField" } %>
+      </div>
+    <% end %>
+  </div>
+</div>

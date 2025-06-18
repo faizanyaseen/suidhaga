@@ -15,10 +15,15 @@ class Order < ApplicationRecord
   validates :status, presence: true
   validates :customer, presence: true
 
-  accepts_nested_attributes_for :line_items, allow_destroy: true, reject_if: :all_blank
+  accepts_nested_attributes_for :line_items, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
 
   before_validation :generate_order_number, on: :create
   before_save :calculate_total_price
+  before_validation :set_default_status
+
+  def status_i18n
+    I18n.t("orders.statuses.#{status}")
+  end
 
   private
 
@@ -33,6 +38,10 @@ class Order < ApplicationRecord
   end
 
   def calculate_total_price
-    self.total_price = line_items.sum { |item| item.price }
+    self.total_price = line_items.sum { |item| item.price * item.number_of_pieces }
+  end
+
+  def set_default_status
+    self.status ||= 'pending'
   end
 end

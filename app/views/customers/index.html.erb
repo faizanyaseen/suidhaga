@@ -1,58 +1,88 @@
-<div class="sm:flex sm:items-center">
-  <div class="sm:flex-auto">
-    <h1 class="text-2xl font-semibold text-gray-900">Customers</h1>
-    <p class="mt-2 text-sm text-gray-700">A list of all customers in your store.</p>
-  </div>
-  <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-    <%= link_to 'Add Customer', new_customer_path, class: "inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto" %>
-  </div>
-</div>
-
-<div class="mt-8">
-  <div class="mb-4">
-    <%= form_with(url: customers_path, method: :get, data: { turbo_frame: "customers_list", turbo_action: "advance" }) do |f| %>
-      <div class="relative rounded-md shadow-sm">
-        <%= f.text_field :search, 
-            class: "block w-full rounded-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5",
-            placeholder: "Search customers...",
-            value: params[:search] %>
-        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-          <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd" />
-          </svg>
+<div class="card bg-base-100 shadow-sm">
+  <div class="card-body">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+      <h2 class="card-title text-2xl font-bold"><%= t('customers.title') %></h2>
+      <%= link_to new_customer_path, class: "btn btn-primary mt-4 sm:mt-0", data: { turbo: false } do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
+        <%= t('customers.new') %>
+      <% end %>
+    </div>
+    
+    <div class="mb-4">
+      <%= form_with(url: customers_path, method: :get, data: { turbo_frame: "customers_list", turbo_action: "advance" }) do |f| %>
+        <div class="form-control">
+          <div class="input-group flex">
+            <%= f.text_field :search,
+                placeholder: t('customers.search.placeholder'),
+                class: "input input-bordered w-full",
+                value: params[:search] %>
+            <button class="btn btn-square">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
+          </div>
         </div>
+      <% end %>
+    </div>
+
+    <%= turbo_frame_tag "customers_list" do %>
+      <div class="overflow-x-auto">
+        <table class="table table-zebra w-full">
+          <thead>
+            <tr>
+              <th><%= t('customers.table.name') %></th>
+              <th><%= t('customers.table.phone') %></th>
+              <th><%= t('customers.table.email') %></th>
+              <th><%= t('customers.table.address') %></th>
+              <th><%= t('customers.table.actions') %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @customers.each do |customer| %>
+              <tr>
+                <td><%= customer.first_name %> <%= customer.last_name %></td>
+                <td><%= customer.phone %></td>
+                <td><%= customer.email %></td>
+                <td><%= customer.address %></td>
+                <td>
+                  <div class="flex space-x-2">
+                    <%= link_to edit_customer_path(customer), class: "btn btn-sm btn-outline", data: { turbo: false } do %>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    <% end %>
+
+                    <%= link_to customer_path(customer), class: "btn btn-sm btn-outline btn-info", data: { turbo: false } do %>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                      </svg>
+                      <span class="hidden sm:inline ml-1"><%= t('customers.actions.orders') %></span>
+                    <% end %>
+
+                    <%= link_to new_order_path(customer_id: customer.id), class: "btn btn-sm btn-outline btn-success", data: { turbo: false } do %>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span class="hidden sm:inline ml-1"><%= t('customers.actions.add_order') %></span>
+                    <% end %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-4">
+        <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
       </div>
     <% end %>
   </div>
+</div>
 
-  <%= turbo_frame_tag "customers_list" do %>
-    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-      <table class="min-w-full divide-y divide-gray-300">
-        <thead class="bg-gray-50">
-          <tr>
-            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Name</th>
-            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Phone</th>
-            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
-            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Address</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200 bg-white">
-          <% @customers.each do |customer| %>
-            <tr>
-              <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
-                <div class="font-medium text-gray-900"><%= customer.first_name %> <%= customer.last_name %></div>
-              </td>
-              <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= customer.phone %></td>
-              <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= customer.email %></td>
-              <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= customer.address %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="mt-4">
-      <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
-    </div>
-  <% end %>
-</div> 
+<div class="mt-4">
+  <%= paginate @customers if @customers.respond_to?(:total_pages) %>
+</div>

@@ -1,0 +1,227 @@
+<div class="card bg-base-100 shadow-sm">
+  <div class="card-body">
+
+    <div class="container mx-auto px-4" data-controller="modal measurement-delete">
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold"><%= t('measurement_types.title') %></h1>
+        <button
+          onclick="measurement_modal.showModal()"
+          data-action="click->modal#setupForCreate"
+          class="btn btn-primary">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          <%= t('measurement_types.new') %>
+        </button>
+      </div>
+
+      <div class="mb-4">
+        <%= form_with(url: measurement_types_path, method: :get, data: { turbo_frame: "measurement_types_list", turbo_action: "advance" }) do |f| %>
+          <div class="form-control">
+            <div class="input-group flex">
+              <%= f.text_field :search,
+                  placeholder: t('measurement_types.form.search_placeholder'),
+                  class: "input input-bordered w-full",
+                  value: params[:search] %>
+              <button class="btn btn-square">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="card bg-base-100">
+        <div class="card-body p-0">
+          <div class="overflow-x-auto">
+            <table class="table table-zebra w-full">
+              <thead>
+                <tr>
+                  <th><%= t('measurement_types.table.key') %></th>
+                  <th><%= t('measurement_types.table.usage') %></th>
+                  <th class="text-right"><%= t('measurement_types.table.actions') %></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if @measurement_types.any? %>
+                  <% @measurement_types.each do |measurement_type| %>
+                    <tr>
+                      <td>
+                        <div class="font-medium"><%= measurement_type.key %></div>
+                      </td>
+                      <td>
+                        <% total_usage = measurement_type.usage_count %>
+                        <% if total_usage > 0 %>
+                          <div class="badge badge-info badge-sm">
+                            <%= t('measurement_types.usage_count', count: total_usage) %>
+                          </div>
+                        <% else %>
+                          <div class="badge badge-ghost badge-sm"><%= t('measurement_types.usage_count.zero') %></div>
+                        <% end %>
+                      </td>
+                      <td>
+                        <div class="flex justify-end gap-2">
+                          <button
+                            onclick="measurement_modal.showModal()"
+                            data-action="click->modal#setupForEdit"
+                            data-modal-id="<%= measurement_type.id %>"
+                            data-modal-key-en="<%= measurement_type.key_en %>"
+                            data-modal-key-ur="<%= measurement_type.key_ur %>"
+                            class="btn btn-ghost btn-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                          </button>
+                          <button
+                            data-action="click->measurement-delete#confirmDelete"
+                            data-measurement-delete-id="<%= measurement_type.id %>"
+                            data-modal-key-en="<%= measurement_type.key_en %>"
+                            data-modal-key-ur="<%= measurement_type.key_ur %>"
+                            class="btn btn-ghost btn-sm text-error">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% else %>
+                  <tr>
+                    <td colspan="3" class="text-center py-8">
+                      <div class="flex flex-col items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-base-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <p class="text-base-content/60">No measurement types found.</p>
+                        <p class="text-sm text-base-content/40">Click "New Measurement Type" to create one.</p>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Create/Edit Modal -->
+      <dialog id="measurement_modal" class="modal">
+        <div class="modal-box">
+          <h3 class="font-bold text-lg mb-4"
+              data-modal-target="title"
+              data-title-new="<%= t('measurement_types.form.title_new') %>"
+              data-title-edit="<%= t('measurement_types.form.title_edit') %>">
+            <%= t('measurement_types.form.title_new') %>
+          </h3>
+
+          <form data-action="submit->modal#submit" data-modal-target="form">
+            <div class="space-y-4">
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text"><%= t('measurement_types.form.key_en') %></span>
+                </label>
+                <input
+                  type="text"
+                  name="measurement_type[key_en]"
+                  id="measurement_type_key_en"
+                  data-modal-target="keyInputEn"
+                  class="input input-bordered w-full"
+                  placeholder="<%= t('placeholders.measurement_type.key_en') %>"
+                  required>
+              </div>
+
+              <div class="form-control w-full">
+                <label class="label">
+                  <span class="label-text"><%= t('measurement_types.form.key_ur') %></span>
+                </label>
+                <input
+                  type="text"
+                  name="measurement_type[key_ur]"
+                  id="measurement_type_key_ur"
+                  data-modal-target="keyInputUr"
+                  class="input input-bordered w-full"
+                  placeholder="<%= t('placeholders.measurement_type.key_ur') %>"
+                  dir="rtl"
+                  required>
+              </div>
+
+              <div class="text-error text-sm mt-2 hidden" data-modal-target="errors"></div>
+
+              <input type="hidden" name="_method" value="post" data-modal-target="method">
+              <input type="hidden" name="id" data-modal-target="idInput">
+              <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+            </div>
+
+            <div class="modal-action">
+              <button type="submit" class="btn btn-primary"><%= t('actions.save') %></button>
+              <button type="button" class="btn btn-ghost" onclick="measurement_modal.close()"><%= t('actions.cancel') %></button>
+            </div>
+          </form>
+        </div>
+
+        <form method="dialog" class="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+
+      <!-- Delete Confirmation Modal -->
+      <dialog id="delete_confirmation_modal" class="modal">
+        <div class="modal-box">
+          <h3 class="font-bold text-lg text-error mb-4"><%= t('measurement_types.delete.title') %></h3>
+
+          <div class="space-y-4">
+            <p class="text-base-content">
+              <%= t('measurement_types.delete.confirm_message') %>
+              <strong data-measurement-delete-target="keyDisplay" class="text-primary"></strong>?
+            </p>
+
+            <div data-measurement-delete-target="usageInfo" class="hidden">
+              <div class="alert alert-warning">
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-9 2a9 9 0 1118 0 9 9 0 01-18 0z" />
+                </svg>
+                <div>
+                  <h3 class="font-bold"><%= t('measurement_types.delete.warning') %></h3>
+                  <div class="text-sm">
+                    <%= t('measurement_types.delete.usage_warning') %>
+                    <ul class="list-disc list-inside mt-2 space-y-1">
+                      <li data-measurement-delete-target="lineItemsUsage" class="hidden">
+                        <%= t('measurement_types.delete.line_items_usage', count: '%{count}').gsub('%{count}', '0') %>
+                      </li>
+                      <li data-measurement-delete-target="customersUsage" class="hidden">
+                        <%= t('measurement_types.delete.customers_usage', count: '%{count}').gsub('%{count}', '0') %>
+                      </li>
+                    </ul>
+                    <p class="mt-2 font-medium"><%= t('measurement_types.delete.deletion_warning') %></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-action">
+            <form data-measurement-delete-target="deleteForm" method="post">
+              <input type="hidden" name="_method" value="delete">
+              <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+              <button type="submit" class="btn btn-error">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                <%= t('measurement_types.delete.confirm_button') %>
+              </button>
+            </form>
+            <button type="button" class="btn btn-ghost" onclick="delete_confirmation_modal.close()">
+              <%= t('actions.cancel') %>
+            </button>
+          </div>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+          <button>close</button>
+        </form>
+      </dialog>
+    </div>
+  </div>
+</div>

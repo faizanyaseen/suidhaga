@@ -7,6 +7,7 @@
 # Ignore bundler config.
 /.bundle
 
+node_modules
 # Ignore all environment files.
 /.env*
 
@@ -35,3 +36,4 @@
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+vendor

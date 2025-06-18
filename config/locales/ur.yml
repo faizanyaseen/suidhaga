@@ -1,0 +1,280 @@
+ur:
+  app_name: "سودھاگا"
+  navigation:
+    dashboard: "ڈیش بورڈ"
+    customers: "گاہک"
+
+  actions:
+    edit: "ترمیم"
+    delete: "حذف کریں"
+    back: "واپس"
+    update: "اپ ڈیٹ"
+    create: "بنائیں"
+    cancel: "منسوخ"
+
+  confirmations:
+    delete: "کیا آپ واقعی حذف کرنا چاہتے ہیں؟"
+    mark_delivered: 'کیا آپ واقعی اس آرڈر کو پہنچا دیا گیا نشان زد کرنا چاہتے ہیں؟'
+
+  notices:
+    created: "%{model} کامیابی سے بنایا گیا"
+    updated: "%{model} کامیابی سے اپ ڈیٹ ہوا"
+    deleted: "%{model} کامیابی سے حذف ہوا"
+    marked_delivered: "آرڈر کامیابی سے پہنچا دیا گیا"
+
+  orders:
+    title: "آرڈرز"
+    new: "نیا آرڈر"
+    search:
+      placeholder: "آرڈرز، گاہک، فون، ای میل تلاش کریں..."
+    filters:
+      button: "فلٹرز"
+      status: "حالت"
+      all_statuses: "تمام حالات"
+      date_range: "تاریخ کی حد"
+      date_options:
+        all_time: "تمام وقت"
+        last_week: "پچھلا ہفتہ"
+        last_month: "پچھلا مہینہ"
+        last_year: "پچھلا سال"
+        custom: "مخصوص تاریخ"
+      customer: "گاہک"
+      all_customers: "تمام گاہک"
+      start_date: "شروع کی تاریخ"
+      end_date: "آخری تاریخ"
+      clear: "تمام فلٹرز صاف کریں"
+      apply: "فلٹرز لاگو کریں"
+    table:
+      order_number: "آرڈر نمبر#"
+      customer: "گاہک"
+      status: "حالت"
+      delivery_date: "ترسیل کی تاریخ"
+      total_price: "کل قیمت"
+      actions: "اقدامات"
+    no_results:
+      title: "کوئی آرڈر نہیں ملا"
+      message: "اپنی تلاش یا فلٹرز کو ایڈجسٹ کرنے کی کوشش کریں"
+    statuses:
+      pending: "زیر التواء"
+      in_progress: "جاری ہے"
+      completed: "مکمل"
+      cancelled: "منسوخ"
+      delivered: "پہنچا دیا گیا"
+      received: "موصول ہوا"
+    select_customer: "گاہک منتخب کریں"
+    select_status: "حالت منتخب کریں"
+    line_items:
+      title: "آئٹمز"
+      items: "سامان"
+      add_item: "آئٹم شامل کریں"
+      remove_item: "آئٹم ہٹائیں"
+      name: "آئٹم کا نام"
+      price: "قیمت"
+      quantity: "تعداد"
+      total: "کل"
+      description: "تفصیل"
+      status: "حالت"
+      images: "تصاویر"
+      measurements: "آئٹم کی پیمائش"
+      add_measurement: "پیمائش شامل کریں"
+      remove_measurement: "پیمائش ہٹائیں"
+      measurement_type: "پیمائش کی قسم"
+      measurement_value: "مقدار"
+      select_measurement_type: "پیمائش کی قسم منتخب کریں"
+      total_price: "کل قیمت"
+      statuses:
+        not_started: "شروع نہیں ہوا"
+        in_progress: "جاری ہے"
+        completed: "مکمل"
+        delivered: "پہنچا دیا گیا"
+        cancelled: "منسوخ"
+      image_actions:
+        remove: "تصویر ہٹائیں"
+        upload: "تصاویر اپ لوڈ کریں"
+    customer_info: "گاہک کی معلومات"
+    order_details: "آرڈر کی تفصیلات"
+    actions:
+      mark_complete: "مکمل کریں"
+      edit: "آرڈر میں ترمیم کریں"
+      view: "آرڈر دیکھیں"
+      create: "آرڈر بنائیں"
+      update: "آرڈر کی معلومات اپ ڈیٹ کریں"
+      mark_delivered: "پہنچا دیا گیا"
+
+  activerecord:
+    models:
+      customer: "گاہک"
+      order: "آرڈر"
+    attributes:
+      customer:
+        name: "نام"
+        first_name: "پہلا نام"
+        last_name: "آخری نام"
+        phone: "فون نمبر"
+        email: "ای میل"
+        address: "پتہ"
+      order:
+        order_number: "آرڈر نمبر"
+        total_price: "کل قیمت"
+        status: "حالت"
+        customer: "گاہک"
+        created_at: "آرڈر کی تاریخ"
+        delivery_date: "ترسیل کی تاریخ"
+      line_item:
+        name: "نام"
+        price: "قیمت"
+        number_of_pieces: "ٹکڑوں کی تعداد"
+
+  customers:
+    title: "گاہک"
+    new: "نیا گاہک"
+    search:
+      placeholder: "گاہکوں کو تلاش کریں..."
+    table:
+      name: "نام"
+      phone: "فون"
+      email: "ای میل"
+      address: "پتہ"
+      actions: "اقدامات"
+    show:
+      title: "گاہک کی تفصیلات"
+      customer_info: "گاہک کی معلومات"
+      orders: "آرڈرز"
+      no_orders: "کوئی آرڈر نہیں ملا"
+      order_details: "آرڈر کی تفصیلات"
+      order_number: "آرڈر نمبر #"
+      order_date: "آرڈر کی تاریخ"
+      delivery_date: "ترسیل کی تاریخ"
+      total_price: "کل قیمت"
+      line_items: "آئٹمز"
+      price: "قیمت"
+      quantity: "تعداد"
+      subtotal: "ذیلی کل"
+      view_details: "تفصیلات دیکھیں"
+    actions:
+      create: "نیا گاہک بنائیں"
+      update: "گاہک کی معلومات اپ ڈیٹ کریں"
+      edit: "ترمیم"
+      orders: "آرڈرز"
+      add_order: "آرڈر شامل کریں"
+    measurements:
+      title: "پیمائش"
+      add_measurement: "پیمائش شامل کریں"
+      type: "قسم"
+      value: "مقدار"
+      select_type: "پیمائش کی قسم منتخب کریں"
+      remove: "پیمائش ہٹائیں"
+
+  placeholders:
+    customer:
+      first_name: "پہلا نام درج کریں"
+      last_name: "آخری نام درج کریں"
+      phone: "فون نمبر درج کریں"
+      email: "ای میل ایڈریس درج کریں"
+      address: "گاہک کا پتہ درج کریں"
+    measurement:
+      value: "پیمائش کی مقدار درج کریں"
+    order:
+      select_date: "تاریخ منتخب کریں"
+      item_name: "آئٹم کا نام درج کریں"
+      price: "قیمت درج کریں"
+      quantity: "تعداد درج کریں"
+      description: "آئٹم کی تفصیل درج کریں"
+      measurement_value: "پیمائش کی مقدار درج کریں"
+    measurement_type:
+      key_en: "مثال: Chest, Waist, Inseam"
+      key_ur: "مثال: چھاتی، کمر، اندرونی لمبائی"
+
+  measurement_types:
+    title: "پیمائش کی اقسام"
+    new: "نئی پیمائش کی قسم"
+    table:
+      key: "کلید"
+      usage: " استعمال ہوا"
+      actions: "اعمال"
+    form:
+      title_new: "نئی پیمائش کی قسم"
+      title_edit: "پیمائش کی قسم میں ترمیم"
+      search_placeholder: "پیمائش کی اقسام تلاش کریں..."
+    search: "پیمائش کی اقسام تلاش کریں..."
+    no_results: "کوئی پیمائش کی قسم نہیں ملی۔"
+    create_prompt: "نئی پیمائش کی قسم بنانے کے لیے \"نئی پیمائش کی قسم\" پر کلک کریں۔"
+    usage_count:
+      zero: "0"
+      one: "جگہ ١"
+      other: "جگہ %{count}"
+    delete:
+      title: "حذف کی تصدیق"
+      warning: "انتباہ!"
+      confirm_message: "کیا آپ واقعی پیمائش کی قسم حذف کرنا چاہتے ہیں"
+      usage_warning: "یہ پیمائش کی قسم فی الحال استعمال میں ہے:"
+      line_items_usage: "%{count} آئٹم(ز) میں"
+      customers_usage: "%{count} گاہک(وں) میں"
+      deletion_warning: "اسے حذف کرنے سے یہ تمام متعلقہ ریکارڈز سے ہٹ جائے گا۔"
+      confirm_button: "ہاں، حذف کریں"
+    notices:
+      deleted: "پیمائش کی قسم '%{key}' کامیابی سے حذف کر دی گئی۔"
+      deleted_with_usage: "پیمائش کی قسم '%{key}' کامیابی سے حذف کر دی گئی۔ یہ %{line_items_count} آئٹم(ز) اور %{customers_count} گاہک(وں) سے ہٹا دی گئی۔"
+    actions:
+      save: "محفوظ کریں"
+    errors:
+      key_en_taken: "انگریزی کلید پہلے سے موجود ہے"
+      key_ur_taken: "اردو کلید پہلے سے موجود ہے"
+
+  errors:
+    template:
+      header:
+        one: "ایک غلطی کی وجہ سے یہ %{model} محفوظ نہیں کیا جا سکا"
+        other: "%{count} غلطیوں کی وجہ سے یہ %{model} محفوظ نہیں کیا جا سکا"
+
+  dashboard:
+    welcome: "خوش آمدید! آج آپ کے کاروبار میں کیا ہو رہا ہے۔"
+    stats:
+      total_orders: "کل آرڈرز"
+      pending_orders: "زیر التواء آرڈرز"
+      tomorrow_deliveries: "کل کی ڈیلیوریاں"
+      late_orders: "تاخیر شدہ آرڈرز"
+      total_customers: "کل گاہک"
+      this_month_revenue: "اس ماہ کی آمدنی"
+    revenue_chart:
+      title: "آمدنی کا رجحان (گزشتہ 12 ماہ)"
+    recent_orders:
+      title: "حالیہ آرڈرز"
+      view_all: "سب دیکھیں"
+      no_orders: "کوئی حالیہ آرڈر نہیں"
+    late_orders:
+      title: "تاخیر شدہ آرڈرز"
+      view_all: "سب دیکھیں"
+      days_late: "%{count} دن تاخیر"
+      due_date: "مقررہ تاریخ: %{date}"
+      no_late_orders: "کوئی تاخیر شدہ آرڈر نہیں!"
+      all_on_track: "تمام آرڈرز ٹریک پر ہیں"
+    quick_actions:
+      title: "فوری اقدامات"
+      new_order: "نیا آرڈر"
+      add_customer: "گاہک شامل کریں"
+      view_pending: "زیر التواء دیکھیں"
+      measurements: "پیمائشیں"
+  profile:
+    title: "پروفائل کی ترتیبات"
+    shop_settings: "دکان کی ترتیبات"
+    user_settings: "صارف کی ترتیبات"
+    shop:
+      name: "دکان کا نام"
+      logo: "دکان کا لوگو"
+      update_success: "دکان کی ترتیبات کامیابی سے اپ ڈیٹ ہو گئیں"
+    user:
+      name: "آپ کا نام"
+      email: "ای میل ایڈریس"
+      current_password: "موجودہ پاس ورڈ"
+      new_password: "نیا پاس ورڈ"
+      password_confirmation: "نئے پاس ورڈ کی تصدیق"
+      password_hint: "اگر آپ تبدیل نہیں کرنا چاہتے تو خالی چھوڑ دیں"
+      current_password_hint: "تبدیلیوں کی تصدیق کے لیے ہمیں آپ کا موجودہ پاس ورڈ درکار ہے"
+      update_success: "پروفائل کامیابی سے اپ ڈیٹ ہو گیا"
+    actions:
+      update_shop: "دکان کی ترتیبات اپ ڈیٹ کریں"
+      update_profile: "پروفائل اپ ڈیٹ کریں"
+      change_password: "پاس ورڈ تبدیل کریں"
+      upload_logo: "لوگو اپ لوڈ کریں"
+      remove_logo: "لوگو ہٹائیں"

@@ -28,4 +28,284 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  app_name: "Suidhaga"
+  navigation:
+    dashboard: "Dashboard"
+    customers: "Customers"
+
+  actions:
+    edit: "Edit"
+    delete: "Delete"
+    back: "Back"
+    update: "Update"
+    create: "Create"
+    cancel: "Cancel"
+
+  confirmations:
+    delete: "Are you sure you want to delete?"
+    mark_delivered: 'Are you sure you want to mark this order as delivered?'
+
+  notices:
+    created: "%{model} was successfully created"
+    updated: "%{model} was successfully updated"
+    deleted: "%{model} was successfully deleted"
+    marked_delivered: "Order was successfully marked as delivered"
+
+  orders:
+    title: "Orders"
+    new: "New Order"
+    search:
+      placeholder: "Search orders, customers, phone, email..."
+    filters:
+      button: "Filters"
+      status: "Status"
+      all_statuses: "All Statuses"
+      date_range: "Date Range"
+      date_options:
+        all_time: "All Time"
+        last_week: "Last Week"
+        last_month: "Last Month"
+        last_year: "Last Year"
+        custom: "Custom Range"
+      customer: "Customer"
+      all_customers: "All Customers"
+      start_date: "Start Date"
+      end_date: "End Date"
+      clear: "Clear All Filters"
+      apply: "Apply Filters"
+    table:
+      order_number: "Order Number#"
+      customer: "Customer"
+      status: "Status"
+      delivery_date: "Delivery Date"
+      total_price: "Total Price"
+      actions: "Actions"
+    no_results:
+      title: "No orders found"
+      message: "Try adjusting your search or filters"
+    actions:
+      edit: "Edit Order"
+      view: "View Order"
+      create: "Create Order"
+      update: "Update Order"
+      mark_complete: "Mark as Complete"
+      mark_delivered: "Mark as Delivered"
+    statuses:
+      received: "Received"
+      in_progress: "In Progress"
+      completed: "Completed"
+      cancelled: "Cancelled"
+      delivered: "Delivered"
+      received: "Received"
+    select_customer: "Select a customer"
+    select_status: "Select status"
+    line_items:
+      title: "Line Items"
+      items: "Items"
+      add_item: "Add Item"
+      remove_item: "Remove Item"
+      name: "Item Name"
+      price: "Price"
+      quantity: "Quantity"
+      total: "Total"
+      total_price: "Total Price"
+      description: "Description"
+      status: "Status"
+      images: "Images"
+      measurements: "Item Measurements"
+      add_measurement: "Add Measurement"
+      remove_measurement: "Remove Measurement"
+      measurement_type: "Measurement Type"
+      measurement_value: "Value"
+      select_measurement_type: "Select a measurement type"
+      statuses:
+        not_started: "Not Started"
+        in_progress: "In Progress"
+        completed: "Completed"
+        delivered: "Delivered"
+        cancelled: "Cancelled"
+      image_actions:
+        remove: "Remove image"
+        upload: "Upload images"
+    customer_info: "Customer Information"
+    order_details: "Order Details"
+
+  activerecord:
+    models:
+      customer: "Customer"
+      order: "Order"
+    attributes:
+      customer:
+        name: "Name"
+        first_name: "First Name"
+        last_name: "Last Name"
+        phone: "Phone"
+        email: "Email"
+        address: "Address"
+      order:
+        order_number: "Order Number"
+        total_price: "Total Price"
+        status: "Status"
+        created_at: "Order Date"
+        delivery_date: "Delivery Date"
+      line_item:
+        name: "Name"
+        price: "Price"
+        number_of_pieces: "Number of Pieces"
+
+  customers:
+    title: "Customers"
+    new: "New Customer"
+    search:
+      placeholder: "Search customers..."
+    table:
+      name: "Name"
+      phone: "Phone"
+      email: "Email"
+      address: "Address"
+      actions: "Actions"
+    show:
+      title: "Customer Details"
+      customer_info: "Customer Information"
+      orders: "Orders"
+      no_orders: "No orders found"
+      order_details: "Order Details"
+      order_number: "Order #"
+      order_date: "Order Date"
+      delivery_date: "Delivery Date"
+      total_price: "Total Price"
+      line_items: "Line Items"
+      price: "Price"
+      quantity: "Quantity"
+      subtotal: "Subtotal"
+      view_details: "View Details"
+    actions:
+      create: "Create Customer"
+      update: "Update Customer"
+      edit: "Edit"
+      orders: "Orders"
+      add_order: "Add Order"
+    measurements:
+      title: "Measurements"
+      add_measurement: "Add Measurement"
+      type: "Type"
+      value: "Value"
+      select_type: "Select measurement type"
+      remove: "Remove measurement"
+
+  placeholders:
+    customer:
+      first_name: "Enter first name"
+      last_name: "Enter last name"
+      phone: "Enter phone number"
+      email: "Enter email address"
+      address: "Enter customer address"
+    measurement:
+      value: "Enter measurement value"
+    order:
+      select_date: "Select date"
+      item_name: "Enter item name"
+      price: "Enter price"
+      quantity: "Enter quantity"
+      description: "Enter item description"
+      measurement_value: "Enter measurement value"
+    measurement_type:
+      key_en: "e.g., Chest, Waist, Inseam"
+      key_ur: "مثال: چھاتی، کمر، اندرونی لمبائی"
+
+  errors:
+    template:
+      header:
+        one: "1 error prohibited this %{model} from being saved"
+        other: "%{count} errors prohibited this %{model} from being saved"
+
+  measurement_types:
+    title: "Measurement Types"
+    new: "New Measurement Type"
+    table:
+      key: "Key"
+      usage: "Usage"
+      actions: "Actions"
+    form:
+      title: "Measurement Type"
+      key_en: "Key (English)"
+      key_ur: "Key (Urdu)"
+      title_new: "New Measurement Type"
+      title_edit: "Edit Measurement Type"
+      search_placeholder: "Search measurement types..."
+    search: "Search measurement types..."
+    no_results: "No measurement types found."
+    create_prompt: "Click \"New Measurement Type\" to create one."
+    usage_count:
+      zero: "Not used"
+      one: "1 usage"
+      other: "%{count} usages"
+    delete:
+      title: "Confirm Deletion"
+      warning: "Warning!"
+      confirm_message: "Are you sure you want to delete the measurement type"
+      usage_warning: "This measurement type is currently being used:"
+      line_items_usage: "In %{count} line item(s)"
+      customers_usage: "In %{count} customer(s)"
+      deletion_warning: "Deleting this will remove it from all associated records."
+      confirm_button: "Yes, Delete"
+    notices:
+      deleted: "Measurement type '%{key}' was successfully deleted."
+      deleted_with_usage: "Measurement type '%{key}' was successfully deleted. It was removed from %{line_items_count} line item(s) and %{customers_count} customer(s)."
+    actions:
+      save: "Save"
+    errors:
+      key_en_taken: "English key has already been taken"
+      key_ur_taken: "Urdu key has already been taken"
+
+  dashboard:
+    welcome: "Welcome back! Here's what's happening with your business today."
+    stats:
+      total_orders: "Total Orders"
+      pending_orders: "Pending Orders"
+      tomorrow_deliveries: "Tomorrow Deliveries"
+      late_orders: "Late Orders"
+      total_customers: "Total Customers"
+      this_month_revenue: "This Month Revenue"
+    revenue_chart:
+      title: "Revenue Trend (Last 12 Months)"
+    recent_orders:
+      title: "Recent Orders"
+      view_all: "View All"
+      no_orders: "No recent orders"
+    late_orders:
+      title: "Late Orders"
+      view_all: "View All"
+      days_late: "%{count} days late"
+      due_date: "Due: %{date}"
+      no_late_orders: "No late orders!"
+      all_on_track: "All orders are on track"
+    quick_actions:
+      title: "Quick Actions"
+      new_order: "New Order"
+      add_customer: "Add Customer"
+      view_pending: "View Pending"
+      measurements: "Measurements"
+  profile:
+    title: "Profile Settings"
+    shop_settings: "Shop Settings"
+    user_settings: "User Settings"
+    shop:
+      name: "Shop Name"
+      logo: "Shop Logo"
+      update_success: "Shop settings updated successfully"
+    user:
+      name: "Your Name"
+      email: "Email Address"
+      current_password: "Current Password"
+      new_password: "New Password"
+      password_confirmation: "Confirm New Password"
+      password_hint: "Leave blank if you don't want to change"
+      current_password_hint: "We need your current password to confirm changes"
+      update_success: "Profile updated successfully"
+    actions:
+      update_shop: "Update Shop Settings"
+      update_profile: "Update Profile"
+      change_password: "Change Password"
+      upload_logo: "Upload Logo"
+      remove_logo: "Remove Logo"

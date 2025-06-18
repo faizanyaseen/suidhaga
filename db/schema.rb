@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_21_213122) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_27_110902) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,6 +56,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_21_213122) do
     t.index ["shop_id"], name: "index_customers_on_shop_id"
   end
 
+  create_table "customers_measurement_types", force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.bigint "measurement_type_id", null: false
+    t.decimal "value", precision: 10, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id", "measurement_type_id"], name: "index_customers_measurements_unique", unique: true
+    t.index ["customer_id"], name: "index_customers_measurement_types_on_customer_id"
+    t.index ["measurement_type_id"], name: "index_customers_measurement_types_on_measurement_type_id"
+  end
+
   create_table "line_items", force: :cascade do |t|
     t.bigint "order_id", null: false
     t.decimal "price", precision: 10, scale: 2, null: false
@@ -80,10 +91,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_21_213122) do
   end
 
   create_table "measurement_types", force: :cascade do |t|
-    t.string "key", null: false
+    t.string "key_en", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["key"], name: "index_measurement_types_on_key", unique: true
+    t.bigint "shop_id"
+    t.string "key_ur"
+    t.index ["shop_id", "key_en"], name: "index_measurement_types_on_shop_id_and_key_en", unique: true
+    t.index ["shop_id", "key_ur"], name: "index_measurement_types_on_shop_id_and_key_ur", unique: true
+    t.index ["shop_id"], name: "index_measurement_types_on_shop_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -93,6 +108,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_21_213122) do
     t.bigint "customer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "delivery_date"
+    t.datetime "delivered_at"
     t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["order_number"], name: "index_orders_on_order_number", unique: true
   end
@@ -120,9 +137,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_21_213122) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "customers", "shops"
+  add_foreign_key "customers_measurement_types", "customers"
+  add_foreign_key "customers_measurement_types", "measurement_types"
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items_measurement_types", "line_items"
   add_foreign_key "line_items_measurement_types", "measurement_types"
+  add_foreign_key "measurement_types", "shops"
   add_foreign_key "orders", "customers"
   add_foreign_key "users", "shops"
 end
