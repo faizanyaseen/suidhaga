@@ -49,9 +49,11 @@
                 <div>
                   <p><strong> <%= t('customers.show.delivery_date') %> : </strong> <%= order.delivery_date&.strftime("%b %d, %Y") %></p>
                 </div>
-                <div>
-                  <p><strong><%= t('customers.show.total_price') %>:</strong> <%= number_to_currency(order.total_price) %></p>
-                </div>
+                <% if show_prices? %>
+                  <div>
+                    <p><strong><%= t('customers.show.total_price') %>:</strong> <%= number_to_currency(order.total_price) %></p>
+                  </div>
+                <% end %>
               </div>
 
               <div class="divider"><%= t('customers.show.line_items') %></div>
@@ -61,9 +63,13 @@
                   <thead>
                     <tr>
                       <th><%= t('orders.line_items.name') %></th>
-                      <th><%= t('customers.show.price') %></th>
-                      <th><%= t('customers.show.quantity') %></th>
-                      <th><%= t('customers.show.subtotal') %></th>
+                      <% if show_prices? %>
+                        <th><%= t('customers.show.price') %></th>
+                      <% end %>
+                        <th><%= t('customers.show.quantity') %></th>
+                      <% if show_prices? %>
+                        <th><%= t('customers.show.subtotal') %></th>
+                      <% end %>
                       <th><%= t('orders.line_items.status') %></th>
                     </tr>
                   </thead>
@@ -71,9 +77,13 @@
                     <% order.line_items.each do |item| %>
                       <tr>
                         <td><%= item.name %></td>
-                        <td><%= number_to_currency(item.price) %></td>
-                        <td><%= item.number_of_pieces %></td>
-                        <td><%= number_to_currency(item.price * item.number_of_pieces) %></td>
+                        <% if show_prices? %>
+                          <td><%= number_to_currency(item.price) %></td>
+                        <% end %>
+                          <td><%= item.number_of_pieces %></td>
+                        <% if show_prices? %>
+                          <td><%= number_to_currency(item.price * item.number_of_pieces) %></td>
+                        <% end %>
                         <td>
                           <div class="badge <%= order_status_color(item.status) %>">
                             <%= t("orders.line_items.statuses.#{item.status}") %>

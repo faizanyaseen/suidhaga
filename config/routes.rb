@@ -34,5 +34,8 @@ Rails.application.routes.draw do
   resource :profiles, only: [:show, :update] do
     patch :update_shop
     delete :remove_logo
+    patch :toggle_price_visibility
   end
+
+  
 end

@@ -16,9 +16,9 @@
       <% end %>
     </div>
   </div>
-</div>
+ </div>
 
-<div data-inline-edit-target="editMode" class="hidden">
+ <div data-inline-edit-target="editMode" class="hidden">
   <%= form_with(model: shop, url: update_shop_profiles_path, data: { inline_edit_target: "form", action: "submit->inline-edit#submitForm" }) do |f| %>
     <div class="card-body">
       <div class="flex justify-between items-center">

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_27_110902) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_18_185035) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -59,7 +59,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_27_110902) do
   create_table "customers_measurement_types", force: :cascade do |t|
     t.bigint "customer_id", null: false
     t.bigint "measurement_type_id", null: false
-    t.decimal "value", precision: 10, scale: 2
+    t.float "value", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["customer_id", "measurement_type_id"], name: "index_customers_measurements_unique", unique: true
@@ -129,6 +129,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_27_110902) do
     t.bigint "shop_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "show_prices", default: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["shop_id"], name: "index_users_on_shop_id"

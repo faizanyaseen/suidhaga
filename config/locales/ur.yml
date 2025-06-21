@@ -273,8 +273,16 @@ ur:
       current_password_hint: "تبدیلیوں کی تصدیق کے لیے ہمیں آپ کا موجودہ پاس ورڈ درکار ہے"
       update_success: "پروفائل کامیابی سے اپ ڈیٹ ہو گیا"
     actions:
-      update_shop: "دکان کی ترتیبات اپ ڈیٹ کریں"
+      update_shop: " دکان کی ترتیبات اپ ڈیٹ کریں"
       update_profile: "پروفائل اپ ڈیٹ کریں"
       change_password: "پاس ورڈ تبدیل کریں"
       upload_logo: "لوگو اپ لوڈ کریں"
       remove_logo: "لوگو ہٹائیں"
+      update: "اپ ڈیٹ کریں"
+  price:
+    visibility: "قیمت کی وضاحت"
+    toggle_label: "ایپ میں قیمتیں دکھائیں"
+    password_title: "پوری ایپ میں قیمتیں دکھائیں"
+    password: " پاس ورڈ"
+    cancel: "منسوخ کریں"
+    confirm: "تصدیق کریں"

@@ -57,6 +57,17 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def toggle_price_visibility
+    unless current_user.valid_password?(params[:password])
+      redirect_to profiles_path, alert: "Invalid password. Could not update price visibility."
+      return
+    end
+    # option = params[:show_prices] == "true"
+    current_user.update(show_prices: params[:show_prices] == "true")
+    redirect_to profiles_path, notice: "Price visibility updated successfully."
+  end
+
+
   private
 
   def shop_params

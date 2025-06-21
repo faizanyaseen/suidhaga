@@ -77,11 +77,12 @@
 
   <!-- Revenue Chart and Additional Stats -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-    <!-- Revenue Chart -->
-    <div class="lg:col-span-2">
-      <div class="card bg-base-100 shadow-xl">
-        <div class="card-body">
-          <h2 class="card-title mb-4"><%= t('dashboard.revenue_chart.title') %></h2>
+    <% if show_prices? %>
+      <!-- Revenue Chart -->
+      <div class="lg:col-span-2">
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title mb-4"><%= t('dashboard.revenue_chart.title') %></h2>
           <div class="h-80">
             <canvas id="revenueChart"
                     data-controller="revenue-chart"
@@ -91,10 +92,12 @@
           </div>
         </div>
       </div>
-    </div>
+    <% end %>
+  </div>
+    
 
     <!-- Additional Stats -->
-    <div class="space-y-6">
+  <div class="space-y-6">
       <!-- Total Customers Card -->
       <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
@@ -113,21 +116,23 @@
       </div>
 
       <!-- This Month Revenue Card -->
-      <div class="card bg-base-100 shadow-xl">
-        <div class="card-body">
-          <div class="flex items-center justify-between">
-            <div>
-              <h2 class="card-title text-base-content/70 text-sm font-medium"><%= t('dashboard.stats.this_month_revenue') %></h2>
-              <p class="text-3xl font-bold text-success"><%= number_to_currency(@stats[:this_month_revenue]) %></p>
-            </div>
-            <div class="bg-success/10 p-3 rounded-full">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-              </svg>
+     <% if show_prices? %>
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="card-title text-base-content/70 text-sm font-medium"><%= t('dashboard.stats.this_month_revenue') %></h2>
+                <p class="text-3xl font-bold text-success"><%= number_to_currency(@stats[:this_month_revenue]) %></p>
+              </div>
+              <div class="bg-success/10 p-3 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                </svg>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      <% end %>
     </div>
   </div>
 
@@ -155,7 +160,9 @@
                   <div class="badge <%= order_status_color(order.status) %> badge-sm">
                     <%= t("orders.statuses.#{order.status}").humanize %>
                   </div>
-                  <p class="text-sm font-medium mt-1"><%= number_to_currency(order.total_price) %></p>
+                <% if show_prices? %>
+                  <p class="text-sm font-medium mt-1"><%= number_to_currency(order.total_price) %> </p>
+                <% end %>
                 </div>
               </div>
             <% end %>
@@ -196,7 +203,9 @@
                   <div class="badge badge-error badge-sm">
                     <%= pluralize((Date.current - order.delivery_date).to_i, t('dashboard.late_orders.days_late', count: (Date.current - order.delivery_date).to_i)) %>
                   </div>
-                  <p class="text-sm font-medium mt-1"><%= number_to_currency(order.total_price) %></p>
+                  <% if show_prices? %>
+                    <p class="text-sm font-medium mt-1"><%= number_to_currency(order.total_price) %></p>
+                  <% end %>
                 </div>
               </div>
             <% end %>

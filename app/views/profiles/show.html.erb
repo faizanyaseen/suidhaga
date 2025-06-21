@@ -14,7 +14,7 @@
           </button>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8">
+        <div class="grid md:grid-cols-1 gap-8">
           <!-- Shop Info -->
           <div class="space-y-4">
             <div class="flex items-center gap-4">
@@ -29,7 +29,6 @@
           </div>
         </div>
       </div>
-
       <!-- Edit Mode -->
       <div data-inline-edit-target="editMode" class="hidden">
         <%= form_with(model: @shop, url: update_shop_profiles_path, data: { inline_edit_target: "form", action: "submit->inline-edit#submitForm" }) do |f| %>
@@ -51,7 +50,6 @@
                 <%= f.label :logo, t('profile.shop.logo'), class: "label" %>
                 <%= f.file_field :logo, class: "file-input file-input-bordered" %>
               </div>
-
               <div class="divider"><%= t('profile.security') %></div>
 
               <%= fields_for :user, current_user do |u| %>
@@ -72,12 +70,83 @@
               <% end %>
             </div>
           </div>
-
           <div class="card-actions justify-end mt-6">
             <%= f.submit t('profile.actions.update'), class: "btn btn-primary" %>
           </div>
         <% end %>
+         <!-- Price Visibility Toggle -->
+           <h3 class="text-xl font-semibold mb-4"><%= t('price.visibility')%></h3>
+             <%= form_with url: toggle_price_visibility_profiles_path, method: :patch, local: true, class: "space-y-4", id: "priceForm" do |f| %>
+               <div class="form-control">
+                 <label class="label cursor-pointer justify-start gap-4">
+                    <span class="label-text"><%= t('price.toggle_label') %> </span>
+                    <%= f.check_box :show_prices, { id: "priceToggle", class: "toggle toggle-primary" }, "true", "false" %>
+                 </label>
+               </div>
+                <!-- Hidden input to hold checkbox value -->
+                <%= hidden_field_tag :password, "", id: "hiddenPasswordField" %>
+               <% end %>
+           <!-- Password Modal -->
+          <div id="passwordModal" class="fixed inset-0 hidden backdrop-blur-sm bg-black/30 flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg shadow-lg w-full max-w-sm p-6">
+              <h2 class="text-xl font-semibold mb-4"> <%= t('price.password_title') %></h2>
+              <div class="form-control">
+                <%= label_tag :password, t('price.password') , class: "label" %>
+                <%= password_field_tag :password, nil, class: "input input-bordered w-full", id: "modalPasswordInput", onkeydown: "handle(event)", required: true %>
+              </div>
+              <div class="flex justify-end gap-2 mt-2">
+                <button type="button" id="cancelModal" class="btn btn-outline"> <%= t('price.cancel')%> </button>
+                <button type="submit" id="confirmModal" class="btn btn-primary"><%= t('price.confirm')%></button>
+              </div>
+            </div>
+          </div>
       </div>
     </div>
   </div>
-</div> 
+</div>
+<%# This JS code handle Price Visibility %>
+<script>
+  document.addEventListener("turbo:load", () => {
+    const toggle = document.getElementById("priceToggle");
+    const modal = document.getElementById("passwordModal");
+    const cancelBtn = document.getElementById("cancelModal");
+    const confirmBtn = document.getElementById("confirmModal");
+    const passwordInput = document.getElementById("modalPasswordInput");
+    const hiddenPasswordField = document.getElementById("hiddenPasswordField");
+    const form = document.getElementById("priceForm");
+
+     // Initialize toggle state from server
+  toggle.checked = <%= current_user.show_prices %>;
+
+  toggle.addEventListener("change", (event) => {
+    if (toggle.checked !== <%= current_user.show_prices %>) {
+      event.preventDefault();
+      modal.classList.remove("hidden");
+    }
+  });
+
+  cancelBtn.addEventListener("click", () => {
+    modal.classList.add("hidden");
+    toggle.checked = <%= current_user.show_prices %>; // Revert to saved state
+    passwordInput.value = "";
+  });
+
+  confirmBtn.addEventListener("click", () => {
+    const password = passwordInput.value;
+    if (!password) {
+      alert("Please enter password");
+      return;
+    }
+    hiddenPasswordField.value = password;
+    modal.classList.add("hidden");
+    passwordInput.value = "";
+    form.submit();
+  });
+     passwordInput.addEventListener("keydown", (event)=>{
+      if (event.key == "Enter"){
+        event.preventDefault();
+        confirmBtn.click();
+      }
+     })
+});
+</script>

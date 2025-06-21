@@ -309,3 +309,11 @@ en:
       change_password: "Change Password"
       upload_logo: "Upload Logo"
       remove_logo: "Remove Logo"
+      update: "Update"
+  price:
+    visibility: "price visibility"
+    toggle_label: "Show prices across the app"
+    password_title: "Enter password to confirm"
+    password: "Password"
+    cancel: "Cancel"
+    confirm: "Confirm"

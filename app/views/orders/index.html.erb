@@ -133,7 +133,9 @@
               <th><%= t('orders.table.customer') %></th>
               <th><%= t('orders.table.status') %></th>
               <th><%= t('orders.table.delivery_date') %></th>
-              <th><%= t('orders.table.total_price') %></th>
+              <% if show_prices? %>
+                <th><%= t('orders.table.total_price') %></th>
+              <% end %>
               <th><%= t('orders.table.actions') %></th>
             </tr>
           </thead>
@@ -151,7 +153,9 @@
                   <td>
                     <%= order.delivery_date&.strftime("%b %d, %Y") %>
                   </td>
-                  <td><%= number_to_currency(order.total_price) %></td>
+                 <% if show_prices? %>
+                    <td><%= number_to_currency(order.total_price) %></td>
+                  <% end %>
                   <td>
                     <div class="flex gap-2 items-center">
                       <%= link_to edit_order_path(order), class: "flex items-center", data: { turbo: false } do %>
