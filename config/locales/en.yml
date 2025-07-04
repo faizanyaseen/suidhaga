@@ -32,6 +32,8 @@ en:
   navigation:
     dashboard: "Dashboard"
     customers: "Customers"
+    orders: "Orders"
+    measurement: "Measurement Types"
 
   actions:
     edit: "Edit"
@@ -287,7 +289,9 @@ en:
       view_pending: "View Pending"
       measurements: "Measurements"
   profile:
+    settings: "Settings"
     title: "Profile Settings"
+    signout: "Sign Out"
     shop_settings: "Shop Settings"
     user_settings: "User Settings"
     shop:

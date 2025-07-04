@@ -3,6 +3,8 @@ ur:
   navigation:
     dashboard: "ڈیش بورڈ"
     customers: "گاہک"
+    orders: "آرڈرز"
+    measurement: "پیمائش کی قسم"
 
   actions:
     edit: "ترمیم"
@@ -256,7 +258,9 @@ ur:
       view_pending: "زیر التواء دیکھیں"
       measurements: "پیمائشیں"
   profile:
+    settings: "ترتیبات"
     title: "پروفائل کی ترتیبات"
+    signout: "سائن آؤٹ کریں"
     shop_settings: "دکان کی ترتیبات"
     user_settings: "صارف کی ترتیبات"
     shop:
