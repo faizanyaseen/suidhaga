@@ -34,7 +34,7 @@
         <%= form_with(model: @shop, url: update_shop_profiles_path, data: { inline_edit_target: "form", action: "submit->inline-edit#submitForm" }) do |f| %>
           <div class="flex justify-between items-center mb-6">
             <h2 class="card-title"><%= t('profile.settings') %></h2>
-            <button type="button" class="btn btn-ghost btn-sm" data-action="inline-edit#toggleEdit">
+            <button type="button" class="btn btn-ghost btn-sm bg-red-500 text-white" data-action="inline-edit#toggleEdit">
               <%= t('actions.cancel') %>
             </button>
           </div>
