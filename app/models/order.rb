@@ -14,6 +14,7 @@ class Order < ApplicationRecord
   validates :total_price, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :status, presence: true
   validates :customer, presence: true
+  validate :must_have_at_least_one_valid_line_item
 
   accepts_nested_attributes_for :line_items, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
 
@@ -43,5 +44,12 @@ class Order < ApplicationRecord
 
   def set_default_status
     self.status ||= 'pending'
+  end
+
+  def must_have_at_least_one_valid_line_item
+    remaining_items = line_items.reject { |item| item.marked_for_destruction? }
+    if remaining_items.empty?
+      errors.add(:base, "At least one line item is required.")
+    end
   end
 end

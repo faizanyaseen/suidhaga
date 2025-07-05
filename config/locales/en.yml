@@ -108,7 +108,7 @@ en:
       remove_item: "Remove Item"
       name: "Item Name"
       price: "Price"
-      quantity: "Quantity"
+      quantity: "Number of Pieces"
       total: "Total"
       total_price: "Total Price"
       description: "Description"
@@ -208,7 +208,7 @@ en:
       select_date: "Select date"
       item_name: "Enter item name"
       price: "Enter price"
-      quantity: "Enter quantity"
+      quantity: "number of pieces"
       description: "Enter item description"
       measurement_value: "Enter measurement value"
     measurement_type:
