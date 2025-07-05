@@ -34,7 +34,10 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         <div class="form-control">
           <%= f.label :phone, t('activerecord.attributes.customer.phone'), class: "label" %>
-          <%= f.telephone_field :phone, class: "input input-bordered w-full #{'input-error' if customer.errors[:phone].any?}", placeholder: t('placeholders.customer.phone') %>
+          <%= f.telephone_field :phone, class: "input input-bordered w-full #{'input-error' if customer.errors[:phone].any?}",
+            pattern: '(03[0-9]{2}|\\+923[0-9]{2})-?(?!1234567)(?!1111111)(?!7654321)[0-9]{7}', placeholder: t('placeholders.customer.phone') ,
+            title: 'Enter a valid phone number'
+          %>
           <% if customer.errors[:phone].any? %>
             <div class="text-error text-sm mt-1"><%= customer.errors[:phone].join(', ') %></div>
           <% end %>
