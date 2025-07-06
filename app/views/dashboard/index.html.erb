@@ -77,27 +77,27 @@
 
   <!-- Revenue Chart and Additional Stats -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-    <% if show_prices? %>
-      <!-- Revenue Chart -->
-      <div class="lg:col-span-2">
+    <!-- Revenue Chart -->
+    <div class="lg:col-span-2">
+      <% if show_prices? %>
         <div class="card bg-base-100 shadow-xl">
           <div class="card-body">
             <h2 class="card-title mb-4"><%= t('dashboard.revenue_chart.title') %></h2>
-          <div class="h-80">
-            <canvas id="revenueChart"
+            <div class="h-80">
+              <canvas id="revenueChart"
                     data-controller="revenue-chart"
                     data-revenue-chart-labels-value="<%= @revenue_data[:labels].to_json %>"
                     data-revenue-chart-data-value="<%= @revenue_data[:data].to_json %>">
-            </canvas>
+              </canvas>
+            </div>
           </div>
         </div>
-      </div>
-    <% end %>
-  </div>
+      <% end %>
+    </div>
     
 
     <!-- Additional Stats -->
-  <div class="space-y-6">
+    <div class="space-y-6">
       <!-- Total Customers Card -->
       <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
