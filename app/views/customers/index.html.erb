@@ -27,61 +27,95 @@
         </div>
       <% end %>
     </div>
+  </div>
+</div>
 
-    <%= turbo_frame_tag "customers_list" do %>
-      <div class="overflow-x-auto">
-        <table class="table table-zebra w-full">
-          <thead>
-            <tr>
-              <th><%= t('customers.table.name') %></th>
-              <th><%= t('customers.table.phone') %></th>
-              <th><%= t('customers.table.email') %></th>
-              <th><%= t('customers.table.address') %></th>
-              <th><%= t('customers.table.actions') %></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @customers.each do |customer| %>
-              <tr>
-                <td><%= customer.first_name %> <%= customer.last_name %></td>
-                <td><%= customer.phone %></td>
-                <td><%= customer.email %></td>
-                <td><%= customer.address %></td>
-                <td>
-                  <div class="flex space-x-2">
-                    <%= link_to edit_customer_path(customer), class: "btn btn-sm btn-outline", data: { turbo: false } do %>
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                      </svg>
-                    <% end %>
+<%= turbo_frame_tag "customers_list" do %>
+  <%# large screen table %>
+  <div class=" hidden md:block overflow-x-auto">
+    <table class="table table-zebra w-full">
+      <thead>
+        <tr>
+          <th><%= t('customers.table.name') %></th>
+          <th><%= t('customers.table.phone') %></th>
+          <th><%= t('customers.table.email') %></th>
+          <th><%= t('customers.table.address') %></th>
+          <th><%= t('customers.table.actions') %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @customers.each do |customer| %>
+          <tr>
+            <td><%= customer.first_name %> <%= customer.last_name %></td>
+            <td><%= customer.phone %></td>
+            <td><%= customer.email %></td>
+            <td><%= customer.address %></td>
+            <td>
+              <div class="flex flex-wrap gap-1 space-x-2">
+                <%= link_to edit_customer_path(customer), class: "btn btn-sm btn-outline", data: { turbo: false } do %>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                <% end %>
 
-                    <%= link_to customer_path(customer), class: "btn btn-sm btn-outline btn-info", data: { turbo: false } do %>
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                      </svg>
-                      <span class="hidden sm:inline ml-1"><%= t('customers.actions.orders') %></span>
-                    <% end %>
+                <%= link_to customer_path(customer), class: "btn btn-sm btn-outline btn-info", data: { turbo: false } do %>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  </svg>
+                  <span class="hidden sm:inline ml-1"><%= t('customers.actions.orders') %></span>
+                <% end %>
 
-                    <%= link_to new_order_path(customer_id: customer.id), class: "btn btn-sm btn-outline btn-success", data: { turbo: false } do %>
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <span class="hidden sm:inline ml-1"><%= t('customers.actions.add_order') %></span>
-                    <% end %>
-                  </div>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="mt-4">
-        <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+                <%= link_to new_order_path(customer_id: customer.id), class: "btn btn-sm btn-outline btn-success", data: { turbo: false } do %>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span class="hidden sm:inline ml-1"><%= t('customers.actions.add_order') %></span>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <!-- Small screen table layout -->
+  <div class="block md:hidden space-y-4">
+    <% @customers.each do |customer| %>
+      <div class="border border-base-300 rounded-lg p-4 shadow-sm bg-white">
+        <div class="mb-2">
+          <h3 class="text-lg font-semibold"><%= customer.first_name %> <%= customer.last_name %></h3>
+        </div>
+        <div class="space-y-1 text-sm text-gray-700">
+          <p><strong><%= t('customers.table.phone') %>:</strong> <%= customer.phone %></p>
+          <p><strong><%= t('customers.table.email') %>:</strong> <%= customer.email %></p>
+          <p><strong><%= t('customers.table.address') %>:</strong> <%= customer.address %></p>
+        </div>
+        <div class="mt-2 flex flex-wrap gap-2">
+          <%= link_to edit_customer_path(customer), class: "btn btn-sm btn-outline", data: { turbo: false } do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+          <% end %>
+          <%= link_to customer_path(customer), class: "btn btn-sm btn-outline btn-info", data: { turbo: false } do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+            <span class="hidden sm:inline ml-1"><%= t('customers.actions.orders') %></span>
+          <% end %>
+          <%= link_to new_order_path(customer_id: customer.id), class: "btn btn-sm btn-outline btn-success", data: { turbo: false } do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            <span class="hidden sm:inline ml-1"><%= t('customers.actions.add_order') %></span>
+          <% end %>
+        </div>
       </div>
     <% end %>
   </div>
-</div>
+  <div class="mt-4">
+    <%== pagy_nav(@pagy) if @pagy.pages > 1 %>
+  </div>
+<% end %>
 
 <div class="mt-4">
   <%= paginate @customers if @customers.respond_to?(:total_pages) %>
