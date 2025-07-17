@@ -40,7 +40,8 @@ en:
     update: "Update"
     create: "Create"
     cancel: "Cancel"
-
+    save: "Save"
+    sign_out: "Sign Out"
   confirmations:
     delete: "Are you sure you want to delete?"
     mark_delivered: 'Are you sure you want to mark this order as delivered?'
@@ -129,6 +130,8 @@ en:
         upload: "Upload images"
     customer_info: "Customer Information"
     order_details: "Order Details"
+    errors:
+      must_have_line_items: "Order must have at least one line item"
 
   activerecord:
     models:
@@ -192,12 +195,14 @@ en:
       value: "Value"
       select_type: "Select measurement type"
       remove: "Remove measurement"
+    errors:
+      invalid_pakistani_mobile: "Please enter a valid Pakistani mobile number (e.g., +92 301 1234567 or 0301 1234567)"
 
   placeholders:
     customer:
       first_name: "Enter first name"
       last_name: "Enter last name"
-      phone: "Enter phone number"
+      phone: "e.g., 0301 1234567 or +92 301 1234567"
       email: "Enter email address"
       address: "Enter customer address"
     measurement:
@@ -257,6 +262,7 @@ en:
     errors:
       key_en_taken: "English key has already been taken"
       key_ur_taken: "Urdu key has already been taken"
+      at_least_one_key_required: "At least one key (English or Urdu) must be provided"
 
   dashboard:
     welcome: "Welcome back! Here's what's happening with your business today."
@@ -284,12 +290,14 @@ en:
       title: "Quick Actions"
       new_order: "New Order"
       add_customer: "Add Customer"
-      view_pending: "View Pending"
+      pending_orders: "Pending Orders"
       measurements: "Measurements"
   profile:
     title: "Profile Settings"
     shop_settings: "Shop Settings"
     user_settings: "User Settings"
+    security: "Security"
+    settings: "Settings"
     shop:
       name: "Shop Name"
       logo: "Shop Logo"

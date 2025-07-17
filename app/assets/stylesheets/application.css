@@ -45,7 +45,7 @@
 }
 
 /* Ensure form elements have proper contrast in both modes */
-.input, .textarea, .select {
+.input, .textarea {
   background-color: hsl(var(--b1));
   color: hsl(var(--bc));
 }

@@ -34,7 +34,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         <div class="form-control">
           <%= f.label :phone, t('activerecord.attributes.customer.phone'), class: "label" %>
-          <%= f.telephone_field :phone, class: "input input-bordered w-full #{'input-error' if customer.errors[:phone].any?}", placeholder: t('placeholders.customer.phone') %>
+          <%= f.number_field :phone, class: "input input-bordered w-full #{'input-error' if customer.errors[:phone].any?}", placeholder: t('placeholders.customer.phone') %>
           <% if customer.errors[:phone].any? %>
             <div class="text-error text-sm mt-1"><%= customer.errors[:phone].join(', ') %></div>
           <% end %>

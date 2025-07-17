@@ -14,6 +14,7 @@ class Order < ApplicationRecord
   validates :total_price, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :status, presence: true
   validates :customer, presence: true
+  validate :must_have_line_items
 
   accepts_nested_attributes_for :line_items, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
 
@@ -26,6 +27,12 @@ class Order < ApplicationRecord
   end
 
   private
+
+  def must_have_line_items
+    if line_items.empty? || line_items.all? { |item| item.marked_for_destruction? }
+      errors.add(:base, I18n.t('orders.errors.must_have_line_items'))
+    end
+  end
 
   def generate_order_number
     return if order_number.present?

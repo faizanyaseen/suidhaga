@@ -5,12 +5,14 @@ ur:
     customers: "گاہک"
 
   actions:
-    edit: "ترمیم"
+    edit: "ترمیم کریں"
     delete: "حذف کریں"
     back: "واپس"
-    update: "اپ ڈیٹ"
+    update: "اپ ڈیٹ کریں"
     create: "بنائیں"
-    cancel: "منسوخ"
+    cancel: "منسوخ کریں"
+    save: "محفوظ کریں"
+    sign_out: "سائن آؤٹ کریں"
 
   confirmations:
     delete: "کیا آپ واقعی حذف کرنا چاہتے ہیں؟"
@@ -24,7 +26,7 @@ ur:
 
   orders:
     title: "آرڈرز"
-    new: "نیا آرڈر"
+    new: "نیا آرڈر بنائیں"
     search:
       placeholder: "آرڈرز، گاہک، فون، ای میل تلاش کریں..."
     filters:
@@ -100,6 +102,8 @@ ur:
       create: "آرڈر بنائیں"
       update: "آرڈر کی معلومات اپ ڈیٹ کریں"
       mark_delivered: "پہنچا دیا گیا"
+    errors:
+      must_have_line_items: "آرڈر میں کم از کم ایک لائن آئٹم ہونا لازمی ہے"
 
   activerecord:
     models:
@@ -113,6 +117,20 @@ ur:
         phone: "فون نمبر"
         email: "ای میل"
         address: "پتہ"
+    errors:
+      models:
+        customer:
+          attributes:
+            first_name:
+              blank: "لازمی ہے"
+            last_name:
+              blank: "لازمی ہے"
+            phone:
+              blank: "لازمی ہے"
+              taken: "یہ فون نمبر پہلے سے استعمال میں ہے"
+            email:
+              taken: "یہ ای میل پتہ پہلے سے استعمال میں ہے"
+              invalid: "ای میل کا فارمیٹ درست نہیں ہے"
       order:
         order_number: "آرڈر نمبر"
         total_price: "کل قیمت"
@@ -164,12 +182,14 @@ ur:
       value: "مقدار"
       select_type: "پیمائش کی قسم منتخب کریں"
       remove: "پیمائش ہٹائیں"
+    errors:
+      invalid_pakistani_mobile: "براہ کرم درست پاکستانی موبائل نمبر درج کریں"
 
   placeholders:
     customer:
       first_name: "پہلا نام درج کریں"
       last_name: "آخری نام درج کریں"
-      phone: "فون نمبر درج کریں"
+      phone: "+92 301 1234567"
       email: "ای میل ایڈریس درج کریں"
       address: "گاہک کا پتہ درج کریں"
     measurement:
@@ -220,12 +240,21 @@ ur:
     errors:
       key_en_taken: "انگریزی کلید پہلے سے موجود ہے"
       key_ur_taken: "اردو کلید پہلے سے موجود ہے"
+      at_least_one_key_required: "کم از کم ایک کلید (انگریزی یا اردو) فراہم کرنا لازمی ہے"
 
   errors:
     template:
       header:
         one: "ایک غلطی کی وجہ سے یہ %{model} محفوظ نہیں کیا جا سکا"
         other: "%{count} غلطیوں کی وجہ سے یہ %{model} محفوظ نہیں کیا جا سکا"
+    messages:
+      blank: "خالی نہیں ہو سکتا"
+      taken: "پہلے سے موجود ہے"
+      invalid: "غیر درست ہے"
+      too_short: "بہت چھوٹا ہے (کم از کم %{count} حروف)"
+      too_long: "بہت لمبا ہے (زیادہ سے زیادہ %{count} حروف)"
+      confirmation: "تصدیق سے میل نہیں کھاتا"
+      accepted: "قبول کرنا لازمی ہے"
 
   dashboard:
     welcome: "خوش آمدید! آج آپ کے کاروبار میں کیا ہو رہا ہے۔"
@@ -251,14 +280,16 @@ ur:
       all_on_track: "تمام آرڈرز ٹریک پر ہیں"
     quick_actions:
       title: "فوری اقدامات"
-      new_order: "نیا آرڈر"
+      new_order: "نیا آرڈر بنائیں"
       add_customer: "گاہک شامل کریں"
-      view_pending: "زیر التواء دیکھیں"
+      pending_orders: "زیر التواء آرڈرز"
       measurements: "پیمائشیں"
   profile:
     title: "پروفائل کی ترتیبات"
     shop_settings: "دکان کی ترتیبات"
     user_settings: "صارف کی ترتیبات"
+    security: "محفوظیت"
+    settings: "ترتیبات"
     shop:
       name: "دکان کا نام"
       logo: "دکان کا لوگو"

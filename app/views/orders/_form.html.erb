@@ -1,5 +1,5 @@
-<div class="card bg-base-100 shadow-xl">
-  <div class="card-body">
+<div class="card bg-base-100">
+  <div class="">
     <%= form_with(model: @order, class: "mt-6", multipart: true, data: { controller: "order-form" }) do |f| %>
       <% if @order.errors.any? %>
         <div class="alert alert-error mb-4">

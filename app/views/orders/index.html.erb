@@ -131,7 +131,7 @@
             <tr>
               <th><%= t('orders.table.order_number') %></th>
               <th><%= t('orders.table.customer') %></th>
-              <th><%= t('orders.table.status') %></th>
+              <th class="min-w-30"><%= t('orders.table.status') %></th>
               <th><%= t('orders.table.delivery_date') %></th>
               <th><%= t('orders.table.total_price') %></th>
               <th><%= t('orders.table.actions') %></th>
@@ -143,7 +143,7 @@
                 <tr>
                   <td><%= order.order_number %></td>
                   <td><%= "#{order.customer.first_name} #{order.customer.last_name}" %></td>
-                  <td>
+                  <td class="px-1">
                     <div class="badge <%= order_status_color(order.status) %>">
                       <%= t("orders.statuses.#{order.status}") %>
                     </div>

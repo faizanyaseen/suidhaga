@@ -128,6 +128,41 @@
           </div>
         </div>
       </div>
+      <!-- Quick Actions -->
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title mb-4"><%= t('dashboard.quick_actions.title') %></h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <%= link_to new_order_path, class: "btn btn-primary", data: { turbo: false } do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                <%= t('dashboard.quick_actions.new_order') %>
+              <% end %>
+
+              <%= link_to new_customer_path, class: "btn btn-secondary", data: { turbo: false } do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                </svg>
+                <%= t('dashboard.quick_actions.add_customer') %>
+              <% end %>
+
+              <%= link_to orders_path(status: 'pending'), class: "btn bg-gradient-to-r from-yellow-500 to-yellow-600 text-white  px-1 py-2" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                <%= t('dashboard.quick_actions.pending_orders') %>
+              <% end %>
+
+              <%= link_to measurement_types_path, class: "btn btn-info" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+                <%= t('dashboard.quick_actions.measurements') %>
+              <% end %>
+            </div>
+          </div>
+        </div>
     </div>
   </div>
 
@@ -210,44 +245,6 @@
             <p class="text-sm text-base-content/60"><%= t('dashboard.late_orders.all_on_track') %></p>
           </div>
         <% end %>
-      </div>
-    </div>
-  </div>
-
-  <!-- Quick Actions -->
-  <div class="mt-8">
-    <div class="card bg-base-100 shadow-xl">
-      <div class="card-body">
-        <h2 class="card-title mb-4"><%= t('dashboard.quick_actions.title') %></h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <%= link_to new_order_path, class: "btn btn-primary", data: { turbo: false } do %>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-            <%= t('dashboard.quick_actions.new_order') %>
-          <% end %>
-
-          <%= link_to new_customer_path, class: "btn btn-secondary", data: { turbo: false } do %>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-            </svg>
-            <%= t('dashboard.quick_actions.add_customer') %>
-          <% end %>
-
-          <%= link_to orders_path(status: 'pending'), class: "btn btn-accent" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
-            <%= t('dashboard.quick_actions.view_pending') %>
-          <% end %>
-
-          <%= link_to measurement_types_path, class: "btn btn-info" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-            </svg>
-            <%= t('dashboard.quick_actions.measurements') %>
-          <% end %>
-        </div>
       </div>
     </div>
   </div>

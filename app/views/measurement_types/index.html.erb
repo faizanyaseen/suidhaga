@@ -1,13 +1,13 @@
 <div class="card bg-base-100 shadow-sm">
-  <div class="card-body">
+  <div class="card-body p-0">
 
     <div class="container mx-auto px-4" data-controller="modal measurement-delete">
-      <div class="flex justify-between items-center mb-6">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
         <h1 class="text-3xl font-bold"><%= t('measurement_types.title') %></h1>
         <button
           onclick="measurement_modal.showModal()"
           data-action="click->modal#setupForCreate"
-          class="btn btn-primary">
+          class="btn btn-primary mt-4 sm:mt-0">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
@@ -40,7 +40,7 @@
               <thead>
                 <tr>
                   <th><%= t('measurement_types.table.key') %></th>
-                  <th><%= t('measurement_types.table.usage') %></th>
+                  <th class="min-w-40 text-center"><%= t('measurement_types.table.usage') %></th>
                   <th class="text-right"><%= t('measurement_types.table.actions') %></th>
                 </tr>
               </thead>
@@ -51,7 +51,7 @@
                       <td>
                         <div class="font-medium"><%= measurement_type.key %></div>
                       </td>
-                      <td>
+                      <td class="text-center">
                         <% total_usage = measurement_type.usage_count %>
                         <% if total_usage > 0 %>
                           <div class="badge badge-info badge-sm">
@@ -128,9 +128,10 @@
                   name="measurement_type[key_en]"
                   id="measurement_type_key_en"
                   data-modal-target="keyInputEn"
+                  data-action="input->modal#handleInput"
+                  data-auto-fill-target="measurement_type_key_ur"
                   class="input input-bordered w-full"
-                  placeholder="<%= t('placeholders.measurement_type.key_en') %>"
-                  required>
+                  placeholder="<%= t('placeholders.measurement_type.key_en') %>">
               </div>
 
               <div class="form-control w-full">
@@ -142,10 +143,11 @@
                   name="measurement_type[key_ur]"
                   id="measurement_type_key_ur"
                   data-modal-target="keyInputUr"
+                  data-action="input->modal#handleInput"
+                  data-auto-fill-target="measurement_type_key_en"
                   class="input input-bordered w-full"
                   placeholder="<%= t('placeholders.measurement_type.key_ur') %>"
-                  dir="rtl"
-                  required>
+                  dir="rtl">
               </div>
 
               <div class="text-error text-sm mt-2 hidden" data-modal-target="errors"></div>
