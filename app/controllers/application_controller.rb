@@ -2,25 +2,38 @@ class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
   include Pagy::Backend
-  before_action :authenticate_user!, :set_locale, :set_shop
   
-  def current_shop
-    current_user.shop if user_signed_in?
-  end
+  before_action :authenticate_user!
+  before_action :set_locale
+  before_action :set_current_shop
+
+  # Make current_shop available in views
   helper_method :current_shop
 
-  private
+  protected
 
-  def set_locale
-    I18n.locale = params[:locale] || session[:locale] || I18n.default_locale
-    session[:locale] = I18n.locale
+  def current_shop
+    @current_shop ||= current_user&.shop
   end
 
+  def set_current_shop
+    @current_shop = current_shop
+  end
+
+  # Include current locale in all generated URLs
   def default_url_options
     { locale: I18n.locale }
   end
 
-  def set_shop
-    @shop = Shop.first # or however you want to fetch the current shop
+  private
+
+  def set_locale
+    I18n.locale = extract_locale || session[:locale] || I18n.default_locale
+    session[:locale] = I18n.locale.to_s
+  end
+
+  def extract_locale
+    parsed_locale = params[:locale]
+    I18n.available_locales.map(&:to_s).include?(parsed_locale) ? parsed_locale : nil
   end
 end

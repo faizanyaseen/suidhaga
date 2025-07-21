@@ -309,3 +309,68 @@ ur:
       change_password: "پاس ورڈ تبدیل کریں"
       upload_logo: "لوگو اپ لوڈ کریں"
       remove_logo: "لوگو ہٹائیں"
+
+  subscription:
+    status:
+      title: "رکنیت کی حالت"
+      active: "فعال"
+      inactive: "غیر فعال"
+      expired: "ختم ہو گیا"
+      cancelled: "منسوخ شدہ"
+
+    plans:
+      basic: "بنیادی"
+      premium: "پریمیم"
+
+    actions:
+      manage: "رکنیت کا انتظام"
+      upgrade: "پریمیم میں اپ گریڈ کریں"
+      downgrade: "بنیادی میں ڈاؤن گریڈ کریں"
+      activate: "رکنیت فعال کریں"
+
+    usage:
+      customers: "گاہک"
+      orders: "آرڈرز"
+
+    expires_in: "%{days} دن باقی ہیں"
+
+    page:
+      subtitle: "اپنی رکنیت اور بلنگ کا انتظام کریں"
+      current_plan: "موجودہ پلان"
+      available_plans: "دستیاب پلانز"
+      usage_statistics: "استعمال کی رپورٹ"
+      free: "مفت"
+      back_to_dashboard: "ڈیش بورڈ واپس جائیں"
+
+    plan_features:
+      basic:
+        customers: "10 گاہک"
+        orders: "50 آرڈرز"
+        support: "بنیادی سپورٹ"
+      premium:
+        customers: "لامحدود گاہک"
+        orders: "لامحدود آرڈرز"
+        support: "ترجیحی سپورٹ"
+        advanced: "ایڈوانس فیچرز"
+
+    confirmations:
+      downgrade: "کیا آپ واقعی بنیادی پلان میں ڈاؤن گریڈ کرنا چاہتے ہیں؟"
+
+    errors:
+      subscription_expired: "آپ کی رکنیت ختم ہو گئی ہے۔ براہ کرم جاری رکھنے کے لیے فعال کریں۔"
+      customer_limit_reached: "آپ نے اپنی گاہک کی حد پوری کر لی ہے۔ لامحدود گاہکوں کے لیے پریمیم میں اپ گریڈ کریں۔"
+      order_limit_reached: "آپ نے اپنے آرڈر کی حد پوری کر لی ہے۔ لامحدود آرڈرز کے لیے پریمیم میں اپ گریڈ کریں۔"
+      upgrade_failed: "رکنیت اپ گریڈ کرنے میں ناکامی۔ براہ کرم دوبارہ کوشش کریں۔"
+      downgrade_failed: "رکنیت ڈاؤن گریڈ کرنے میں ناکامی۔ براہ کرم دوبارہ کوشش کریں۔"
+      cancel_failed: "رکنیت منسوخ کرنے میں ناکامی۔ براہ کرم سپورٹ سے رابطہ کریں۔"
+
+    upgrade_messages:
+      customer_limit_reached: "آپ نے اپنی گاہک کی حد پوری کر لی ہے (%{current}/%{limit})۔ لامحدود گاہکوں کے لیے پریمیم میں اپ گریڈ کریں!"
+      order_limit_reached: "آپ نے اپنے آرڈر کی حد پوری کر لی ہے (%{current}/%{limit})۔ لامحدود آرڈرز کے لیے پریمیم میں اپ گریڈ کریں!"
+
+    notices:
+      updated: "رکنیت کامیابی سے اپ ڈیٹ ہو گئی۔"
+      upgraded_to_premium: "کامیابی سے پریمیم پلان میں اپ گریڈ ہو گیا! اب آپ کے پاس لامحدود گاہک اور آرڈرز ہیں۔"
+      downgraded_to_basic: "بنیادی پلان میں ڈاؤن گریڈ ہو گیا۔ اب آپ 10 گاہک اور 50 آرڈرز تک محدود ہیں۔"
+      activated: "رکنیت کامیابی سے فعال ہو گئی۔"
+      deactivated: "رکنیت کامیابی سے غیر فعال ہو گئی۔"

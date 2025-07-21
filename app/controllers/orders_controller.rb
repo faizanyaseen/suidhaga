@@ -1,4 +1,6 @@
 class OrdersController < ApplicationController
+  include SubscriptionChecker
+
   def index
     @orders = current_shop.orders.includes(:customer).order(created_at: :desc)
 

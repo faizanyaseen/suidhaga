@@ -317,3 +317,65 @@ en:
       change_password: "Change Password"
       upload_logo: "Upload Logo"
       remove_logo: "Remove Logo"
+
+  subscription:
+    status:
+      title: "Subscription Status"
+      active: "Active"
+      inactive: "Inactive"
+      expired: "Expired"
+      cancelled: "Cancelled"
+
+    plans:
+      basic: "Basic"
+      premium: "Premium"
+
+    actions:
+      manage: "Manage Subscription"
+      upgrade: "Upgrade to Premium"
+      downgrade: "Downgrade to Basic"
+
+    usage:
+      customers: "Customers"
+      orders: "Orders"
+
+    expires_in: "%{days} days remaining"
+
+    page:
+      subtitle: "Manage your subscription and billing"
+      current_plan: "Current Plan"
+      available_plans: "Available Plans"
+      usage_statistics: "Usage Statistics"
+      free: "Free"
+      back_to_dashboard: "Back to Dashboard"
+
+    plan_features:
+      basic:
+        customers: "10 Customers"
+        orders: "50 Orders"
+        support: "Basic Support"
+      premium:
+        customers: "Unlimited Customers"
+        orders: "Unlimited Orders"
+        support: "Priority Support"
+        advanced: "Advanced Features"
+
+    confirmations:
+      downgrade: "Are you sure you want to downgrade to Basic plan?"
+
+    errors:
+      subscription_expired: "Your subscription has expired. Please activate to continue."
+      customer_limit_reached: "You have reached your customer limit. Please upgrade to Premium for unlimited customers."
+      order_limit_reached: "You have reached your order limit. Please upgrade to Premium for unlimited orders."
+      upgrade_failed: "Failed to upgrade subscription. Please try again."
+      downgrade_failed: "Failed to downgrade subscription. Please try again."
+
+    upgrade_messages:
+      customer_limit_reached: "You have reached your customer limit (%{current}/%{limit}). Upgrade to Premium for unlimited customers!"
+      order_limit_reached: "You have reached your order limit (%{current}/%{limit}). Upgrade to Premium for unlimited orders!"
+
+    notices:
+      updated: "Subscription updated successfully."
+      upgraded_to_premium: "Successfully upgraded to Premium plan! You now have unlimited customers and orders."
+      downgraded_to_basic: "Downgraded to Basic plan. You are now limited to 10 customers and 50 orders."
+      deactivated: "Subscription deactivated successfully."

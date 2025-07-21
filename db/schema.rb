@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_27_110902) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_18_111455) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -120,6 +120,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_27_110902) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "subscriptions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "plan_type", default: "free", null: false
+    t.datetime "start_date", null: false
+    t.datetime "end_date"
+    t.integer "status", default: 0
+    t.integer "max_customers", default: 10
+    t.integer "max_orders", default: 50
+    t.text "features", default: "[]"
+    t.decimal "price", precision: 10, scale: 2, default: "0.0"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["end_date"], name: "index_subscriptions_on_end_date"
+    t.index ["user_id", "status"], name: "index_subscriptions_on_user_id_and_status"
+    t.index ["user_id"], name: "index_subscriptions_on_user_id", unique: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -144,5 +161,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_27_110902) do
   add_foreign_key "line_items_measurement_types", "measurement_types"
   add_foreign_key "measurement_types", "shops"
   add_foreign_key "orders", "customers"
+  add_foreign_key "subscriptions", "users"
   add_foreign_key "users", "shops"
 end

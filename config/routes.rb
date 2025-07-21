@@ -35,4 +35,12 @@ Rails.application.routes.draw do
     patch :update_shop
     delete :remove_logo
   end
+
+  resources :subscriptions, only: [:show, :edit, :update] do
+    member do
+      patch :upgrade
+      patch :downgrade
+      patch :cancel
+    end
+  end
 end

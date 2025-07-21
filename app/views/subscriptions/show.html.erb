@@ -1,0 +1,164 @@
+<div class="container mx-auto px-4">
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold"><%= t('subscription.status.title') %></h1>
+    <p class="text-base-content/60 mt-2"><%= t('subscription.page.subtitle') %></p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Current Plan -->
+    <div class="lg:col-span-2">
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title"><%= t('subscription.page.current_plan') %></h2>
+
+          <div class="flex items-center gap-4 my-4">
+            <div class="badge badge-<%= @subscription.active? ? 'success' : 'error' %> badge-lg">
+              <%= t("subscription.status.#{@subscription.status}") %>
+            </div>
+            <span class="text-lg font-semibold">
+              <%= t("subscription.plans.#{@subscription.plan_type || 'basic'}").humanize %> Plan
+            </span>
+            <span class="text-base-content/60">
+              <% if @subscription.premium? %>
+                Rs. <%= @subscription.price || 1000 %>/month
+              <% else %>
+                <%= t('subscription.page.free') %>
+              <% end %>
+            </span>
+          </div>
+
+          <% if @subscription.active? %>
+            <div class="alert alert-info">
+              <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span>Your subscription expires in <%= @subscription.remaining_days %> days</span>
+            </div>
+          <% else %>
+            <div class="alert alert-error">
+              <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span>Your subscription has expired. Activate to continue using all features.</span>
+            </div>
+          <% end %>
+
+          <!-- Usage Statistics -->
+          <div class="divider"><%= t('subscription.page.usage_statistics') %></div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="stat bg-base-200 rounded-lg">
+              <div class="stat-title">Customers</div>
+              <div class="stat-value text-2xl">
+                <%= current_user.shop.customers.count %>/<% if @subscription.premium? %>∞<% else %><%= @subscription.max_customers || 0 %><% end %>
+              </div>
+              <% unless @subscription.premium? %>
+                <div class="stat-desc">
+                  <progress class="progress progress-primary w-full"
+                            value="<%= @subscription.usage_percentage_customers %>"
+                            max="100"></progress>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="stat bg-base-200 rounded-lg">
+              <div class="stat-title">Orders</div>
+              <div class="stat-value text-2xl">
+                <%= current_user.shop.orders.count %>/<% if @subscription.premium? %>∞<% else %><%= @subscription.max_orders || 0 %><% end %>
+              </div>
+              <% unless @subscription.premium? %>
+                <div class="stat-desc">
+                  <progress class="progress progress-secondary w-full"
+                            value="<%= @subscription.usage_percentage_orders %>"
+                            max="100"></progress>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plan Comparison & Actions -->
+    <div>
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title"><%= t('subscription.page.available_plans') %></h2>
+
+          <!-- Basic Plan -->
+                      <div class="card bg-base-200 mb-4">
+              <div class="card-body p-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h3 class="font-semibold"><%= t('subscription.plans.basic') %> Plan</h3>
+                    <p class="text-sm text-base-content/60"><%= t('subscription.page.free') %></p>
+                  </div>
+                  <% if @subscription.basic? %>
+                    <div class="badge badge-success">Current</div>
+                  <% end %>
+                </div>
+                <ul class="text-sm mt-2 space-y-1">
+                  <li>• <%= t('subscription.plan_features.basic.customers') %></li>
+                  <li>• <%= t('subscription.plan_features.basic.orders') %></li>
+                  <li>• <%= t('subscription.plan_features.basic.support') %></li>
+                </ul>
+              </div>
+            </div>
+
+          <!-- Premium Plan -->
+          <div class="card bg-base-200 mb-4">
+            <div class="card-body p-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="font-semibold text-primary-content"><%= t('subscription.plans.premium') %> Plan</h3>
+                  <p class="text-sm text-primary-content opacity-80">Rs. 1000/month</p>
+                </div>
+                <% if @subscription.premium? %>
+                  <div class="badge badge-success">Current</div>
+                <% end %>
+              </div>
+              <ul class="text-sm mt-2 space-y-1 text-primary-content">
+                <li>• <%= t('subscription.plan_features.premium.customers') %></li>
+                <li>• <%= t('subscription.plan_features.premium.orders') %></li>
+                <li>• <%= t('subscription.plan_features.premium.support') %></li>
+                <li>• <%= t('subscription.plan_features.premium.advanced') %></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="space-y-3">
+            <!--
+            <%# if @subscription.basic? %>
+              <%#= button_to upgrade_subscription_path(@subscription),
+                  method: :patch,
+                  class: "btn btn-primary w-full" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                </svg>
+                <%= t('subscription.actions.upgrade') %>
+              <%# end %>
+            <%# else %>
+              <%#= button_to downgrade_subscription_path(@subscription),
+                  method: :patch,
+                  data: { confirm: "Are you sure you want to downgrade to Basic plan?" },
+                  class: "btn btn-warning w-full" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 13l5 5 5-5M7 6l5 5 5-5" />
+                </svg>
+                Downgrade to Basic
+              <%# end %>
+            <%# end %>
+            -->
+            <%= link_to root_path, class: "btn btn-outline w-full" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <%= t('subscription.page.back_to_dashboard') %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
