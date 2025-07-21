@@ -131,6 +131,11 @@ class OrdersController < ApplicationController
     end
   end
 
+  def print
+    @order = current_shop.orders.includes(:customer, line_items: { images_attachments: :blob }).find(params[:id])
+    render layout: 'print'
+  end
+
   private
 
   def order_params

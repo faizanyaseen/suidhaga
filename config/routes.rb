@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     member do
       patch :mark_complete
       patch :mark_delivered
+      get :print
     end
   end
   resources :measurement_types do

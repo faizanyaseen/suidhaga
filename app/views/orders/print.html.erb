@@ -1,0 +1,137 @@
+<div class="receipt">
+  <!-- Header -->
+  <div class="header">
+    <h1><%= @order.shop.name %></h1>
+    <h2>Order Receipt</h2>
+    <div>Receipt #: <%= @order.order_number %></div>
+    <div>Date: <%= Date.current.strftime("%B %d, %Y") %></div>
+  </div>
+
+  <!-- Shop & Customer Details -->
+  <div class="details-grid">
+    <!-- Shop Details -->
+    <div class="section">
+      <div class="section-title">Shop Details</div>
+      <div class="detail-item">
+        <span class="detail-label">Shop Name:</span>
+        <%= @order.shop.name %>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Contact:</span>
+        Suidhaga Services
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Email:</span>
+        info@suidhaga.com
+      </div>
+    </div>
+
+    <!-- Customer Details -->
+    <div class="section">
+      <div class="section-title">Customer Details</div>
+      <div class="detail-item">
+        <span class="detail-label">Name:</span>
+        <%= @order.customer.first_name %> <%= @order.customer.last_name %>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Phone:</span>
+        <%= @order.customer.phone %>
+      </div>
+      <% if @order.customer.email.present? %>
+        <div class="detail-item">
+          <span class="detail-label">Email:</span>
+          <%= @order.customer.email %>
+        </div>
+      <% end %>
+      <% if @order.customer.address.present? %>
+        <div class="detail-item">
+          <span class="detail-label">Address:</span>
+          <%= @order.customer.address %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Order Details -->
+  <div class="section">
+    <div class="section-title">Order Details</div>
+    <div class="detail-item">
+      <span class="detail-label">Order Number:</span>
+      <%= @order.order_number %>
+    </div>
+    <div class="detail-item">
+      <span class="detail-label">Order Date:</span>
+      <%= @order.created_at.strftime("%B %d, %Y") %>
+    </div>
+    <% if @order.delivery_date %>
+      <div class="detail-item">
+        <span class="detail-label">Delivery Date:</span>
+        <%= @order.delivery_date.strftime("%B %d, %Y") %>
+      </div>
+    <% end %>
+    <div class="detail-item">
+      <span class="detail-label">Status:</span>
+      <%= @order.status.humanize %>
+    </div>
+    <% if @order.delivered_at %>
+      <div class="detail-item">
+        <span class="detail-label">Delivered At:</span>
+        <%= @order.delivered_at.strftime("%B %d, %Y at %I:%M %p") %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Line Items -->
+  <div class="section">
+    <div class="section-title">Items Ordered</div>
+    <table class="items-table">
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Quantity</th>
+          <th>Unit Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @order.line_items.each do |item| %>
+          <tr>
+            <td>
+              <strong><%= item.name %></strong>
+              <% if item.description.present? %>
+                <br><small><%= item.description %></small>
+              <% end %>
+              <% if item.line_items_measurement_types.any? %>
+                <br><small>
+                  Measurements: 
+                  <%= item.line_items_measurement_types.map { |m| "#{m.measurement_type.key_en || m.measurement_type.key_ur}: #{m.value}" }.join(", ") %>
+                </small>
+              <% end %>
+            </td>
+            <td><%= item.number_of_pieces %></td>
+            <td class="amount">Rs. <%= number_with_precision(item.price, precision: 0) %></td>
+            <td class="amount">Rs. <%= number_with_precision(item.price * item.number_of_pieces, precision: 0) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Total Section -->
+  <div class="total-section">
+    <div class="total-amount">
+      <strong>TOTAL AMOUNT: Rs. <%= number_with_precision(@order.total_price, precision: 0) %></strong>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div>Thank you for your business!</div>
+    <div style="margin-top: 10px;">
+      This receipt was generated on <%= Time.current.strftime("%B %d, %Y at %I:%M %p") %>
+    </div>
+    <div style="margin-top: 15px; font-size: 8px;">
+      Powered by Wicked Martians
+    </div>
+  </div>
+</div> 
