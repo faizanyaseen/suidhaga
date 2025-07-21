@@ -1,8 +1,19 @@
 ur:
+  number:
+    currency:
+      format:
+        unit: "Rs."
+        precision: 0
+        delimiter: ","
+        separator: "."
+        format: "%u %n"
+
   app_name: "سودھاگا"
   navigation:
     dashboard: "ڈیش بورڈ"
     customers: "گاہک"
+    orders: "آرڈرز"
+    measurement_types: "پیمائش کی اقسام"
 
   actions:
     edit: "ترمیم کریں"
@@ -332,7 +343,7 @@ ur:
       customers: "گاہک"
       orders: "آرڈرز"
 
-    expires_in: "%{days} دن باقی ہیں"
+    expires_in: "آپ کی رکنیت %{days} دن باقی ہیں"
 
     page:
       subtitle: "اپنی رکنیت اور بلنگ کا انتظام کریں"
@@ -341,7 +352,13 @@ ur:
       usage_statistics: "استعمال کی رپورٹ"
       free: "مفت"
       back_to_dashboard: "ڈیش بورڈ واپس جائیں"
-
+      customers: "گاہک"
+      orders: "آرڈرز"
+      current: "موجودہ"
+      plan: "پلان"
+      days: "دن"
+      expires_in: "آپ کی رکنیت %{days} دن باقی ہے"
+      expired: "آپ کی رکنیت ختم ہو گئی ہے۔ فعال کریں تاکہ سب کی خصوصیات استعمال کر سکیں۔"
     plan_features:
       basic:
         customers: "10 گاہک"

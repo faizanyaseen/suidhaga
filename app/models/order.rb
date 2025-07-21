@@ -49,6 +49,6 @@ class Order < ApplicationRecord
   end
 
   def set_default_status
-    self.status ||= 'pending'
+    self.status ||= 'received'
   end
 end

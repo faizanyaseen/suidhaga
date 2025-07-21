@@ -28,10 +28,21 @@
 #       enabled: "ON"
 
 en:
+  number:
+    currency:
+      format:
+        unit: "Rs."
+        precision: 0
+        delimiter: ","
+        separator: "."
+        format: "%u %n"
+
   app_name: "Suidhaga"
   navigation:
     dashboard: "Dashboard"
     customers: "Customers"
+    orders: "Orders"
+    measurement_types: "Measurement Types"
 
   actions:
     edit: "Edit"
@@ -348,7 +359,13 @@ en:
       usage_statistics: "Usage Statistics"
       free: "Free"
       back_to_dashboard: "Back to Dashboard"
-
+      customers: "Customers"
+      orders: "Orders"
+      current: "Current"
+      plan: "Plan"
+      days: "days"
+      expires_in: "Your subscription expires in %{days} days"
+      expired: "Your subscription has expired. Activate to continue using all features."
     plan_features:
       basic:
         customers: "10 Customers"

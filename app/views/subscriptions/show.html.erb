@@ -16,11 +16,11 @@
               <%= t("subscription.status.#{@subscription.status}") %>
             </div>
             <span class="text-lg font-semibold">
-              <%= t("subscription.plans.#{@subscription.plan_type || 'basic'}").humanize %> Plan
+              <%= t("subscription.plans.#{@subscription.plan_type || 'basic'}").humanize %> <%= t('subscription.page.plan') %>
             </span>
             <span class="text-base-content/60">
               <% if @subscription.premium? %>
-                Rs. <%= @subscription.price || 1000 %>/month
+                <%= number_to_currency(@subscription.price || 1000) %>/month
               <% else %>
                 <%= t('subscription.page.free') %>
               <% end %>
@@ -32,14 +32,14 @@
               <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
-              <span>Your subscription expires in <%= @subscription.remaining_days %> days</span>
+              <span><%= t('subscription.page.expires_in', days: @subscription.remaining_days) %></span>
             </div>
           <% else %>
             <div class="alert alert-error">
               <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
-              <span>Your subscription has expired. Activate to continue using all features.</span>
+              <span><%= t('subscription.page.expired') %></span>
             </div>
           <% end %>
 
@@ -48,7 +48,7 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="stat bg-base-200 rounded-lg">
-              <div class="stat-title">Customers</div>
+              <div class="stat-title"><%= t('subscription.page.customers') %></div>
               <div class="stat-value text-2xl">
                 <%= current_user.shop.customers.count %>/<% if @subscription.premium? %>∞<% else %><%= @subscription.max_customers || 0 %><% end %>
               </div>
@@ -62,7 +62,7 @@
             </div>
 
             <div class="stat bg-base-200 rounded-lg">
-              <div class="stat-title">Orders</div>
+              <div class="stat-title"><%= t('subscription.page.orders') %></div>
               <div class="stat-value text-2xl">
                 <%= current_user.shop.orders.count %>/<% if @subscription.premium? %>∞<% else %><%= @subscription.max_orders || 0 %><% end %>
               </div>
@@ -90,11 +90,11 @@
               <div class="card-body p-4">
                 <div class="flex items-center justify-between">
                   <div>
-                    <h3 class="font-semibold"><%= t('subscription.plans.basic') %> Plan</h3>
+                    <h3 class="font-semibold"><%= t('subscription.plans.basic') %> <%= t('subscription.page.plan') %></h3>
                     <p class="text-sm text-base-content/60"><%= t('subscription.page.free') %></p>
                   </div>
                   <% if @subscription.basic? %>
-                    <div class="badge badge-success">Current</div>
+                    <div class="badge badge-success"><%= t('subscription.page.current') %></div>
                   <% end %>
                 </div>
                 <ul class="text-sm mt-2 space-y-1">
@@ -110,11 +110,11 @@
             <div class="card-body p-4">
               <div class="flex items-center justify-between">
                 <div>
-                  <h3 class="font-semibold text-primary-content"><%= t('subscription.plans.premium') %> Plan</h3>
-                  <p class="text-sm text-primary-content opacity-80">Rs. 1000/month</p>
+                  <h3 class="font-semibold text-primary-content"><%= t('subscription.plans.premium') %> <%= t('subscription.page.plan') %></h3>
+                  <p class="text-sm text-primary-content opacity-80"><%= number_to_currency(1000) %>/month</p>
                 </div>
                 <% if @subscription.premium? %>
-                  <div class="badge badge-success">Current</div>
+                  <div class="badge badge-success"><%= t('subscription.page.current') %></div>
                 <% end %>
               </div>
               <ul class="text-sm mt-2 space-y-1 text-primary-content">
@@ -141,12 +141,12 @@
             <%# else %>
               <%#= button_to downgrade_subscription_path(@subscription),
                   method: :patch,
-                  data: { confirm: "Are you sure you want to downgrade to Basic plan?" },
+                  data: { confirm: t('subscription.actions.downgrade_confirm') },
                   class: "btn btn-warning w-full" do %>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 13l5 5 5-5M7 6l5 5 5-5" />
                 </svg>
-                Downgrade to Basic
+                <%= t('subscription.actions.downgrade') %>
               <%# end %>
             <%# end %>
             -->
