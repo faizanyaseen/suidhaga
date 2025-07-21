@@ -95,14 +95,24 @@ class OrdersController < ApplicationController
     @order = current_shop.orders.find(params[:id])
 
     begin
+      email_sent = false
+
       ActiveRecord::Base.transaction do
         @order.update!(status: :completed)
         @order.line_items.update_all(status: LineItem.statuses[:completed])
+
+        # Send email notification to customer if email is present
+        if @order.customer.email.present?
+          OrderMailer.order_completed(@order).deliver_now
+          email_sent = true
+        end
       end
 
+      message_key = email_sent ? 'order_completed' : 'order_completed_no_email'
+
       respond_to do |format|
-        format.json { render json: { status: 'success', message: 'Order marked as complete!' } }
-        format.html { redirect_to @order, notice: 'Order marked as complete!' }
+        format.json { render json: { status: 'success', message: t("notices.#{message_key}") } }
+        format.html { redirect_to @order, notice: t("notices.#{message_key}") }
       end
     rescue => e
       respond_to do |format|
