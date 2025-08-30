@@ -26,67 +26,6 @@
 
     <%= javascript_importmap_tags %>
     
-    <style>
-      /* Custom styles for professional layout */
-      body {
-        padding-top: 4rem; /* Height of navbar */
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
-      
-      .drawer-side {
-        top: 4rem !important; /* Position below navbar */
-        height: calc(100vh - 4rem) !important; /* Full height minus navbar */
-        overflow-y: auto !important; /* Enable scrolling */
-        overflow-x: hidden !important; /* Prevent horizontal scrolling */
-      }
-      
-      .drawer-content {
-        height: calc(100vh - 4rem);
-        overflow-y: auto;
-        width: 100%;
-        padding: 1.5rem;
-      }
-      
-      .menu li a.active {
-        background-color: hsl(var(--p) / 0.2);
-        color: hsl(var(--pc));
-      }
-      
-      /* Prevent text wrapping in sidebar */
-      .menu li a {
-        white-space: nowrap;
-      }
-      
-      /* Table styles */
-      .table-container {
-        overflow-x: auto;
-        margin-top: 1rem;
-      }
-      
-      @media (max-width: 1023px) {
-        .drawer-side {
-          position: fixed !important;
-        }
-      }
-      
-      /* Login page styles */
-      .auth-container {
-        min-height: calc(100vh - 4rem);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: hsl(var(--b1));
-      }
-      
-      .auth-card {
-        width: 100%;
-        max-width: 28rem;
-        margin: 2rem;
-      }
-    </style>
-    
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         const storedTheme = localStorage.getItem('theme')
@@ -106,7 +45,7 @@
     </script>
   </head>
 
-  <body class="bg-base-100" data-controller="theme">
+  <body class="bg-base-200" data-controller="theme">
     <%= render "shared/navbar" %>
     
     <% if user_signed_in? %>

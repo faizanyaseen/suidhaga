@@ -1,5 +1,5 @@
-<div class="card bg-base-100">
-  <div class="">
+<div class="card bg-base-100 shadow-xl">
+  <div class="card-body">
     <%= form_with(model: @order, class: "mt-6", multipart: true, data: { controller: "order-form" }) do |f| %>
       <% if @order.errors.any? %>
         <div class="alert alert-error mb-4">
@@ -21,7 +21,7 @@
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="form-control">
-          <%= f.label :customer_id, t('activerecord.attributes.order.customer'), class: "label" %>
+          <%= f.label :customer_id, t('activerecord.models.customer'), class: "label" %>
           <%= f.collection_select :customer_id, @customers, :id, ->(c) { "#{c.first_name} #{c.last_name}" },
               { prompt: t('orders.select_customer') },
               {
@@ -34,14 +34,14 @@
         </div>
 
         <div class="form-control">
-          <%= f.label :delivery_date, t('activerecord.attributes.order.delivery_date'), class: "label" %>
+          <%= f.label :delivery_date, t('orders.table.delivery_date'), class: "label" %>
           <%= f.date_field :delivery_date, class: "input input-bordered w-full", placeholder: t('placeholders.order.select_date'), required: true, data: { order_form_target: "dependentField" } %>
         </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         <div class="form-control">
-          <%= f.label :status, t('activerecord.attributes.order.status'), class: "label" %>
+          <%= f.label :status, t('orders.table.status'), class: "label" %>
           <%= f.select :status, Order.statuses.keys.map { |s| [t("orders.statuses.#{s}"), s] },
               { prompt: t('orders.select_status') },
               { 

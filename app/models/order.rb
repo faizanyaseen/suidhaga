@@ -7,7 +7,9 @@ class Order < ApplicationRecord
     received: 0,
     in_progress: 1,
     completed: 2,
-    delivered: 3
+    delivered: 3,
+    pending: 4,
+    cancelled: 5
   }, default: :received
 
   validates :order_number, presence: true, uniqueness: true

@@ -9,11 +9,16 @@ class ApplicationController < ActionController::Base
 
   # Make current_shop available in views
   helper_method :current_shop
+  helper_method :current_shop_logo
 
   protected
 
   def current_shop
     @current_shop ||= current_user&.shop
+  end
+
+  def current_shop_logo
+    @current_shop_logo ||= Shop.find(1).logo
   end
 
   def set_current_shop

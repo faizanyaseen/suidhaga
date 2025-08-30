@@ -53,3 +53,97 @@
 .input::placeholder, .textarea::placeholder {
   color: hsl(var(--bc) / 0.5);
 }
+
+/* Custom styles for professional layout */
+body {
+  padding-top: 4rem; /* Height of navbar */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer-side {
+  top: 4rem !important; /* Position below navbar */
+  height: calc(100vh - 4rem) !important; /* Full height minus navbar */
+  overflow-y: auto !important; /* Enable scrolling */
+  overflow-x: hidden !important; /* Prevent horizontal scrolling */
+}
+
+.drawer-content {
+  height: calc(100vh - 4rem);
+  overflow-y: auto;
+  width: 100%;
+  padding: 1.5rem;
+}
+
+.menu li a.active {
+  background-color: var(--color-primary) !important;
+  color: var(--color-primary-content) !important;
+  font-weight: 600 !important;
+  border-radius: 0.5rem !important;
+  transform: scale(1.02) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.menu li a.active svg {
+  color: var(--color-primary-content) !important;
+}
+
+.menu li a:hover:not(.active) {
+  background-color: color-mix(in oklch, var(--color-primary) 15%, transparent) !important;
+}
+
+/* Shop info section background */
+.menu li.shop-info {
+  background-color: var(--color-base-300) !important;
+  border-radius: 0.75rem !important;
+  margin: 0 -0.5rem 1rem -0.5rem !important;
+  padding: 0.5rem !important;
+  border: 1px solid var(--color-base-content) !important;
+  border-opacity: 0.1 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Light mode specific styling */
+[data-theme="light"] .menu li.shop-info {
+  background-color: var(--color-base-300) !important;
+  border-color: color-mix(in oklch, var(--color-base-content) 10%, transparent) !important;
+}
+
+/* Dark mode specific styling */
+[data-theme="dark"] .menu li.shop-info {
+  background-color: var(--color-base-300) !important;
+  border-color: color-mix(in oklch, var(--color-base-content) 15%, transparent) !important;
+}
+
+/* Prevent text wrapping in sidebar */
+.menu li a {
+  white-space: nowrap;
+}
+
+/* Table styles */
+.table-container {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+@media (max-width: 1023px) {
+  .drawer-side {
+    position: fixed !important;
+  }
+}
+
+/* Login page styles */
+.auth-container {
+  min-height: calc(100vh - 4rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: hsl(var(--b1));
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 28rem;
+  margin: 2rem;
+}

@@ -64,7 +64,7 @@ export default class extends Controller {
             borderWidth: 1,
             callbacks: {
               label: function(context) {
-                return 'Revenue: $' + context.parsed.y.toLocaleString()
+                return 'Revenue: Rs' + context.parsed.y.toLocaleString()
               }
             }
           }
@@ -77,7 +77,7 @@ export default class extends Controller {
             },
             ticks: {
               callback: function(value) {
-                return '$' + value.toLocaleString()
+                return  value.toLocaleString()
               }
             }
           },

@@ -16,14 +16,10 @@
               <%= t("subscription.status.#{@subscription.status}") %>
             </div>
             <span class="text-lg font-semibold">
-              <%= t("subscription.plans.#{@subscription.plan_type || 'basic'}").humanize %> <%= t('subscription.page.plan') %>
+              <%= t("subscription.plans.premium").humanize %> <%= t('subscription.page.plan') %>
             </span>
             <span class="text-base-content/60">
-              <% if @subscription.premium? %>
-                <%= number_to_currency(@subscription.price || 1000) %>/month
-              <% else %>
-                <%= t('subscription.page.free') %>
-              <% end %>
+              <%= number_to_currency(@subscription.price || 2500) %>/month
             </span>
           </div>
 
@@ -50,74 +46,38 @@
             <div class="stat bg-base-200 rounded-lg">
               <div class="stat-title"><%= t('subscription.page.customers') %></div>
               <div class="stat-value text-2xl">
-                <%= current_user.shop.customers.count %>/<% if @subscription.premium? %>∞<% else %><%= @subscription.max_customers || 0 %><% end %>
+                <%= current_user.shop.customers.count %>/∞
               </div>
-              <% unless @subscription.premium? %>
-                <div class="stat-desc">
-                  <progress class="progress progress-primary w-full"
-                            value="<%= @subscription.usage_percentage_customers %>"
-                            max="100"></progress>
-                </div>
-              <% end %>
             </div>
 
             <div class="stat bg-base-200 rounded-lg">
               <div class="stat-title"><%= t('subscription.page.orders') %></div>
               <div class="stat-value text-2xl">
-                <%= current_user.shop.orders.count %>/<% if @subscription.premium? %>∞<% else %><%= @subscription.max_orders || 0 %><% end %>
+                <%= current_user.shop.orders.count %>/∞
               </div>
-              <% unless @subscription.premium? %>
-                <div class="stat-desc">
-                  <progress class="progress progress-secondary w-full"
-                            value="<%= @subscription.usage_percentage_orders %>"
-                            max="100"></progress>
-                </div>
-              <% end %>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Plan Comparison & Actions -->
+    <!-- Plan Details -->
     <div>
       <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
-          <h2 class="card-title"><%= t('subscription.page.available_plans') %></h2>
-
-          <!-- Basic Plan -->
-                      <div class="card bg-base-200 mb-4">
-              <div class="card-body p-4">
-                <div class="flex items-center justify-between">
-                  <div>
-                    <h3 class="font-semibold"><%= t('subscription.plans.basic') %> <%= t('subscription.page.plan') %></h3>
-                    <p class="text-sm text-base-content/60"><%= t('subscription.page.free') %></p>
-                  </div>
-                  <% if @subscription.basic? %>
-                    <div class="badge badge-success"><%= t('subscription.page.current') %></div>
-                  <% end %>
-                </div>
-                <ul class="text-sm mt-2 space-y-1">
-                  <li>• <%= t('subscription.plan_features.basic.customers') %></li>
-                  <li>• <%= t('subscription.plan_features.basic.orders') %></li>
-                  <li>• <%= t('subscription.plan_features.basic.support') %></li>
-                </ul>
-              </div>
-            </div>
+          <h2 class="card-title"><%= t('subscription.page.plan_details') %></h2>
 
           <!-- Premium Plan -->
           <div class="card bg-base-200 mb-4">
             <div class="card-body p-4">
               <div class="flex items-center justify-between">
                 <div>
-                  <h3 class="font-semibold text-primary-content"><%= t('subscription.plans.premium') %> <%= t('subscription.page.plan') %></h3>
-                  <p class="text-sm text-primary-content opacity-80"><%= number_to_currency(1000) %>/month</p>
+                  <h3 class="font-semibold"><%= t('subscription.plans.premium') %> <%= t('subscription.page.plan') %></h3>
+                  <p class="text-sm opacity-80"><%= number_to_currency(2500) %>/month</p>
                 </div>
-                <% if @subscription.premium? %>
-                  <div class="badge badge-success"><%= t('subscription.page.current') %></div>
-                <% end %>
+                <div class="badge badge-success"><%= t('subscription.page.current') %></div>
               </div>
-              <ul class="text-sm mt-2 space-y-1 text-primary-content">
+              <ul class="text-sm mt-2 space-y-1">
                 <li>• <%= t('subscription.plan_features.premium.customers') %></li>
                 <li>• <%= t('subscription.plan_features.premium.orders') %></li>
                 <li>• <%= t('subscription.plan_features.premium.support') %></li>
@@ -128,28 +88,6 @@
 
           <!-- Action Buttons -->
           <div class="space-y-3">
-            <!--
-            <%# if @subscription.basic? %>
-              <%#= button_to upgrade_subscription_path(@subscription),
-                  method: :patch,
-                  class: "btn btn-primary w-full" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
-                </svg>
-                <%= t('subscription.actions.upgrade') %>
-              <%# end %>
-            <%# else %>
-              <%#= button_to downgrade_subscription_path(@subscription),
-                  method: :patch,
-                  data: { confirm: t('subscription.actions.downgrade_confirm') },
-                  class: "btn btn-warning w-full" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 13l5 5 5-5M7 6l5 5 5-5" />
-                </svg>
-                <%= t('subscription.actions.downgrade') %>
-              <%# end %>
-            <%# end %>
-            -->
             <%= link_to root_path, class: "btn btn-outline w-full" do %>
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />

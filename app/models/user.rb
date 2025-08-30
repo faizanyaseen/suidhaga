@@ -31,16 +31,18 @@ class User < ApplicationRecord
   private
 
   def create_default_subscription
-    return self.subscription if self.subscription.present?
+    # Check if subscription exists directly in database to avoid infinite loop
+    existing_subscription = Subscription.find_by(user_id: id) if persisted?
+    return existing_subscription if existing_subscription.present?
 
     self.create_subscription!(
-      plan_type: 'basic',
+      plan_type: 'premium',
       start_date: Time.current,
       end_date: 1.month.from_now,
-      status: :active,
-      max_customers: 10,
-      max_orders: 50,
-      price: 0.0
+      status: :inactive,
+      max_customers: 999999,
+      max_orders: 999999,
+      price: 2500.0
     )
   end
 end

@@ -1,4 +1,4 @@
-<div class="container mx-auto px-4">
+<div class="container mx-auto">
   <div class="mb-6">
     <h1 class="text-3xl font-bold"><%= t('navigation.dashboard') %></h1>
     <p class="text-base-content/60 mt-2"><%= t('dashboard.welcome') %></p>
@@ -74,91 +74,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Subscription Status Card -->
-<% if current_user.subscription %>
-  <div class="mb-8">
-    <div class="card bg-base-100 shadow-xl">
-      <div class="card-body">
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 class="card-title flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.586-1.414A2 2 0 0018 9H9.414a2 2 0 00-1.414.586l-7 7a2 2 0 002.828 2.828l2-2M7 17h2m6 0h2M7 9h2m6 0h2" />
-              </svg>
-              <%= t('subscription.status.title') %>
-            </h2>
-            <div class="flex items-center gap-4 mt-2">
-              <div class="badge badge-<%= current_user.subscription.active? ? 'success' : 'error' %> badge-lg">
-                <%= t("subscription.status.#{current_user.subscription.status}") %>
-              </div>
-              <span class="text-sm text-base-content/60">
-                <%= t("subscription.plans.#{current_user.subscription.plan_type || 'basic'}").humanize %> Plan
-                <% if current_user.subscription.premium? %>
-                  <span class="badge badge-primary badge-sm ml-2">PREMIUM</span>
-                <% end %>
-              </span>
-            </div>
-          </div>
-
-          <div class="text-right">
-            <% if current_user.subscription.active? %>
-              <p class="text-sm text-base-content/60">
-                <%= t('subscription.expires_in', days: current_user.subscription.remaining_days) %>
-              </p>
-            <% end %>
-            <%= link_to subscription_path(current_user.subscription), class: "btn btn-sm btn-outline" do %>
-              <%= t('subscription.actions.manage') %>
-            <% end %>
-          </div>
-        </div>
-
-        <!-- Usage Progress Bars -->
-        <% if current_user.subscription.active? %>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-            <div>
-              <div class="flex justify-between items-center mb-1">
-                <span class="text-sm font-medium"><%= t('subscription.usage.customers') %></span>
-                <span class="text-sm text-base-content/60">
-                  <%= current_user.shop.customers.count %>/<%= current_user.subscription.max_customers %>
-                </span>
-              </div>
-              <progress class="progress progress-primary w-full"
-                        value="<%= current_user.subscription.usage_percentage_customers %>"
-                        max="100"></progress>
-            </div>
-
-            <div>
-              <div class="flex justify-between items-center mb-1">
-                <span class="text-sm font-medium"><%= t('subscription.usage.orders') %></span>
-                <span class="text-sm text-base-content/60">
-                  <%= current_user.shop.orders.count %>/<%= current_user.subscription.max_orders %>
-                </span>
-              </div>
-              <progress class="progress progress-secondary w-full"
-                        value="<%= current_user.subscription.usage_percentage_orders %>"
-                        max="100"></progress>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </div>
-<% else %>
-  <!-- Show message if no subscription exists -->
-  <div class="mb-8">
-    <div class="card bg-base-100 shadow-xl">
-      <div class="card-body">
-        <div class="alert alert-warning">
-          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-          </svg>
-          <span>No subscription found. A subscription will be created automatically.</span>
-        </div>
-      </div>
-    </div>
-  </div>
-<% end %>
 
   <!-- Revenue Chart and Additional Stats -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
@@ -314,7 +229,8 @@
                 </div>
                 <div class="text-right">
                   <div class="badge badge-error badge-sm">
-                    <%= pluralize((Date.current - order.delivery_date).to_i, t('dashboard.late_orders.days_late', count: (Date.current - order.delivery_date).to_i)) %>
+                    <% days_late = (Date.current - order.delivery_date.to_date).to_i %>
+                    <%= pluralize(days_late, t('dashboard.late_orders.days_late')) %>
                   </div>
                   <p class="text-sm font-medium mt-1"><%= number_to_currency(order.total_price) %></p>
                 </div>

@@ -8,7 +8,7 @@ ur:
         separator: "."
         format: "%u %n"
 
-  app_name: "سودھاگا"
+  app_name: "سوئی دھاگا"
   navigation:
     dashboard: "ڈیش بورڈ"
     customers: "گاہک"
@@ -76,6 +76,7 @@ ur:
       cancelled: "منسوخ"
       delivered: "پہنچا دیا گیا"
       received: "موصول ہوا"
+      cancelled: "منسوخ"
     select_customer: "گاہک منتخب کریں"
     select_status: "حالت منتخب کریں"
     line_items:
@@ -159,6 +160,7 @@ ur:
   customers:
     title: "گاہک"
     new: "نیا گاہک"
+    add_new_customer: "نیا گاہک شامل کریں"
     search:
       placeholder: "گاہکوں کو تلاش کریں..."
     table:
@@ -287,7 +289,7 @@ ur:
     late_orders:
       title: "تاخیر شدہ آرڈرز"
       view_all: "سب دیکھیں"
-      days_late: "%{count} دن تاخیر"
+      days_late: "دن تاخیر"
       due_date: "مقررہ تاریخ: %{date}"
       no_late_orders: "کوئی تاخیر شدہ آرڈر نہیں!"
       all_on_track: "تمام آرڈرز ٹریک پر ہیں"

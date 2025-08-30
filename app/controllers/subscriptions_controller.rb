@@ -52,13 +52,13 @@ class SubscriptionsController < ApplicationController
     # Create subscription if it doesn't exist
     unless @subscription
       @subscription = current_user.create_subscription!(
-        plan_type: 'basic',
+        plan_type: 'premium',
         start_date: Time.current,
         end_date: 1.month.from_now,
-        status: :active,
-        max_customers: 10,
-        max_orders: 50,
-        price: 0.0
+        status: :inactive,
+        max_customers: 999999,
+        max_orders: 999999,
+        price: 2500.0
       )
     end
   end
