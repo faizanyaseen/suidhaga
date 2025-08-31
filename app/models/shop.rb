@@ -8,4 +8,13 @@ class Shop < ApplicationRecord
   has_many :orders, through: :customers
 
   validates :name, presence: true
+  validates :tailor_limit, numericality: { greater_than_or_equal_to: 0 }
+
+  def tailor_limit_reached?
+    tailors.count >= tailor_limit
+  end
+
+  def remaining_tailor_slots
+    [tailor_limit - tailors.count, 0].max
+  end
 end

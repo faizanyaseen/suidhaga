@@ -1,12 +1,36 @@
 <div class="card bg-base-100 shadow-sm">
   <div class="card-body">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-      <h2 class="card-title text-2xl font-bold"><%= t('tailors.title') %></h2>
-      <%= link_to new_tailor_path, class: "btn btn-primary mt-4 sm:mt-0", data: { turbo: false } do %>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-        </svg>
-        <%= t('tailors.new') %>
+      <div>
+        <h2 class="card-title text-2xl font-bold">
+          <%= t('tailors.title') %> <span class="text-base-content/60 text-lg">/ درزی</span>
+        </h2>
+        <div class="mt-1">
+          <% if @remaining_slots > 0 %>
+            <span class="text-sm text-success">
+              <%= t('tailors.remaining_slots', count: @remaining_slots, limit: @tailor_limit) %>
+            </span>
+          <% else %>
+            <span class="text-sm text-error">
+              <%= t('tailors.no_slots_remaining', limit: @tailor_limit) %>
+            </span>
+          <% end %>
+        </div>
+      </div>
+      <% if !@limit_reached %>
+        <%= link_to new_tailor_path, class: "btn btn-primary mt-4 sm:mt-0", data: { turbo: false } do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          <%= t('tailors.new') %>
+        <% end %>
+      <% else %>
+        <button class="btn btn-disabled mt-4 sm:mt-0" disabled>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          <%= t('tailors.new') %>
+        </button>
       <% end %>
     </div>
 

@@ -6,7 +6,12 @@
       </svg>
       <%= t('actions.back') %>
     <% end %>
-    <h2 class="text-2xl font-bold"><%= t('tailors.new_tailor') %></h2>
+    <div>
+      <h2 class="text-2xl font-bold"><%= t('tailors.new_tailor') %></h2>
+      <p class="text-sm text-success mt-1">
+        <%= t('tailors.remaining_slots', count: @remaining_slots, limit: current_shop.tailor_limit) %>
+      </p>
+    </div>
   </div>
   
   <div class="card bg-base-100 shadow-xl">

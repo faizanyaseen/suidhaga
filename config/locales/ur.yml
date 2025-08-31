@@ -14,6 +14,7 @@ ur:
     customers: "گاہک"
     orders: "آرڈرز"
     measurement_types: "پیمائش کی اقسام"
+    tailors: "درزی"
 
   actions:
     edit: "ترمیم کریں"
@@ -79,6 +80,7 @@ ur:
       cancelled: "منسوخ"
     select_customer: "گاہک منتخب کریں"
     select_status: "حالت منتخب کریں"
+    select_tailor: "درزی منتخب کریں (اختیاری)"
     line_items:
       title: "آئٹمز"
       items: "سامان"
@@ -123,6 +125,7 @@ ur:
     models:
       customer: "گاہک"
       order: "آرڈر"
+      tailor: "درزی"
     attributes:
       customer:
         name: "نام"
@@ -220,6 +223,29 @@ ur:
       key_en: "مثال: Chest, Waist, Inseam"
       key_ur: "مثال: چھاتی، کمر، اندرونی لمبائی"
 
+  tailors:
+    title: "درزی"
+    new: "درزی شامل کریں"
+    new_tailor: "نیا درزی شامل کریں"
+    edit_tailor: "درزی میں ترمیم کریں"
+    username: "صارف نام"
+    phone: "فون نمبر"
+    email: "ای میل"
+    password: "پاس ورڈ"
+    password_confirmation: "پاس ورڈ کی تصدیق"
+    leave_blank: "اگر آپ اسے تبدیل نہیں کرنا چاہتے تو خالی چھوڑ دیں"
+    create: "درزی بنائیں"
+    update: "درزی اپڈیٹ کریں"
+    actions: "اقدامات"
+    no_tailors: "ابھی تک کوئی درزی شامل نہیں کیا گیا"
+    created: "درزی کامیابی سے بنایا گیا"
+    updated: "درزی کامیابی سے اپڈیٹ ہوا"
+    deleted: "درزی کامیابی سے حذف کر دیا گیا"
+    confirm_delete: "کیا آپ واقعی اس درزی کو حذف کرنا چاہتے ہیں؟"
+    limit_reached: "آپ اپنی دکان کے لیے %{limit} درزیوں کی زیادہ سے زیادہ حد تک پہنچ گئے ہیں۔"
+    remaining_slots: "%{limit} میں سے %{count} سلاٹس باقی ہیں"
+    no_slots_remaining: "کوئی سلاٹ باقی نہیں (حد: %{limit})"
+
   measurement_types:
     title: "پیمائش کی اقسام"
     new: "نئی پیمائش کی قسم"
@@ -279,7 +305,10 @@ ur:
       tomorrow_deliveries: "کل کی ڈیلیوریاں"
       late_orders: "تاخیر شدہ آرڈرز"
       total_customers: "کل گاہک"
+      total_tailors: "کل درزی"
       this_month_revenue: "اس ماہ کی آمدنی"
+      remaining_tailor_slots: "%{count} سلاٹس دستیاب ہیں"
+      no_tailor_slots: "حد تک پہنچ گئے"
     revenue_chart:
       title: "آمدنی کا رجحان (گزشتہ 12 ماہ)"
     recent_orders:
@@ -299,6 +328,8 @@ ur:
       add_customer: "گاہک شامل کریں"
       pending_orders: "زیر التواء آرڈرز"
       measurements: "پیمائشیں"
+      manage_tailors: "درزی کا انتظام کریں"
+      tailors_used: "درزی استعمال کیے گئے"
   profile:
     title: "پروفائل کی ترتیبات"
     shop_settings: "دکان کی ترتیبات"
@@ -309,6 +340,14 @@ ur:
       name: "دکان کا نام"
       logo: "دکان کا لوگو"
       update_success: "دکان کی ترتیبات کامیابی سے اپ ڈیٹ ہو گئیں"
+      tailor_management: "درزی مینجمنٹ"
+      current_tailor_limit: "موجودہ درزی کی حد"
+      tailors_count: "آپ کی دکان میں فی الحال %{count} درزی ہیں"
+      update_limit: "حد اپ ڈیٹ کریں"
+      update_tailor_limit: "درزی کی حد اپ ڈیٹ کریں"
+      tailor_limit: "درزیوں کی زیادہ سے زیادہ تعداد"
+      min_tailor_limit_note: "کم از کم حد %{count} ہے (آپ کے درزیوں کی موجودہ تعداد)"
+      tailor_limit_updated: "درزی کی حد کامیابی سے اپ ڈیٹ ہو گئی"
     user:
       name: "آپ کا نام"
       email: "ای میل ایڈریس"

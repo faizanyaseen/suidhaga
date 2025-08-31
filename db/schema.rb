@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_18_111455) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_31_085017) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -110,14 +110,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_18_111455) do
     t.datetime "updated_at", null: false
     t.date "delivery_date"
     t.datetime "delivered_at"
+    t.bigint "tailor_id"
     t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["order_number"], name: "index_orders_on_order_number", unique: true
+    t.index ["tailor_id"], name: "index_orders_on_tailor_id"
   end
 
   create_table "shops", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "tailor_limit", default: 5, null: false
   end
 
   create_table "subscriptions", force: :cascade do |t|
@@ -146,9 +149,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_18_111455) do
     t.bigint "shop_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
+    t.integer "role", default: 0
+    t.string "username"
+    t.string "phone"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["phone"], name: "index_users_on_phone", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["shop_id"], name: "index_users_on_shop_id"
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -161,6 +170,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_18_111455) do
   add_foreign_key "line_items_measurement_types", "measurement_types"
   add_foreign_key "measurement_types", "shops"
   add_foreign_key "orders", "customers"
+  add_foreign_key "orders", "users", column: "tailor_id"
   add_foreign_key "subscriptions", "users"
   add_foreign_key "users", "shops"
 end

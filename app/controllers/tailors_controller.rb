@@ -6,16 +6,29 @@ class TailorsController < ApplicationController
 
   def index
     @tailors = current_shop.tailors
+    @tailor_limit = current_shop.tailor_limit
+    @remaining_slots = current_shop.remaining_tailor_slots
+    @limit_reached = current_shop.tailor_limit_reached?
   end
 
   def show
   end
 
   def new
-    @tailor = User.new
+    if current_shop.tailor_limit_reached?
+      redirect_to tailors_path, alert: t('tailors.limit_reached', limit: current_shop.tailor_limit)
+    else
+      @tailor = User.new
+      @remaining_slots = current_shop.remaining_tailor_slots
+    end
   end
 
   def create
+    if current_shop.tailor_limit_reached?
+      redirect_to tailors_path, alert: t('tailors.limit_reached', limit: current_shop.tailor_limit)
+      return
+    end
+
     @tailor = User.new(tailor_params)
     @tailor.role = :tailor
     @tailor.shop = current_shop
@@ -23,6 +36,7 @@ class TailorsController < ApplicationController
     if @tailor.save
       redirect_to tailors_path, notice: t('tailors.created')
     else
+      @remaining_slots = current_shop.remaining_tailor_slots
       render :new, status: :unprocessable_entity
     end
   end

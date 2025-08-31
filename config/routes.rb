@@ -35,6 +35,7 @@ Rails.application.routes.draw do
 
   resource :profiles, only: [:show, :update] do
     patch :update_shop
+    patch :update_tailor_limit
     delete :remove_logo
   end
 

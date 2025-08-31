@@ -25,6 +25,7 @@ class DashboardController < ApplicationController
         Date.current
       ).where.not(status: 'cancelled').count,
       total_customers: current_user.owner? ? current_shop.customers.count : nil,
+      total_tailors: current_user.owner? ? current_shop.tailors.count : nil,
       this_month_revenue: current_user.owner? ? orders.where(
         created_at: Date.current.beginning_of_month..Date.current.end_of_month,
         status: ['completed', 'delivered']
