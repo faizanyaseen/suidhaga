@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_shop_logo
-    @current_shop_logo ||= Shop.find(1).logo
+    @current_shop_logo ||= current_shop&.logo if current_shop.present?
   end
 
   def set_current_shop

@@ -1,5 +1,6 @@
 class Order < ApplicationRecord
   belongs_to :customer
+  belongs_to :tailor, class_name: 'User', optional: true
   has_many :line_items, dependent: :destroy
   has_one :shop, through: :customer
 
@@ -17,6 +18,7 @@ class Order < ApplicationRecord
   validates :status, presence: true
   validates :customer, presence: true
   validate :must_have_line_items
+  validate :tailor_belongs_to_shop
 
   accepts_nested_attributes_for :line_items, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
 
@@ -33,6 +35,12 @@ class Order < ApplicationRecord
   def must_have_line_items
     if line_items.empty? || line_items.all? { |item| item.marked_for_destruction? }
       errors.add(:base, I18n.t('orders.errors.must_have_line_items'))
+    end
+  end
+
+  def tailor_belongs_to_shop
+    if tailor.present? && tailor.shop_id != customer.shop_id
+      errors.add(:tailor, I18n.t('orders.errors.tailor_not_from_shop'))
     end
   end
 

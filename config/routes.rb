@@ -30,6 +30,7 @@ Rails.application.routes.draw do
       get :usage_info
     end
   end
+  resources :tailors
   root 'dashboard#index'
 
   resource :profiles, only: [:show, :update] do

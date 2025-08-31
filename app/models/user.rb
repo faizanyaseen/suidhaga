@@ -6,10 +6,21 @@ class User < ApplicationRecord
          
   belongs_to :shop, optional: true
   has_one :subscription, dependent: :destroy
+  has_many :assigned_orders, class_name: 'Order', foreign_key: 'tailor_id', dependent: :nullify
   
+  enum :role, { owner: 0, tailor: 1 }
+
   attr_accessor :shop_name
 
+  validates :username, presence: true, uniqueness: true, if: :tailor?
+  validates :phone, presence: true, uniqueness: true, if: :tailor?
+  
   after_create :create_default_subscription
+
+  # Skip password validation when password is not being changed
+  def password_required?
+    new_record? || password.present? || password_confirmation.present?
+  end
 
   def has_active_subscription?
     subscription&.active? || false

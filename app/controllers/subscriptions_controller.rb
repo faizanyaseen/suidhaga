@@ -1,5 +1,6 @@
 # app/controllers/subscriptions_controller.rb
 class SubscriptionsController < ApplicationController
+  include OwnerAuthorization
   before_action :set_subscription
 
   def show

@@ -1,4 +1,5 @@
 class ProfilesController < ApplicationController
+  include OwnerAuthorization
   before_action :authenticate_user!
   before_action :set_shop
 
@@ -55,6 +56,11 @@ class ProfilesController < ApplicationController
         format.json { render json: { status: :error, message: @shop.errors.full_messages.join(', ') } }
       end
     end
+  end
+
+  def remove_logo
+    @shop.logo.purge
+    redirect_to profiles_path, notice: t('profile.shop.logo_removed')
   end
 
   private

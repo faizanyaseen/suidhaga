@@ -53,11 +53,13 @@
           </div>
         </div>
         <ul tabindex="0" class="menu dropdown-content bg-base-200 rounded-box z-[1] mt-4 w-52 p-2 shadow-sm">
+          <% if current_user.owner? %>
+            <li>
+              <%= link_to t('profile.title'), profiles_path, class: "justify-between" %>
+            </li>
+          <% end %>
           <li>
-            <%= link_to t('profile.title'), profiles_path, class: "justify-between" %>
-          </li>
-          <li>
-            <%= button_to destroy_user_session_path, method: :delete do %>
+            <%= link_to destroy_user_session_path, method: :delete, class: "justify-between", data: { turbo_method: :delete } do %>
               <%= t('actions.sign_out') %>
             <% end %>
           </li>

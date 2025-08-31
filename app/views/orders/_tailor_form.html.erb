@@ -1,0 +1,94 @@
+<%= form_with(model: @order, class: "mt-6", multipart: true, data: { controller: "order-form" }) do |f| %>
+  <% if @order.errors.any? %>
+    <div class="alert alert-error mb-4">
+      <div>
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <div>
+          <h2 class="font-medium">
+            <%= t('errors.template.header', count: @order.errors.count, model: Order.model_name.human.downcase) %>
+          </h2>
+          <ul class="mt-2 list-disc list-inside text-sm">
+            <% @order.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="form-control">
+      <p><strong><%= t('activerecord.attributes.customer.name') %> : </strong> <%= "#{@order.customer.first_name} #{@order.customer.last_name}" %></p>
+    </div>
+    
+    <div class="form-control">
+      <p><strong><%= t('activerecord.attributes.order.delivery_date') %> : </strong> <%= @order.delivery_date&.strftime("%B %d, %Y") %></p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+    <div class="form-control">
+      <%= f.label :status, t('orders.table.status'), class: "label" %>
+      <%= f.select :status, 
+          [['In Progress', 'in_progress'], ['Completed', 'completed'], ['Pending', 'pending']],
+          { prompt: t('orders.select_status') },
+          { 
+            class: "select select-bordered w-full",
+            data: { order_form_target: "dependentField" }
+          } %>
+    </div>
+  </div>
+
+  <!-- Line Items Section -->
+  <div class="divider"><%= t('orders.line_items.title') %></div>
+  
+  <div class="space-y-6">
+    <% @order.line_items.each_with_index do |item, index| %>
+      <%= f.fields_for :line_items, item do |line_item_form| %>
+        <div class="card bg-base-200 p-4 mb-4">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+            <h4 class="card-title"><%= item.name %></h4>
+          </div>
+          
+          <p class="mt-2"><%= item.description %></p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div>
+              <p><strong><%= t('orders.line_items.quantity') %>:</strong> <%= item.number_of_pieces %></p>
+            </div>
+            
+            <div class="form-control">
+              <%= line_item_form.label :status, t('orders.line_items.status'), class: "label" %>
+              <%= line_item_form.select :status, 
+                  [['In Progress', 'in_progress'], ['Completed', 'completed']],
+                  {},
+                  { class: "select select-bordered w-full" } %>
+              <%= line_item_form.hidden_field :id %>
+            </div>
+          </div>
+          
+          <% if item.description.present? %>
+            <p><strong><%= t('orders.line_items.description') %>:</strong> <%= item.description %></p>
+          <% end %>
+
+          <% if item.line_items_measurement_types.any? %>
+            <div class="divider"><%= t('orders.line_items.measurements') %></div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              <% item.line_items_measurement_types.each do |measurement| %>
+                <div class="bg-base-100 p-3 rounded-lg">
+                  <p class="font-medium"><%= measurement.measurement_type.key %></p>
+                  <p class="text-lg"><%= measurement.value %></p>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  
+  <div class="form-control mt-6">
+    <%= f.submit t('orders.actions.update'), class: "btn btn-primary w-full" %>
+  </div>
+<% end %> 

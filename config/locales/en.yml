@@ -43,6 +43,7 @@ en:
     customers: "Customers"
     orders: "Orders"
     measurement_types: "Measurement Types"
+    tailors: "Tailors"
 
   actions:
     edit: "Edit"
@@ -102,6 +103,7 @@ en:
       view: "View Order"
       create: "Create Order"
       update: "Update Order"
+      update_status: "Update Status"
       mark_complete: "Mark as Complete"
       mark_delivered: "Mark as Delivered"
     statuses:
@@ -115,6 +117,7 @@ en:
       cancelled: "Cancelled"
     select_customer: "Select a customer"
     select_status: "Select status"
+    select_tailor: "Select Tailor (Optional)"
     line_items:
       title: "Line Items"
       items: "Items"
@@ -147,11 +150,13 @@ en:
     order_details: "Order Details"
     errors:
       must_have_line_items: "Order must have at least one line item"
+      tailor_not_from_shop: "Tailor must belong to the same shop as the customer"
 
   activerecord:
     models:
       customer: "Customer"
       order: "Order"
+      tailor: "Tailor"
     attributes:
       customer:
         name: "Name"
@@ -239,6 +244,29 @@ en:
       header:
         one: "1 error prohibited this %{model} from being saved"
         other: "%{count} errors prohibited this %{model} from being saved"
+    not_authorized: "You are not authorized to perform this action"
+    invalid_status: "You are not allowed to set this status"
+    invalid_line_item_status: "You are not allowed to set this line item status"
+
+  tailors:
+    title: "Tailors"
+    new: "Add Tailor"
+    new_tailor: "Add New Tailor"
+    edit_tailor: "Edit Tailor"
+    username: "Username"
+    phone: "Phone Number"
+    email: "Email"
+    password: "Password"
+    password_confirmation: "Password Confirmation"
+    leave_blank: "Leave blank if you don't want to change it"
+    create: "Create Tailor"
+    update: "Update Tailor"
+    actions: "Actions"
+    no_tailors: "No tailors have been added yet"
+    created: "Tailor was successfully created"
+    updated: "Tailor was successfully updated"
+    deleted: "Tailor was successfully deleted"
+    confirm_delete: "Are you sure you want to delete this tailor?"
 
   measurement_types:
     title: "Measurement Types"

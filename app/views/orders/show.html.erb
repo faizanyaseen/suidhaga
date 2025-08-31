@@ -10,20 +10,22 @@
   <div class="card-body">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
       <div class="flex gap-2 items-center">
-        <h2 class="card-title text-2xl font-bold"><%= t('orders.table.order_number') %><%= @order.id %></h2>
+        <h2 class="card-title text-2xl font-bold"><%= t('orders.table.order_number') %><%= @order.order_number %></h2>
         <div class="badge badge-sm <%= order_status_color(@order.status) %> mt-2 sm:mt-0" data-line-item-status>
           <%= t("orders.statuses.#{@order.status}") %>
         </div>
       </div>
       <div class="flex gap-2 flex-wrap">
-        <%= link_to edit_order_path(@order), class: "btn btn-primary" do %>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-          </svg>
-          <%= t('orders.actions.edit') %>
+        <% if current_user.owner? || (@order.tailor_id == current_user.id) %>
+          <%= link_to edit_order_path(@order), class: "btn btn-primary" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            <%= current_user.owner? ? t('orders.actions.edit') : t('orders.actions.update_status') %>
+          <% end %>
         <% end %>
 
-        <% if @order.completed? && !@order.delivered? %>
+        <% if @order.completed? && !@order.delivered? && current_user.owner? %>
           <div data-controller="order-delivered"
                data-order-delivered-order-id-value="<%= @order.id %>"
                data-action="order-delivered#markDelivered"
@@ -55,7 +57,7 @@
           </div>
         <% end %>
 
-        <% if @order.delivered? %>
+        <% if current_user.owner? %>
           <%= link_to print_order_path(@order), target: "_blank", class: "btn btn-info" do %>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -72,9 +74,11 @@
         <div class="card bg-base-200">
           <div class="card-body p-4">
             <p><strong><%= t('activerecord.attributes.customer.name') %> : </strong> <%= "#{@order.customer.first_name} #{@order.customer.last_name}" %></p>
-            <p><strong><%= t('activerecord.attributes.customer.phone') %> : </strong> <%= @order.customer.phone %></p>
-            <p><strong><%= t('activerecord.attributes.customer.email') %> : </strong> <%= @order.customer.email %></p>
-            <p><strong><%= t('activerecord.attributes.customer.address') %> : </strong> <%= @order.customer.address %></p>
+            <% if current_user.owner? %>
+              <p><strong><%= t('activerecord.attributes.customer.phone') %> : </strong> <%= @order.customer.phone %></p>
+              <p><strong><%= t('activerecord.attributes.customer.email') %> : </strong> <%= @order.customer.email %></p>
+              <p><strong><%= t('activerecord.attributes.customer.address') %> : </strong> <%= @order.customer.address %></p>
+            <% end %>
           </div>
         </div>
       </div>
@@ -85,7 +89,12 @@
           <div class="card-body p-4">
             <p><strong><%= t('activerecord.attributes.order.created_at') %> : </strong> <%= @order.created_at.strftime("%B %d, %Y") %></p>
             <p><strong><%= t('activerecord.attributes.order.delivery_date') %> : </strong> <%= @order.delivery_date.strftime("%B %d, %Y") if @order.delivery_date %></p>
-            <p><strong><%= t('activerecord.attributes.order.total_price') %> : </strong> <%= number_to_currency(@order.total_price) %></p>
+            <% if current_user.owner? %>
+              <p><strong><%= t('activerecord.attributes.order.total_price') %> : </strong> <%= number_to_currency(@order.total_price) %></p>
+            <% end %>
+            <% if @order.tailor.present? %>
+              <p><strong><%= t('activerecord.models.tailor') %> : </strong> <%= @order.tailor.username %></p>
+            <% end %>
           </div>
         </div>
       </div>
@@ -108,13 +117,17 @@
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
               <div>
-                <p><strong><%= t('orders.line_items.price') %>:</strong> <%= number_to_currency(item.price) %></p>
+                <% if current_user.owner? %>
+                  <p><strong><%= t('orders.line_items.price') %>:</strong> <%= number_to_currency(item.price) %></p>
+                <% end %>
               </div>
               <div>
                 <p><strong><%= t('orders.line_items.quantity') %>:</strong> <%= item.number_of_pieces %></p>
               </div>
               <div>
-                <p><strong><%= t('orders.line_items.total_price') %>:</strong> <%= number_to_currency(item.price * item.number_of_pieces) %></p>
+                <% if current_user.owner? %>
+                  <p><strong><%= t('orders.line_items.total_price') %>:</strong> <%= number_to_currency(item.price * item.number_of_pieces) %></p>
+                <% end %>
               </div>
             </div>
 

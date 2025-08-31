@@ -49,6 +49,21 @@
                 data: { order_form_target: "dependentField" }
               } %>
         </div>
+        
+        <div class="form-control">
+          <%= f.label :tailor_id, t('activerecord.models.tailor'), class: "label" %>
+          <% if current_user.owner? %>
+            <%= f.collection_select :tailor_id, @tailors, :id, :username,
+                { prompt: t('orders.select_tailor'), include_blank: true },
+                { 
+                  class: "select select-bordered w-full",
+                  data: { order_form_target: "dependentField" }
+                } %>
+          <% else %>
+            <%= f.hidden_field :tailor_id, value: current_user.id %>
+            <input type="text" class="input input-bordered w-full" disabled value="<%= current_user.username %>" />
+          <% end %>
+        </div>
       </div>
 
       <!-- Line Items Section -->
