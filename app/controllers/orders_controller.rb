@@ -9,6 +9,16 @@ class OrdersController < ApplicationController
       current_user.assigned_orders.includes(:customer).order(created_at: :desc)
     end
 
+    # Active/Inactive filter
+    if params[:active] == 'inactive'
+      @orders = @orders.where(active: false)
+    elsif params[:active] == 'all'
+      @orders = @orders.unscoped.where(id: @orders.all_orders.select(:id))
+    else
+      # Default to active orders (either params[:active] == 'active' or not present)
+      @orders = @orders.where(active: true)
+    end
+
     # Search filter
     if params[:search].present?
       search_term = "%#{params[:search].downcase}%"
@@ -100,7 +110,6 @@ class OrdersController < ApplicationController
 
   def update
     @order = find_order
-    
     if current_user.owner?
       # Owner can update everything
       if @order.update(order_params)
@@ -118,6 +127,9 @@ class OrdersController < ApplicationController
         return
       end
       
+      # Log the parameters for debugging
+      Rails.logger.info("Tailor update params: #{params.inspect}")
+      
       # Only allow status updates for tailors
       allowed_statuses = ['in_progress', 'completed', 'pending']
       if !allowed_statuses.include?(params[:order][:status]) && params[:order][:status].present?
@@ -128,9 +140,13 @@ class OrdersController < ApplicationController
       # Process line items status updates
       if params[:order][:line_items_attributes].present?
         params[:order][:line_items_attributes].each do |_, line_item_params|
-          if line_item_params[:status].present? && !['in_progress', 'completed'].include?(line_item_params[:status])
-            redirect_to @order, alert: t('errors.invalid_line_item_status')
-            return
+          if line_item_params[:status].present?
+            # Convert status to string for comparison
+            status_str = line_item_params[:status].to_s
+            unless ['in_progress', 'completed'].include?(status_str)
+              redirect_to @order, alert: t('errors.invalid_line_item_status')
+              return
+            end
           end
         end
       end
@@ -138,10 +154,28 @@ class OrdersController < ApplicationController
       # Create a filtered params hash for tailors
       tailor_params = params.require(:order).permit(
         :status,
-        line_items_attributes: [:id, :status]
+        line_items_attributes: [:id, :status, :_destroy]
       )
       
-      if @order.update(tailor_params)
+      # Process each line item separately to ensure status is updated correctly
+      success = true
+      
+      # First update the order status
+      if tailor_params[:status].present?
+        success = @order.update(status: tailor_params[:status]) && success
+      end
+      
+      # Then update each line item status
+      if tailor_params[:line_items_attributes].present?
+        tailor_params[:line_items_attributes].each do |_, line_item_params|
+          if line_item_params[:id].present? && line_item_params[:status].present?
+            line_item = @order.line_items.find(line_item_params[:id])
+            success = line_item.update(status: line_item_params[:status]) && success
+          end
+        end
+      end
+      
+      if success
         redirect_to @order, notice: 'Order status was successfully updated.'
       else
         @customers = current_shop.customers
@@ -224,10 +258,10 @@ class OrdersController < ApplicationController
 
   def find_order
     if current_user.owner?
-      current_shop.orders.includes(:customer, :tailor, line_items: { images_attachments: :blob }).find(params[:id])
+      current_shop.orders.all_orders.includes(:customer, :tailor, line_items: { images_attachments: :blob }).find(params[:id])
     else
       # For tailors, we still need to include the customer but we'll limit what's displayed in the view
-      current_user.assigned_orders.includes(:customer, line_items: { images_attachments: :blob }).find(params[:id])
+      current_user.assigned_orders.all_orders.includes(:customer, line_items: { images_attachments: :blob }).find(params[:id])
     end
   end
 

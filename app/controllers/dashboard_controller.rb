@@ -18,7 +18,8 @@ class DashboardController < ApplicationController
       pending_orders: orders.where(status: 'pending').count,
       tomorrow_deliveries: orders.where(
         delivery_date: Date.tomorrow,
-        status: ['pending', 'in_progress', 'ready']
+        status: ['pending', 'in_progress', 'ready', 'completed', 'received'],
+        active: true
       ).count,
       late_orders: orders.where(
         'delivery_date < ? AND delivered_at IS NULL',

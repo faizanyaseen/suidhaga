@@ -1,0 +1,161 @@
+<%= link_to tailors_path, class: "btn btn-ghost btn-sm mt-4 sm:mt-0" do %>
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+  </svg>
+  <%= t('actions.back') %>
+<% end %>
+<div class="card bg-base-100 shadow-sm">
+  <div class="card-body">
+    <div class="flex flex-col sm:flex-row sm:justify-start mb-6">
+      <div class="flex items-center gap-4">
+        <div class="flex bg-primary text-primary-content rounded-full w-16 h-16 items-center justify-center">
+          <span class="text-xl"><%= @tailor.username.first.upcase %></span>
+        </div>
+        
+        <div>
+          <h2 class="card-title text-2xl font-bold"><%= @tailor.username %></h2>
+          <div class="flex flex-col sm:flex-row sm:gap-4 text-sm text-base-content/70">
+            <div><%= @tailor.email %></div>
+            <div><%= @tailor.phone %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <!-- Total Orders Card -->
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="card-title text-base-content/70 text-sm font-medium">
+              <%= t('dashboard.stats.total_orders') %>
+            </h2>
+            <div class="bg-blue-100 p-3 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+            </div>
+          </div>
+          <div class="stat-value text-3xl font-bold"><%= @stats[:total_orders] %></div>
+        </div>
+      </div>
+
+      <!-- Pending Orders Card -->
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="card-title text-base-content/70 text-sm font-medium">
+              <%= t('dashboard.stats.pending_orders') %>
+            </h2>
+            <div class="bg-yellow-100 p-3 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+          </div>
+          <div class="stat-value text-3xl font-bold"><%= @stats[:pending_orders] %></div>
+        </div>
+      </div>
+
+      <!-- In Progress Orders Card -->
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="card-title text-base-content/70 text-sm font-medium">
+              <%= t('orders.statuses.in_progress') %>
+            </h2>
+            <div class="bg-purple-100 p-3 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </div>
+          </div>
+          <div class="stat-value text-3xl font-bold"><%= @stats[:in_progress_orders] %></div>
+        </div>
+      </div>
+
+      <!-- Completed Orders Card -->
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="card-title text-base-content/70 text-sm font-medium">
+              <%= t('orders.statuses.completed') %>
+            </h2>
+            <div class="bg-green-100 p-3 rounded-full">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+          </div>
+          <div class="stat-value text-3xl font-bold"><%= @stats[:completed_orders] %></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="mb-6">
+      <h3 class="text-xl font-bold mb-4"><%= t('tailors.assigned_orders') %></h3>
+      <% if @orders.empty? %>
+        <div class="alert alert-info">
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span><%= t('tailors.no_assigned_orders') %></span>
+          </div>
+        </div>
+      <% else %>
+        <div class="overflow-x-auto">
+          <table class="table table-zebra w-full">
+            <thead>
+              <tr>
+                <th><%= t('orders.table.order_number') %></th>
+                <th><%= t('orders.table.customer') %></th>
+                <th><%= t('orders.table.delivery_date') %></th>
+                <th><%= t('orders.table.status') %></th>
+                <th><%= t('orders.table.actions') %></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @orders.each do |order| %>
+                <tr>
+                  <td><%= order.order_number %></td>
+                  <td><%= order.customer.full_name %></td>
+                  <td>
+                    <% if order.delivery_date %>
+                      <span class="<%= order.delivery_date < Date.current && !order.delivered? ? 'text-error' : '' %>">
+                        <%= l(order.delivery_date, format: :long) %>
+                      </span>
+                    <% else %>
+                      -
+                    <% end %>
+                  </td>
+                  <td>
+                    <div class="badge badge-sm <%= order_status_color(order.status) %>">
+                      <%= t("orders.statuses.#{order.status}") %>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="flex space-x-2">
+                      <%= link_to order_path(order), class: "btn btn-sm btn-outline" do %>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                      <% end %>
+                      
+                      <%= link_to edit_order_path(order), class: "btn btn-sm btn-outline" do %>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                      <% end %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div> 

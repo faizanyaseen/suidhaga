@@ -76,6 +76,10 @@ en:
       status: "Status"
       all_statuses: "All Statuses"
       date_range: "Date Range"
+      active_status: "Order Status"
+      active_orders: "Active Orders"
+      inactive_orders: "Completed Orders"
+      all_orders: "All Orders"
       date_options:
         all_time: "All Time"
         last_week: "Last Week"
@@ -270,6 +274,8 @@ en:
     limit_reached: "You have reached the maximum limit of %{limit} tailors for your shop."
     remaining_slots: "%{count} slots remaining out of %{limit}"
     no_slots_remaining: "No slots remaining (Limit: %{limit})"
+    assigned_orders: "Assigned Orders"
+    no_assigned_orders: "No orders have been assigned to this tailor yet."
 
   measurement_types:
     title: "Measurement Types"
@@ -321,7 +327,11 @@ en:
       total_customers: "Total Customers"
       total_tailors: "Total Tailors"
       this_month_revenue: "This Month Revenue"
+      created_tailors: "Created Tailors"
+      tailor_limit: "Maximum Limit"
       remaining_tailor_slots: "%{count} slots available"
+      you_can_add_more_slots: "You can add %{count} more tailors"
+      maximum_limit_reached: "Maximum limit reached"
       no_tailor_slots: "Limit reached"
     revenue_chart:
       title: "Revenue Trend (Last 12 Months)"

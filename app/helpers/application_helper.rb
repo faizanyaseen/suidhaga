@@ -5,6 +5,25 @@ module ApplicationHelper
     number_to_currency(number, :unit => "R$ ", :separator => ",", :delimiter => ".")
   end
 
+  def order_status_color(status)
+    case status.to_s
+    when 'received'
+      'badge-info'
+    when 'in_progress'
+      'badge-warning'
+    when 'completed'
+      'badge-success'
+    when 'delivered'
+      'badge-success'
+    when 'pending'
+      'badge-secondary'
+    when 'cancelled'
+      'badge-error'
+    else
+      'badge-ghost'
+    end
+  end
+
   def flash_type_to_class(type)
     case type.to_s
     when 'notice'

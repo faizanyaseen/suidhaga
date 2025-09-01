@@ -43,7 +43,7 @@ export default class extends Controller {
     const formData = new FormData(form)
     let activeCount = 0
 
-    const filterFields = ['status', 'date_range', 'customer_id', 'start_date', 'end_date']
+    const filterFields = ['status', 'date_range', 'customer_id', 'start_date', 'end_date', 'tailor_id']
     
     filterFields.forEach(field => {
       const value = formData.get(field)
@@ -51,6 +51,12 @@ export default class extends Controller {
         activeCount++
       }
     })
+    
+    // Special handling for active filter - only count if not default (active)
+    const activeValue = formData.get('active')
+    if (activeValue && activeValue !== '' && activeValue !== 'active') {
+      activeCount++
+    }
 
     const countBadge = this.activeCountTarget
     if (activeCount > 0) {
@@ -69,9 +75,22 @@ export default class extends Controller {
       searchField.value = ''
     }
 
-    form.querySelectorAll('select').forEach(select => {
+    // Reset all selects except active filter
+    form.querySelectorAll('select:not([name="active"])').forEach(select => {
       select.selectedIndex = 0
     })
+    
+    // Set active filter to default (active)
+    const activeSelect = form.querySelector('select[name="active"]')
+    if (activeSelect) {
+      // Find the option with value 'active' and select it
+      for (let i = 0; i < activeSelect.options.length; i++) {
+        if (activeSelect.options[i].value === 'active') {
+          activeSelect.selectedIndex = i
+          break
+        }
+      }
+    }
 
     form.querySelectorAll('input[type="date"]').forEach(input => {
       input.value = ''

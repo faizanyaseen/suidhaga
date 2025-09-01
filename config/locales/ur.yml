@@ -1,4 +1,18 @@
 ur:
+  date:
+    formats:
+      default: "%Y-%m-%d"
+      short: "%b %d"
+      long: "%B %d, %Y"
+    day_names: [اتوار, پیر, منگل, بدھ, جمعرات, جمعہ, ہفتہ]
+    abbr_day_names: [اتوار, پیر, منگل, بدھ, جمعرات, جمعہ, ہفتہ]
+    month_names: [~, جنوری, فروری, مارچ, اپریل, مئی, جون, جولائی, اگست, ستمبر, اکتوبر, نومبر, دسمبر]
+    abbr_month_names: [~, جنوری, فروری, مارچ, اپریل, مئی, جون, جولائی, اگست, ستمبر, اکتوبر, نومبر, دسمبر]
+    order:
+      - :day
+      - :month
+      - :year
+
   number:
     currency:
       format:
@@ -48,6 +62,10 @@ ur:
       status: "حالت"
       all_statuses: "تمام حالات"
       date_range: "تاریخ کی حد"
+      active_status: "آرڈر کی حالت"
+      active_orders: "فعال آرڈرز"
+      inactive_orders: "مکمل آرڈرز"
+      all_orders: "تمام آرڈرز"
       date_options:
         all_time: "تمام وقت"
         last_week: "پچھلا ہفتہ"
@@ -243,8 +261,12 @@ ur:
     deleted: "درزی کامیابی سے حذف کر دیا گیا"
     confirm_delete: "کیا آپ واقعی اس درزی کو حذف کرنا چاہتے ہیں؟"
     limit_reached: "آپ اپنی دکان کے لیے %{limit} درزیوں کی زیادہ سے زیادہ حد تک پہنچ گئے ہیں۔"
-    remaining_slots: "%{limit} میں سے %{count} سلاٹس باقی ہیں"
-    no_slots_remaining: "کوئی سلاٹ باقی نہیں (حد: %{limit})"
+    remaining_slots: "%{count} سلاٹس باقی ہیں %{limit} میں سے"
+    no_slots_remaining: "آپ مزید درزی شامل نہیں کر سکتے"
+    you_can_add_more_slots: "آپ %{count} اور درزی شامل کر سکتے ہیں"
+    assigned_orders: "تفویض کردہ آرڈرز"
+    no_assigned_orders: "اس درزی کو ابھی تک کوئی آرڈر تفویض نہیں کیا گیا ہے۔"
+    
 
   measurement_types:
     title: "پیمائش کی اقسام"
@@ -307,7 +329,11 @@ ur:
       total_customers: "کل گاہک"
       total_tailors: "کل درزی"
       this_month_revenue: "اس ماہ کی آمدنی"
+      created_tailors: "تیار کردہ درزی"
+      tailor_limit: "زیادہ سے زیادہ حد"
       remaining_tailor_slots: "%{count} سلاٹس دستیاب ہیں"
+      you_can_add_more_slots: "آپ %{count} اور درزی شامل کر سکتے ہیں"
+      maximum_limit_reached: "آپ مزید درزی شامل نہیں کر سکتے"
       no_tailor_slots: "حد تک پہنچ گئے"
     revenue_chart:
       title: "آمدنی کا رجحان (گزشتہ 12 ماہ)"

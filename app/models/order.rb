@@ -25,12 +25,22 @@ class Order < ApplicationRecord
   before_validation :generate_order_number, on: :create
   before_save :calculate_total_price
   before_validation :set_default_status
+  before_save :update_active_status
 
   def status_i18n
     I18n.t("orders.statuses.#{status}")
   end
 
+  default_scope { where(active: true) }
+  scope :active, -> { where(active: true) }
+  scope :inactive, -> { where(active: false) }
+  scope :all_orders, -> { unscoped }
+
   private
+
+  def update_active_status
+    self.active = false if delivered? && status_changed?
+  end
 
   def must_have_line_items
     if line_items.empty? || line_items.all? { |item| item.marked_for_destruction? }

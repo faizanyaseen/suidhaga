@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_31_085017) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_01_120657) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -111,6 +111,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_31_085017) do
     t.date "delivery_date"
     t.datetime "delivered_at"
     t.bigint "tailor_id"
+    t.boolean "active", default: true, null: false
     t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["order_number"], name: "index_orders_on_order_number", unique: true
     t.index ["tailor_id"], name: "index_orders_on_tailor_id"

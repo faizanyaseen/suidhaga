@@ -12,6 +12,8 @@ class TailorsController < ApplicationController
   end
 
   def show
+    @orders = @tailor.assigned_orders.includes(:customer).order(created_at: :desc)
+    @stats = calculate_tailor_stats(@tailor)
   end
 
   def new
@@ -61,6 +63,27 @@ class TailorsController < ApplicationController
 
   def set_tailor
     @tailor = current_shop.tailors.find(params[:id])
+  end
+
+  def calculate_tailor_stats(tailor)
+    orders = tailor.assigned_orders
+    
+    {
+      total_orders: orders.count,
+      pending_orders: orders.where(status: 'pending').count,
+      in_progress_orders: orders.where(status: 'in_progress').count,
+      completed_orders: orders.where(status: 'completed').count,
+      delivered_orders: orders.where(status: 'delivered').count,
+      late_orders: orders.where(
+        'delivery_date < ? AND delivered_at IS NULL',
+        Date.current
+      ).where.not(status: 'cancelled').count,
+      tomorrow_deliveries: orders.where(
+        delivery_date: Date.tomorrow,
+        status: ['pending', 'in_progress', 'ready']
+      ).count,
+      recent_orders: orders.order(created_at: :desc).limit(5)
+    }
   end
 
   def tailor_params
