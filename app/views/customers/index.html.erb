@@ -1,7 +1,7 @@
 <div class="card bg-base-100 shadow-sm">
   <div class="card-body">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-      <h2 class="card-title text-2xl font-bold"><%= t('customers.title') %></h2>
+      <h2 class="card-title text-2xl font-bold"><%= image_tag "customers.png", class: "h-16 w-16 mr-2" %><%= t('customers.title') %></h2>
       <%= link_to new_customer_path, class: "btn btn-primary mt-4 sm:mt-0", data: { turbo: false } do %>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />

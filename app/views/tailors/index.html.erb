@@ -3,7 +3,8 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
       <div>
         <h2 class="card-title text-2xl font-bold">
-          <%= t('tailors.title') %> <span class="text-base-content/60 text-lg"></span>
+          <%= image_tag "tailor.png", class: "h-16 w-16 mr-2" %><%= t('tailors.title') %></h2>
+          <span class="text-base-content/60 text-lg"></span>
         </h2>
         <div class="mt-1">
           <% if @remaining_slots > 0 %>
