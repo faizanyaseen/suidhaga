@@ -121,7 +121,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_01_120657) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "tailor_limit", default: 5, null: false
+    t.integer "tailor_limit", default: 0, null: false
   end
 
   create_table "subscriptions", force: :cascade do |t|

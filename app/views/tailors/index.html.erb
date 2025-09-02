@@ -49,6 +49,7 @@
               <th><%= t('tailors.username') %></th>
               <th><%= t('tailors.phone') %></th>
               <th><%= t('tailors.email') %></th>
+              <th><%= t('tailors.active_orders') %></th>
               <th><%= t('tailors.actions') %></th>
             </tr>
           </thead>
@@ -58,6 +59,13 @@
                 <td><%= tailor.username %></td>
                 <td><%= tailor.phone %></td>
                 <td><%= tailor.email %></td>
+                <td>
+                  <% if @active_orders_count[tailor.id] > 0 %>
+                    <span class="badge badge-primary"><%= @active_orders_count[tailor.id] %></span>
+                  <% else %>
+                    <span class="text-base-content/50">0</span>
+                  <% end %>
+                </td>
                 <td>
                   <div class="flex space-x-2">
                     <%= link_to tailor_path(tailor), class: "btn btn-sm btn-outline" do %>

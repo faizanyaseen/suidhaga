@@ -9,6 +9,12 @@ class TailorsController < ApplicationController
     @tailor_limit = current_shop.tailor_limit
     @remaining_slots = current_shop.remaining_tailor_slots
     @limit_reached = current_shop.tailor_limit_reached?
+    
+    # Calculate active orders count for each tailor
+    @active_orders_count = {}
+    @tailors.each do |tailor|
+      @active_orders_count[tailor.id] = tailor.assigned_orders.where(active: true).count
+    end
   end
 
   def show

@@ -249,6 +249,7 @@ ur:
     username: "صارف نام"
     phone: "فون نمبر"
     email: "ای میل"
+    active_orders: "فعال آرڈرز"
     password: "پاس ورڈ"
     password_confirmation: "پاس ورڈ کی تصدیق"
     leave_blank: "اگر آپ اسے تبدیل نہیں کرنا چاہتے تو خالی چھوڑ دیں"
