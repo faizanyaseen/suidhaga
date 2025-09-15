@@ -30,13 +30,38 @@ class ProfilesController < ApplicationController
   end
 
   def update_shop
-    if @shop.update(shop_params)
+    shop_updated = @shop.update(shop_params)
+
+    user_updated = true
+    if params[:user] && params[:user][:password].present?
+      if current_user.valid_password?(params[:user][:current_password])
+        user_updated = current_user.update(password: params[:user][:password],
+                                         password_confirmation: params[:user][:password_confirmation])
+      else
+        current_user.errors.add(:current_password, :invalid)
+        user_updated = false
+      end
+    end
+
+    if shop_updated && user_updated
+      notice_message = if params[:user] && params[:user][:password].present? && user_updated
+                         t('profile.update_with_password_success')
+                       else
+                         t('profile.shop.update_success')
+                       end
+
+      if params[:user] && params[:user][:password].present? && user_updated
+        sign_out(current_user)
+        redirect_to root_paths, notice: notice_message
+        return
+      end
+
       respond_to do |format|
-        format.html { redirect_to profiles_path, notice: t('profile.shop.update_success') }
+        format.html { redirect_to profiles_path, notice: notice_message }
         format.json do
           response_data = {
             status: :ok,
-            message: t('profile.shop.update_success'),
+            message: notice_message,
             html: {
               name: @shop.name
             }
@@ -53,7 +78,7 @@ class ProfilesController < ApplicationController
     else
       respond_to do |format|
         format.html { render :show }
-        format.json { render json: { status: :error, message: @shop.errors.full_messages.join(', ') } }
+        format.json { render json: { status: :error, message: (@shop.errors.full_messages + current_user.errors.full_messages).join(', ') } }
       end
     end
   end

@@ -1,4 +1,4 @@
-<div class="line-item-fields border rounded-lg p-4 mb-4 relative">
+<div class="line-item-fields">
   <%= f.hidden_field :_destroy %>
   <%= f.hidden_field :id if f.object.persisted? %>
 
@@ -95,7 +95,7 @@
 
     <div class="space-y-4" data-nested-form-target="container">
       <%= f.fields_for :line_items_measurement_types do |mt_form| %>
-        <div class="measurement-type-fields flex flex-col md:flex-row items-start md:items-center gap-4 p-4 border border-base-300 rounded-lg"
+        <div class="measurement-type-fields flex flex-col md:flex-row items-start md:items-center gap-4 p-4 border-1 border-base-300 border-dashed rounded-md"
              data-controller="measurement-value"
              data-measurement-value-customer-id-value="<%= @order.customer_id %>">
 
@@ -143,7 +143,7 @@
 
     <template data-nested-form-target="template">
       <%= f.fields_for :line_items_measurement_types, LineItemsMeasurementType.new, child_index: 'NEW_RECORD' do |mt_form| %>
-        <div class="measurement-type-fields flex flex-col md:flex-row items-start md:items-center gap-4 p-4 border border-base-300 rounded-lg"
+        <div class="measurement-type-fields flex flex-col md:flex-row items-start md:items-center gap-4 p-4 border-2 border-gray-300 border-dashed rounded-md"
              data-controller="measurement-value">
 
           <%= mt_form.hidden_field :_destroy %>

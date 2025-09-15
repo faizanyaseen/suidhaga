@@ -1,0 +1,80 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>Generate PWA Icons</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .container { max-width: 800px; margin: 0 auto; }
+    .result { margin-top: 20px; padding: 10px; border: 1px solid #ddd; }
+    canvas { border: 1px solid #ccc; margin: 10px 0; }
+    button { padding: 10px; background: #0066ff; color: white; border: none; cursor: pointer; }
+    button:hover { background: #0055dd; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>PWA Icon Generator</h1>
+    <p>This tool will help you generate properly sized icons for your PWA.</p>
+    <div>
+      <h2>Step 1: Select your source image</h2>
+      <input type="file" id="sourceImage" accept="image/*">
+    </div>
+    <div class="result">
+      <h2>Step 2: Generate and download icons</h2>
+      <button id="generateBtn" disabled>Generate Icons</button>
+      <div id="preview">
+        <h3>192x192 Icon:</h3>
+        <canvas id="canvas192" width="192" height="192"></canvas>
+        <a id="download192" download="icon-192x192.png" href="#">Download 192x192 Icon</a>
+
+        <h3>512x512 Icon:</h3>
+        <canvas id="canvas512" width="512" height="512"></canvas>
+        <a id="download512" download="icon-512x512.png" href="#">Download 512x512 Icon</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const sourceImage = document.getElementById('sourceImage');
+    const generateBtn = document.getElementById('generateBtn');
+    const canvas192 = document.getElementById('canvas192');
+    const canvas512 = document.getElementById('canvas512');
+    const download192 = document.getElementById('download192');
+    const download512 = document.getElementById('download512');
+
+    let imageLoaded = false;
+    let sourceImg = new Image();
+
+    sourceImage.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          sourceImg.src = event.target.result;
+          sourceImg.onload = function() {
+            imageLoaded = true;
+            generateBtn.disabled = false;
+          };
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    generateBtn.addEventListener('click', function() {
+      if (!imageLoaded) return;
+
+      // Generate 192x192 icon
+      const ctx192 = canvas192.getContext('2d');
+      ctx192.clearRect(0, 0, 192, 192);
+      ctx192.drawImage(sourceImg, 0, 0, 192, 192);
+      download192.href = canvas192.toDataURL('image/png');
+
+      // Generate 512x512 icon
+      const ctx512 = canvas512.getContext('2d');
+      ctx512.clearRect(0, 0, 512, 512);
+      ctx512.drawImage(sourceImg, 0, 0, 512, 512);
+      download512.href = canvas512.toDataURL('image/png');
+    });
+  </script>
+</body>
+</html> -->

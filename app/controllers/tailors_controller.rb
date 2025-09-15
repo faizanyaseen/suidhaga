@@ -6,6 +6,15 @@ class TailorsController < ApplicationController
 
   def index
     @tailors = current_shop.tailors
+
+    if params[:query].present?
+      query = "%#{params[:query].downcase}%"
+      @tailors = @tailors.where(
+        "LOWER(username) LIKE ? OR LOWER(email) LIKE ? OR phone LIKE ?",
+        query, query, query
+      )
+    end
+
     @tailor_limit = current_shop.tailor_limit
     @remaining_slots = current_shop.remaining_tailor_slots
     @limit_reached = current_shop.tailor_limit_reached?

@@ -78,7 +78,7 @@ en:
       date_range: "Date Range"
       active_status: "Order Status"
       active_orders: "Active Orders"
-      inactive_orders: "Completed Orders"
+      inactive_orders: "Inactive Orders"
       all_orders: "All Orders"
       date_options:
         all_time: "All Time"
@@ -277,6 +277,7 @@ en:
     no_slots_remaining: "No slots remaining (Limit: %{limit})"
     assigned_orders: "Assigned Orders"
     no_assigned_orders: "No orders have been assigned to this tailor yet."
+    search_placeholder: "Search tailors by name, email or phone..."
 
   measurement_types:
     title: "Measurement Types"
@@ -361,6 +362,7 @@ en:
     user_settings: "User Settings"
     security: "Security"
     settings: "Settings"
+    update_with_password_success: "Profile and password updated successfully"
     shop:
       name: "Shop Name"
       logo: "Shop Logo"

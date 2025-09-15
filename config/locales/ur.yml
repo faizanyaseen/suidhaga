@@ -267,6 +267,7 @@ ur:
     you_can_add_more_slots: "آپ %{count} اور درزی شامل کر سکتے ہیں"
     assigned_orders: "تفویض کردہ آرڈرز"
     no_assigned_orders: "اس درزی کو ابھی تک کوئی آرڈر تفویض نہیں کیا گیا ہے۔"
+    search_placeholder: "نام، ای میل یا فون سے درزی تلاش کریں..."
     
 
   measurement_types:
@@ -358,11 +359,12 @@ ur:
       manage_tailors: "درزی کا انتظام کریں"
       tailors_used: "درزی استعمال کیے گئے"
   profile:
-    title: "پروفائل کی ترتیبات"
+    title: "پروفائل ترتیبات"
     shop_settings: "دکان کی ترتیبات"
     user_settings: "صارف کی ترتیبات"
-    security: "محفوظیت"
+    security: "سیکیورٹی"
     settings: "ترتیبات"
+    update_with_password_success: "پروفائل اور پاس ورڈ کامیابی سے اپ ڈیٹ ہو گئے"
     shop:
       name: "دکان کا نام"
       logo: "دکان کا لوگو"
