@@ -1,7 +1,16 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: {
-    registrations: 'users/registrations'
-  }
+  devise_for :users, skip: [:registrations], controllers: {
+  registrations: 'users/registrations'
+}
+
+devise_scope :user do
+  resource :registration,
+    only: [:edit, :update, :destroy],
+    path: 'users',
+    path_names: { new: 'sign_up' },
+    controller: 'users/registrations',
+    as: :user_registration
+end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
