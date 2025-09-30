@@ -1,0 +1,102 @@
+<div class="container mx-auto px-4">
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold"><%= t('subscription.status.title') %></h1>
+    <p class="text-base-content/60 mt-2"><%= t('subscription.page.subtitle') %></p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Current Plan -->
+    <div class="lg:col-span-2">
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title"><%= t('subscription.page.current_plan') %></h2>
+
+          <div class="flex items-center gap-4 my-4">
+            <div class="badge badge-<%= @subscription.active? ? 'success' : 'error' %> badge-lg">
+              <%= t("subscription.status.#{@subscription.status}") %>
+            </div>
+            <span class="text-lg font-semibold">
+              <%= t("subscription.plans.premium").humanize %> <%= t('subscription.page.plan') %>
+            </span>
+            <span class="text-base-content/60">
+              <%= number_to_currency(@subscription.price || 2500) %>/month
+            </span>
+          </div>
+
+          <% if @subscription.active? %>
+            <div class="alert alert-info">
+              <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span><%= t('subscription.page.expires_in', days: @subscription.remaining_days) %></span>
+            </div>
+          <% else %>
+            <div class="alert alert-error">
+              <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span><%= t('subscription.page.expired') %></span>
+            </div>
+          <% end %>
+
+          <!-- Usage Statistics -->
+          <div class="divider"><%= t('subscription.page.usage_statistics') %></div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="stat bg-base-200 rounded-lg">
+              <div class="stat-title"><%= t('subscription.page.customers') %></div>
+              <div class="stat-value text-2xl">
+                <%= current_user.shop.customers.count %>/∞
+              </div>
+            </div>
+
+            <div class="stat bg-base-200 rounded-lg">
+              <div class="stat-title"><%= t('subscription.page.orders') %></div>
+              <div class="stat-value text-2xl">
+                <%= current_user.shop.orders.count %>/∞
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plan Details -->
+    <div>
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title"><%= t('subscription.page.plan_details') %></h2>
+
+          <!-- Premium Plan -->
+          <div class="card bg-base-200 mb-4">
+            <div class="card-body p-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="font-semibold"><%= t('subscription.plans.premium') %> <%= t('subscription.page.plan') %></h3>
+                  <p class="text-sm opacity-80"><%= number_to_currency(2500) %>/month</p>
+                </div>
+                <div class="badge badge-success"><%= t('subscription.page.current') %></div>
+              </div>
+              <ul class="text-sm mt-2 space-y-1">
+                <li>• <%= t('subscription.plan_features.premium.customers') %></li>
+                <li>• <%= t('subscription.plan_features.premium.orders') %></li>
+                <li>• <%= t('subscription.plan_features.premium.support') %></li>
+                <li>• <%= t('subscription.plan_features.premium.advanced') %></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="space-y-3">
+            <%= link_to root_path, class: "btn btn-outline w-full" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <%= t('subscription.page.back_to_dashboard') %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

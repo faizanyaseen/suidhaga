@@ -1,7 +1,16 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: {
-    registrations: 'users/registrations'
-  }
+  devise_for :users, skip: [:registrations], controllers: {
+  registrations: 'users/registrations'
+}
+
+devise_scope :user do
+  resource :registration,
+    only: [:edit, :update, :destroy],
+    path: 'users',
+    path_names: { new: 'sign_up' },
+    controller: 'users/registrations',
+    as: :user_registration
+end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -22,6 +31,7 @@ Rails.application.routes.draw do
     member do
       patch :mark_complete
       patch :mark_delivered
+      get :print
     end
   end
   resources :measurement_types do
@@ -29,10 +39,20 @@ Rails.application.routes.draw do
       get :usage_info
     end
   end
+  resources :tailors
   root 'dashboard#index'
 
   resource :profiles, only: [:show, :update] do
     patch :update_shop
+    patch :update_tailor_limit
     delete :remove_logo
+  end
+
+  resources :subscriptions, only: [:show, :edit, :update] do
+    member do
+      patch :upgrade
+      patch :downgrade
+      patch :cancel
+    end
   end
 end

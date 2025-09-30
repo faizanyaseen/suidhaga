@@ -1,11 +1,13 @@
 module OrdersHelper
   def order_status_color(status)
     case status
-    when 'pending'
-      'badge-warning'
-    when 'in_progress'
+    when 'received'
       'badge-info'
+    when 'in_progress'
+      'badge-warning'
     when 'completed'
+      'badge-success'
+    when 'delivered'
       'badge-success'
     when 'cancelled'
       'badge-error'
@@ -16,11 +18,13 @@ module OrdersHelper
 
   def status_badge_class(status)
     case status.to_s
-    when 'pending'
-      'badge badge-warning'
-    when 'in_progress'
+    when 'received'
       'badge badge-info'
+    when 'in_progress'
+      'badge badge-warning'
     when 'completed'
+      'badge badge-success'
+    when 'delivered'
       'badge badge-success'
     when 'cancelled'
       'badge badge-error'

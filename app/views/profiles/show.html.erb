@@ -1,5 +1,5 @@
 <div class="container mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold mb-8"><%= t('profile.title') %></h1>
+  <h1 class="text-3xl font-bold mb-8 flex items-center gap-2"><%= image_tag "profile-setting.png", class: "h-16 w-16 mr-2" %><%= t('profile.title') %></h1>
 
   <div class="card bg-base-100 shadow-xl" data-controller="inline-edit">
     <div class="card-body">
@@ -7,8 +7,8 @@
       <div data-inline-edit-target="viewMode">
         <div class="flex justify-between items-center mb-6">
           <h2 class="card-title"><%= t('profile.settings') %></h2>
-          <button class="btn btn-ghost btn-sm" data-action="inline-edit#toggleEdit">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <button class="btn btn-active btn-success" data-action="inline-edit#toggleEdit">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
               <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
             </svg>
           </button>
@@ -35,46 +35,71 @@
         <%= form_with(model: @shop, url: update_shop_profiles_path, data: { inline_edit_target: "form", action: "submit->inline-edit#submitForm" }) do |f| %>
           <div class="flex justify-between items-center mb-6">
             <h2 class="card-title"><%= t('profile.settings') %></h2>
-            <button type="button" class="btn btn-ghost btn-sm" data-action="inline-edit#toggleEdit">
+            <button type="button" class="btn btn-active btn-secondary px-4 py-2" data-action="inline-edit#toggleEdit">
               <%= t('actions.cancel') %>
             </button>
           </div>
 
           <div class="grid md:grid-cols-2 gap-8">
             <div class="space-y-4">
-              <div class="form-control">
+              <div class="form-control flex flex-col gap-2">
                 <%= f.label :name, t('profile.shop.name'), class: "label" %>
                 <%= f.text_field :name, class: "input input-bordered" %>
               </div>
 
-              <div class="form-control">
-                <%= f.label :logo, t('profile.shop.logo'), class: "label" %>
-                <%= f.file_field :logo, class: "file-input file-input-bordered" %>
+              <div class="form-control flex flex-row justify-between items-end flex-wrap gap-2">
+                <div class="mt-2">
+                  <%= f.label :logo, t('profile.shop.logo'), class: "label" %>
+                  <%= f.file_field :logo, class: "file-input file-input-bordered" %>
+                </div>
+                <div class="mt-2">
+                  <% if @shop.logo.attached? %>
+                    <%= image_tag @shop.logo, class: "w-24 h-24 object-cover rounded-lg" %>
+                  <% end %>
+                </div>
               </div>
 
               <div class="divider"><%= t('profile.security') %></div>
 
               <%= fields_for :user, current_user do |u| %>
-                <div class="form-control">
-                  <%= u.label :current_password, t('profile.user.current_password'), class: "label" %>
-                  <%= u.password_field :current_password, class: "input input-bordered" %>
+                <div class="form-control flex flex-col gap-2">
+                    <%= u.label :current_password, t('profile.user.current_password'), class: "label" %>
+                    <div class="relative flex" data-controller="password-toggle">
+                      <%= u.password_field :current_password, class: "input input-bordered w-full", data: { password_toggle_target: "passwordField" } %>
+                      <button type="button" class="eye-password-button" data-action="click->password-toggle#toggle">
+                        <%= image_tag "open-eye.svg", class: "h-5 w-5 text-gray-400", data: { password_toggle_target: "eyeOpen" } %>
+                        <%= image_tag "close-eye.svg", class: "h-5 w-5 text-gray-400 hidden", data: { password_toggle_target: "eyeClosed" } %>
+                      </button>
+                    </div>
                 </div>
 
-                <div class="form-control">
+                <div class="form-control flex flex-col gap-2">
                   <%= u.label :password, t('profile.user.new_password'), class: "label" %>
-                  <%= u.password_field :password, class: "input input-bordered" %>
+                  <div class="relative" data-controller="password-toggle">
+                    <%= u.password_field :password, class: "input input-bordered w-full", data: { password_toggle_target: "passwordField" } %>
+                    <button type="button" class="eye-password-button" data-action="click->password-toggle#toggle">
+                      <%= image_tag "open-eye.svg", class: "h-5 w-5 text-gray-400", data: { password_toggle_target: "eyeOpen" } %>
+                      <%= image_tag "close-eye.svg", class: "h-5 w-5 text-gray-400 hidden", data: { password_toggle_target: "eyeClosed" } %>
+                    </button>
+                  </div>
                 </div>
 
-                <div class="form-control">
+                <div class="form-control flex flex-col gap-2">
                   <%= u.label :password_confirmation, t('profile.user.password_confirmation'), class: "label" %>
-                  <%= u.password_field :password_confirmation, class: "input input-bordered" %>
+                  <div class="relative" data-controller="password-toggle">
+                    <%= u.password_field :password_confirmation, class: "input input-bordered w-full", data: { password_toggle_target: "passwordField" } %>
+                    <button type="button" class="eye-password-button" data-action="click->password-toggle#toggle">
+                      <%= image_tag "open-eye.svg", class: "h-5 w-5 text-gray-400", data: { password_toggle_target: "eyeOpen" } %>
+                      <%= image_tag "close-eye.svg", class: "h-5 w-5 text-gray-400 hidden", data: { password_toggle_target: "eyeClosed" } %>
+                    </button>
+                  </div>
                 </div>
               <% end %>
             </div>
           </div>
 
           <div class="card-actions justify-end mt-6">
-            <%= f.submit t('profile.actions.update'), class: "btn btn-primary" %>
+            <%= f.submit t('profile.actions.update_profile'), class: "btn btn-primary" %>
           </div>
         <% end %>
       </div>

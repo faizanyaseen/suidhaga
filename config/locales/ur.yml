@@ -1,16 +1,44 @@
 ur:
-  app_name: "سودھاگا"
+  date:
+    formats:
+      default: "%Y-%m-%d"
+      short: "%b %d"
+      long: "%B %d, %Y"
+    day_names: [اتوار, پیر, منگل, بدھ, جمعرات, جمعہ, ہفتہ]
+    abbr_day_names: [اتوار, پیر, منگل, بدھ, جمعرات, جمعہ, ہفتہ]
+    month_names: [~, جنوری, فروری, مارچ, اپریل, مئی, جون, جولائی, اگست, ستمبر, اکتوبر, نومبر, دسمبر]
+    abbr_month_names: [~, جنوری, فروری, مارچ, اپریل, مئی, جون, جولائی, اگست, ستمبر, اکتوبر, نومبر, دسمبر]
+    order:
+      - :day
+      - :month
+      - :year
+
+  number:
+    currency:
+      format:
+        unit: "Rs."
+        precision: 0
+        delimiter: ","
+        separator: "."
+        format: "%u %n"
+
+  app_name: "سوئی دھاگا"
   navigation:
     dashboard: "ڈیش بورڈ"
     customers: "گاہک"
+    orders: "آرڈرز"
+    measurement_types: "پیمائش کی اقسام"
+    tailors: "درزی"
 
   actions:
-    edit: "ترمیم"
+    edit: "ترمیم کریں"
     delete: "حذف کریں"
     back: "واپس"
-    update: "اپ ڈیٹ"
+    update: "اپ ڈیٹ کریں"
     create: "بنائیں"
-    cancel: "منسوخ"
+    cancel: "منسوخ کریں"
+    save: "محفوظ کریں"
+    sign_out: "سائن آؤٹ کریں"
 
   confirmations:
     delete: "کیا آپ واقعی حذف کرنا چاہتے ہیں؟"
@@ -21,10 +49,12 @@ ur:
     updated: "%{model} کامیابی سے اپ ڈیٹ ہوا"
     deleted: "%{model} کامیابی سے حذف ہوا"
     marked_delivered: "آرڈر کامیابی سے پہنچا دیا گیا"
+    order_completed: "آرڈر مکمل ہو گیا اور گاہک کو اطلاع دے دی گئی!"
+    order_completed_no_email: "آرڈر مکمل ہو گیا!"
 
   orders:
     title: "آرڈرز"
-    new: "نیا آرڈر"
+    new: "نیا آرڈر بنائیں"
     search:
       placeholder: "آرڈرز، گاہک، فون، ای میل تلاش کریں..."
     filters:
@@ -32,6 +62,10 @@ ur:
       status: "حالت"
       all_statuses: "تمام حالات"
       date_range: "تاریخ کی حد"
+      active_status: "آرڈر کی حالت"
+      active_orders: "فعال آرڈرز"
+      inactive_orders: "مکمل آرڈرز"
+      all_orders: "تمام آرڈرز"
       date_options:
         all_time: "تمام وقت"
         last_week: "پچھلا ہفتہ"
@@ -61,8 +95,10 @@ ur:
       cancelled: "منسوخ"
       delivered: "پہنچا دیا گیا"
       received: "موصول ہوا"
+      cancelled: "منسوخ"
     select_customer: "گاہک منتخب کریں"
     select_status: "حالت منتخب کریں"
+    select_tailor: "درزی منتخب کریں (اختیاری)"
     line_items:
       title: "آئٹمز"
       items: "سامان"
@@ -100,11 +136,14 @@ ur:
       create: "آرڈر بنائیں"
       update: "آرڈر کی معلومات اپ ڈیٹ کریں"
       mark_delivered: "پہنچا دیا گیا"
+    errors:
+      must_have_line_items: "آرڈر میں کم از کم ایک لائن آئٹم ہونا لازمی ہے"
 
   activerecord:
     models:
       customer: "گاہک"
       order: "آرڈر"
+      tailor: "درزی"
     attributes:
       customer:
         name: "نام"
@@ -113,6 +152,20 @@ ur:
         phone: "فون نمبر"
         email: "ای میل"
         address: "پتہ"
+    errors:
+      models:
+        customer:
+          attributes:
+            first_name:
+              blank: "لازمی ہے"
+            last_name:
+              blank: "لازمی ہے"
+            phone:
+              blank: "لازمی ہے"
+              taken: "یہ فون نمبر پہلے سے استعمال میں ہے"
+            email:
+              taken: "یہ ای میل پتہ پہلے سے استعمال میں ہے"
+              invalid: "ای میل کا فارمیٹ درست نہیں ہے"
       order:
         order_number: "آرڈر نمبر"
         total_price: "کل قیمت"
@@ -128,6 +181,7 @@ ur:
   customers:
     title: "گاہک"
     new: "نیا گاہک"
+    add_new_customer: "نیا گاہک شامل کریں"
     search:
       placeholder: "گاہکوں کو تلاش کریں..."
     table:
@@ -164,12 +218,14 @@ ur:
       value: "مقدار"
       select_type: "پیمائش کی قسم منتخب کریں"
       remove: "پیمائش ہٹائیں"
+    errors:
+      invalid_pakistani_mobile: "براہ کرم درست پاکستانی موبائل نمبر درج کریں"
 
   placeholders:
     customer:
       first_name: "پہلا نام درج کریں"
       last_name: "آخری نام درج کریں"
-      phone: "فون نمبر درج کریں"
+      phone: "+92 301 1234567"
       email: "ای میل ایڈریس درج کریں"
       address: "گاہک کا پتہ درج کریں"
     measurement:
@@ -184,6 +240,35 @@ ur:
     measurement_type:
       key_en: "مثال: Chest, Waist, Inseam"
       key_ur: "مثال: چھاتی، کمر، اندرونی لمبائی"
+
+  tailors:
+    title: "درزی"
+    new: "درزی شامل کریں"
+    new_tailor: "نیا درزی شامل کریں"
+    edit_tailor: "درزی میں ترمیم کریں"
+    username: "صارف نام"
+    phone: "فون نمبر"
+    email: "ای میل"
+    active_orders: "فعال آرڈرز"
+    password: "پاس ورڈ"
+    password_confirmation: "پاس ورڈ کی تصدیق"
+    leave_blank: "اگر آپ اسے تبدیل نہیں کرنا چاہتے تو خالی چھوڑ دیں"
+    create: "درزی بنائیں"
+    update: "درزی اپڈیٹ کریں"
+    actions: "اقدامات"
+    no_tailors: "ابھی تک کوئی درزی شامل نہیں کیا گیا"
+    created: "درزی کامیابی سے بنایا گیا"
+    updated: "درزی کامیابی سے اپڈیٹ ہوا"
+    deleted: "درزی کامیابی سے حذف کر دیا گیا"
+    confirm_delete: "کیا آپ واقعی اس درزی کو حذف کرنا چاہتے ہیں؟"
+    limit_reached: "آپ اپنی دکان کے لیے %{limit} درزیوں کی زیادہ سے زیادہ حد تک پہنچ گئے ہیں۔"
+    remaining_slots: "%{count} سلاٹس باقی ہیں %{limit} میں سے"
+    no_slots_remaining: "آپ مزید درزی شامل نہیں کر سکتے"
+    you_can_add_more_slots: "آپ %{count} اور درزی شامل کر سکتے ہیں"
+    assigned_orders: "تفویض کردہ آرڈرز"
+    no_assigned_orders: "اس درزی کو ابھی تک کوئی آرڈر تفویض نہیں کیا گیا ہے۔"
+    search_placeholder: "نام، ای میل یا فون سے درزی تلاش کریں..."
+    
 
   measurement_types:
     title: "پیمائش کی اقسام"
@@ -220,12 +305,21 @@ ur:
     errors:
       key_en_taken: "انگریزی کلید پہلے سے موجود ہے"
       key_ur_taken: "اردو کلید پہلے سے موجود ہے"
+      at_least_one_key_required: "کم از کم ایک کلید (انگریزی یا اردو) فراہم کرنا لازمی ہے"
 
   errors:
     template:
       header:
         one: "ایک غلطی کی وجہ سے یہ %{model} محفوظ نہیں کیا جا سکا"
         other: "%{count} غلطیوں کی وجہ سے یہ %{model} محفوظ نہیں کیا جا سکا"
+    messages:
+      blank: "خالی نہیں ہو سکتا"
+      taken: "پہلے سے موجود ہے"
+      invalid: "غیر درست ہے"
+      too_short: "بہت چھوٹا ہے (کم از کم %{count} حروف)"
+      too_long: "بہت لمبا ہے (زیادہ سے زیادہ %{count} حروف)"
+      confirmation: "تصدیق سے میل نہیں کھاتا"
+      accepted: "قبول کرنا لازمی ہے"
 
   dashboard:
     welcome: "خوش آمدید! آج آپ کے کاروبار میں کیا ہو رہا ہے۔"
@@ -235,7 +329,14 @@ ur:
       tomorrow_deliveries: "کل کی ڈیلیوریاں"
       late_orders: "تاخیر شدہ آرڈرز"
       total_customers: "کل گاہک"
+      total_tailors: "کل درزی"
       this_month_revenue: "اس ماہ کی آمدنی"
+      created_tailors: "تیار کردہ درزی"
+      tailor_limit: "زیادہ سے زیادہ حد"
+      remaining_tailor_slots: "%{count} سلاٹس دستیاب ہیں"
+      you_can_add_more_slots: "آپ %{count} اور درزی شامل کر سکتے ہیں"
+      maximum_limit_reached: "آپ مزید درزی شامل نہیں کر سکتے"
+      no_tailor_slots: "حد تک پہنچ گئے"
     revenue_chart:
       title: "آمدنی کا رجحان (گزشتہ 12 ماہ)"
     recent_orders:
@@ -245,24 +346,37 @@ ur:
     late_orders:
       title: "تاخیر شدہ آرڈرز"
       view_all: "سب دیکھیں"
-      days_late: "%{count} دن تاخیر"
+      days_late: "دن تاخیر"
       due_date: "مقررہ تاریخ: %{date}"
       no_late_orders: "کوئی تاخیر شدہ آرڈر نہیں!"
       all_on_track: "تمام آرڈرز ٹریک پر ہیں"
     quick_actions:
       title: "فوری اقدامات"
-      new_order: "نیا آرڈر"
+      new_order: "نیا آرڈر بنائیں"
       add_customer: "گاہک شامل کریں"
-      view_pending: "زیر التواء دیکھیں"
+      pending_orders: "زیر التواء آرڈرز"
       measurements: "پیمائشیں"
+      manage_tailors: "درزی کا انتظام کریں"
+      tailors_used: "درزی استعمال کیے گئے"
   profile:
-    title: "پروفائل کی ترتیبات"
+    title: "پروفائل ترتیبات"
     shop_settings: "دکان کی ترتیبات"
     user_settings: "صارف کی ترتیبات"
+    security: "سیکیورٹی"
+    settings: "ترتیبات"
+    update_with_password_success: "پروفائل اور پاس ورڈ کامیابی سے اپ ڈیٹ ہو گئے"
     shop:
       name: "دکان کا نام"
       logo: "دکان کا لوگو"
       update_success: "دکان کی ترتیبات کامیابی سے اپ ڈیٹ ہو گئیں"
+      tailor_management: "درزی مینجمنٹ"
+      current_tailor_limit: "موجودہ درزی کی حد"
+      tailors_count: "آپ کی دکان میں فی الحال %{count} درزی ہیں"
+      update_limit: "حد اپ ڈیٹ کریں"
+      update_tailor_limit: "درزی کی حد اپ ڈیٹ کریں"
+      tailor_limit: "درزیوں کی زیادہ سے زیادہ تعداد"
+      min_tailor_limit_note: "کم از کم حد %{count} ہے (آپ کے درزیوں کی موجودہ تعداد)"
+      tailor_limit_updated: "درزی کی حد کامیابی سے اپ ڈیٹ ہو گئی"
     user:
       name: "آپ کا نام"
       email: "ای میل ایڈریس"
@@ -278,3 +392,89 @@ ur:
       change_password: "پاس ورڈ تبدیل کریں"
       upload_logo: "لوگو اپ لوڈ کریں"
       remove_logo: "لوگو ہٹائیں"
+
+  subscription:
+    status:
+      title: "رکنیت کی حالت"
+      active: "فعال"
+      inactive: "غیر فعال"
+      expired: "ختم ہو گیا"
+      cancelled: "منسوخ شدہ"
+
+    plans:
+      basic: "بنیادی"
+      premium: "پریمیم"
+
+    actions:
+      manage: "رکنیت کا انتظام"
+      upgrade: "پریمیم میں اپ گریڈ کریں"
+      downgrade: "بنیادی میں ڈاؤن گریڈ کریں"
+      activate: "رکنیت فعال کریں"
+
+    usage:
+      customers: "گاہک"
+      orders: "آرڈرز"
+
+    expires_in: "آپ کی رکنیت %{days} دن باقی ہیں"
+
+    page:
+      subtitle: "اپنی رکنیت اور بلنگ کا انتظام کریں"
+      current_plan: "موجودہ پلان"
+      available_plans: "دستیاب پلانز"
+      usage_statistics: "استعمال کی رپورٹ"
+      free: "مفت"
+      back_to_dashboard: "ڈیش بورڈ واپس جائیں"
+      customers: "گاہک"
+      orders: "آرڈرز"
+      current: "موجودہ"
+      plan: "پلان"
+      days: "دن"
+      expires_in: "آپ کی رکنیت %{days} دن باقی ہے"
+      expired: "آپ کی رکنیت ختم ہو گئی ہے۔ فعال کریں تاکہ سب کی خصوصیات استعمال کر سکیں۔"
+    plan_features:
+      basic:
+        customers: "10 گاہک"
+        orders: "50 آرڈرز"
+        support: "بنیادی سپورٹ"
+      premium:
+        customers: "لامحدود گاہک"
+        orders: "لامحدود آرڈرز"
+        support: "ترجیحی سپورٹ"
+        advanced: "ایڈوانس فیچرز"
+
+    confirmations:
+      downgrade: "کیا آپ واقعی بنیادی پلان میں ڈاؤن گریڈ کرنا چاہتے ہیں؟"
+
+    errors:
+      subscription_expired: "آپ کی رکنیت ختم ہو گئی ہے۔ براہ کرم جاری رکھنے کے لیے فعال کریں۔"
+      customer_limit_reached: "آپ نے اپنی گاہک کی حد پوری کر لی ہے۔ لامحدود گاہکوں کے لیے پریمیم میں اپ گریڈ کریں۔"
+      order_limit_reached: "آپ نے اپنے آرڈر کی حد پوری کر لی ہے۔ لامحدود آرڈرز کے لیے پریمیم میں اپ گریڈ کریں۔"
+      upgrade_failed: "رکنیت اپ گریڈ کرنے میں ناکامی۔ براہ کرم دوبارہ کوشش کریں۔"
+      downgrade_failed: "رکنیت ڈاؤن گریڈ کرنے میں ناکامی۔ براہ کرم دوبارہ کوشش کریں۔"
+      cancel_failed: "رکنیت منسوخ کرنے میں ناکامی۔ براہ کرم سپورٹ سے رابطہ کریں۔"
+
+    upgrade_messages:
+      customer_limit_reached: "آپ نے اپنی گاہک کی حد پوری کر لی ہے (%{current}/%{limit})۔ لامحدود گاہکوں کے لیے پریمیم میں اپ گریڈ کریں!"
+      order_limit_reached: "آپ نے اپنے آرڈر کی حد پوری کر لی ہے (%{current}/%{limit})۔ لامحدود آرڈرز کے لیے پریمیم میں اپ گریڈ کریں!"
+
+    notices:
+      updated: "رکنیت کامیابی سے اپ ڈیٹ ہو گئی۔"
+      upgraded_to_premium: "کامیابی سے پریمیم پلان میں اپ گریڈ ہو گیا! اب آپ کے پاس لامحدود گاہک اور آرڈرز ہیں۔"
+      downgraded_to_basic: "بنیادی پلان میں ڈاؤن گریڈ ہو گیا۔ اب آپ 10 گاہک اور 50 آرڈرز تک محدود ہیں۔"
+      activated: "رکنیت کامیابی سے فعال ہو گئی۔"
+      deactivated: "رکنیت کامیابی سے غیر فعال ہو گئی۔"
+
+  order_mailer:
+    order_completed:
+      subject: "آرڈر %{order_number} مکمل - %{shop_name}"
+      header: "آرڈر مکمل!"
+      subtitle: "آپ کا آرڈر مکمل ہو گیا ہے اور تیار ہے"
+      greeting: "عزیز %{name}،"
+      message: "خوشخبری! آپ کا آرڈر %{order_number} %{shop_name} سے مکمل ہو گیا ہے اور پک اپ/ڈیلیوری کے لیے تیار ہے۔"
+      order_details: "آرڈر کی تفصیلات"
+      items: "آرڈر کردہ اشیاء"
+      total: "کل رقم"
+      next_steps: "آپ کا آرڈر اب تیار ہے۔ ہم جلد ہی آپ سے پک اپ/ڈیلیوری کے انتظامات کے بارے میں رابطہ کریں گے۔"
+      contact_info: "اگر آپ کے کوئی سوالات ہیں تو برائے کرم ہم سے رابطہ کریں:"
+      thanks: "%{shop_name} کا انتخاب کرنے کے لیے شکریہ!"
+      footer: "یہ ایک خودکار ای میل ہے۔ براہ کرم اس ای میل کا جواب نہ دیں۔"

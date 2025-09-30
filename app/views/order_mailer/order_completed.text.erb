@@ -1,0 +1,36 @@
+<%= t('order_mailer.order_completed.header') %>
+
+<%= t('order_mailer.order_completed.greeting', name: @customer.first_name) %>
+
+<%= t('order_mailer.order_completed.message', order_number: @order.order_number, shop_name: @shop.name) %>
+
+<%= t('order_mailer.order_completed.order_details') %>:
+=====================================
+<%= t('activerecord.attributes.order.order_number') %>: <%= @order.order_number %>
+<%= t('activerecord.attributes.order.created_at') %>: <%= @order.created_at.strftime("%B %d, %Y") %>
+<% if @order.delivery_date -%>
+<%= t('activerecord.attributes.order.delivery_date') %>: <%= @order.delivery_date.strftime("%B %d, %Y") %>
+<% end -%>
+<%= t('activerecord.attributes.order.total_price') %>: <%= number_to_currency(@order.total_price) %>
+
+<%= t('order_mailer.order_completed.items') %>:
+=====================================
+<% @order.line_items.each do |item| -%>
+- <%= item.name %>
+  <%= t('orders.line_items.quantity') %>: <%= item.number_of_pieces %>
+  <%= t('orders.line_items.price') %>: <%= number_to_currency(item.price) %>
+  <%= t('orders.line_items.total_price') %>: <%= number_to_currency(item.price * item.number_of_pieces) %>
+
+<% end -%>
+<%= t('order_mailer.order_completed.total') %>: <%= number_to_currency(@order.total_price) %>
+
+<%= t('order_mailer.order_completed.next_steps') %>
+
+<%= t('order_mailer.order_completed.contact_info') %>
+<% if @customer.phone.present? -%>
+<%= t('activerecord.attributes.customer.phone') %>: <%= @customer.phone %>
+<% end -%>
+
+=====================================
+<%= t('order_mailer.order_completed.thanks', shop_name: @shop.name) %>
+<%= t('order_mailer.order_completed.footer') %> 

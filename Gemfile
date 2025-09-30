@@ -45,12 +45,18 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+# QR code generation
+# gem "rqrcode", "~> 2.0"
+
 # Pagination
 gem "pagy"
 gem "kaminari"
 
 # Search functionality
 gem "ransack"
+
+# Email
+gem "letter_opener"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -61,6 +67,8 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # gem 'bullet'
 end
 
 group :development do

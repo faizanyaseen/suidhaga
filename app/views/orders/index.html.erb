@@ -1,12 +1,14 @@
 <div class="card bg-base-100 shadow-sm">
   <div class="card-body">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-      <h2 class="card-title text-2xl font-bold"><%= t('orders.title') %></h2>
-      <%= link_to new_order_path, class: "btn btn-primary mt-4 sm:mt-0", data: { turbo: false } do %>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-        </svg>
-        <%= t('orders.new') %>
+      <h2 class="card-title text-2xl font-bold"><%= image_tag "order-1.svg", class: "h-16 w-16 mr-2" %><%= t('orders.title') %></h2>
+      <% if current_user.owner? %>
+        <%= link_to new_order_path, class: "btn btn-primary mt-4 sm:mt-0", data: { turbo: false } do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          <%= t('orders.new') %>
+        <% end %>
       <% end %>
     </div>
     
@@ -84,6 +86,32 @@
                   </div>
                 </div>
 
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <% if current_user.owner? %>
+                    <div class="form-control">
+                      <%= f.label :tailor_id, t('activerecord.models.tailor'), class: "label label-text font-medium" %>
+                      <div>
+                        <%= f.select :tailor_id,
+                            options_for_select([['All Tailors', '']] + current_shop.tailors.map { |t| [t.username, t.id] }, params[:tailor_id]),
+                            {},
+                            { class: "select select-bordered select-sm w-full", data: { action: "change->filters#updateCount" } } %>
+                      </div>
+                    </div>
+                    <!-- Active/Inactive Filter -->
+                    <div class="form-control">
+                      <%#= f.label :active, t('orders.filters.active_status'), class: "label label-text font-medium" %>
+                      <%#= f.select :active,
+                          options_for_select([
+                            [t('orders.filters.active_orders'), 'active'],
+                            [t('orders.filters.inactive_orders'), 'inactive'],
+                            [t('orders.filters.all_orders'), 'all'],
+                          ], params[:active] || 'active'),
+                          {},
+                          { class: "select select-bordered select-sm w-full", data: { action: "change->filters#updateCount" } } %>
+                    </div>
+                  <% end %>
+                </div>
+
                 <!-- Custom Date Range -->
                 <div class="mt-4 hidden" data-filters-target="customDateRange">
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -101,7 +129,7 @@
                 <!-- Filter Actions -->
                 <div class="flex justify-between items-center mt-6">
                   <button type="button"
-                          class="btn btn-ghost btn-sm"
+                          class="btn btn-outline btn-sm"
                           data-action="click->filters#clearAll">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -131,9 +159,12 @@
             <tr>
               <th><%= t('orders.table.order_number') %></th>
               <th><%= t('orders.table.customer') %></th>
-              <th><%= t('orders.table.status') %></th>
+              <th class="min-w-30"><%= t('orders.table.status') %></th>
               <th><%= t('orders.table.delivery_date') %></th>
-              <th><%= t('orders.table.total_price') %></th>
+              <% if current_user.owner? %>
+                <th><%= t('orders.table.total_price') %></th>
+                <th><%= t('activerecord.models.tailor') %></th>
+              <% end %>
               <th><%= t('orders.table.actions') %></th>
             </tr>
           </thead>
@@ -143,15 +174,21 @@
                 <tr>
                   <td><%= order.order_number %></td>
                   <td><%= "#{order.customer.first_name} #{order.customer.last_name}" %></td>
-                  <td>
+                  <td class="px-1">
                     <div class="badge <%= order_status_color(order.status) %>">
                       <%= t("orders.statuses.#{order.status}") %>
                     </div>
                   </td>
                   <td>
-                    <%= order.delivery_date&.strftime("%b %d, %Y") %>
+                    <%#= order.delivery_date&.strftime("%b %d, %Y") %>
+                    <span class="<%= order.delivery_date < Date.current && !order.delivered? ? 'text-error' : '' %>">
+                      <%= l(order.delivery_date, format: :long) %>
+                    </span>
                   </td>
-                  <td><%= number_to_currency(order.total_price) %></td>
+                  <% if current_user.owner? %>
+                    <td><%= number_to_currency(order.total_price) %></td>
+                    <td><%= order.tailor&.username || '-' %></td>
+                  <% end %>
                   <td>
                     <div class="flex gap-2 items-center">
                       <%= link_to edit_order_path(order), class: "flex items-center", data: { turbo: false } do %>
@@ -172,7 +209,7 @@
               <% end %>
             <% else %>
               <tr>
-                <td colspan="6" class="text-center py-8">
+                <td colspan="<%= current_user.owner? ? 7 : 6 %>" class="text-center py-8">
                   <div class="flex flex-col items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-base-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />

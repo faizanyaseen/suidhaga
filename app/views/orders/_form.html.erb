@@ -21,7 +21,7 @@
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="form-control">
-          <%= f.label :customer_id, t('activerecord.attributes.order.customer'), class: "label" %>
+          <%= f.label :customer_id, t('activerecord.models.customer'), class: "label" %>
           <%= f.collection_select :customer_id, @customers, :id, ->(c) { "#{c.first_name} #{c.last_name}" },
               { prompt: t('orders.select_customer') },
               {
@@ -34,20 +34,35 @@
         </div>
 
         <div class="form-control">
-          <%= f.label :delivery_date, t('activerecord.attributes.order.delivery_date'), class: "label" %>
+          <%= f.label :delivery_date, t('orders.table.delivery_date'), class: "label" %>
           <%= f.date_field :delivery_date, class: "input input-bordered w-full", placeholder: t('placeholders.order.select_date'), required: true, data: { order_form_target: "dependentField" } %>
         </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         <div class="form-control">
-          <%= f.label :status, t('activerecord.attributes.order.status'), class: "label" %>
+          <%= f.label :status, t('orders.table.status'), class: "label" %>
           <%= f.select :status, Order.statuses.keys.map { |s| [t("orders.statuses.#{s}"), s] },
               { prompt: t('orders.select_status') },
               { 
                 class: "select select-bordered w-full",
                 data: { order_form_target: "dependentField" }
               } %>
+        </div>
+        
+        <div class="form-control">
+          <%= f.label :tailor_id, t('activerecord.models.tailor'), class: "label" %>
+          <% if current_user.owner? %>
+            <%= f.collection_select :tailor_id, @tailors, :id, :username,
+                { prompt: t('orders.select_tailor'), include_blank: true },
+                { 
+                  class: "select select-bordered w-full",
+                  data: { order_form_target: "dependentField" }
+                } %>
+          <% else %>
+            <%= f.hidden_field :tailor_id, value: current_user.id %>
+            <input type="text" class="input input-bordered w-full" disabled value="<%= current_user.username %>" />
+          <% end %>
         </div>
       </div>
 
@@ -72,7 +87,7 @@
         
         <div class="space-y-6" data-nested-form-target="container">
           <%= f.fields_for :line_items do |line_item_form| %>
-            <div class="line-item-fields p-4 border border-base-300 rounded-lg">
+            <div class="line-item-fields p-4 border-2 border-gray-500 border-dashed rounded-lg">
               <div class="flex justify-end my-4">
                 <button type="button"
                         data-action="nested-form#remove"
@@ -91,7 +106,7 @@
 
         <template data-nested-form-target="template">
           <%= f.fields_for :line_items, LineItem.new, child_index: 'NEW_RECORD' do |line_item_form| %>
-            <div class="line-item-fields p-4 border border-base-300 rounded-lg">
+            <div class="line-item-fields p-4 border-2 border-gray-500 border-dashed rounded-lg">
               <div class="flex justify-end my-4">
                 <button type="button"
                         data-action="nested-form#remove"

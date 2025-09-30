@@ -1,6 +1,23 @@
 class OrdersController < ApplicationController
+  include SubscriptionChecker
+  before_action :ensure_owner, only: [:new, :create]
+
   def index
-    @orders = current_shop.orders.includes(:customer).order(created_at: :desc)
+    @orders = if current_user.owner?
+      current_shop.orders.includes(:customer, :tailor).order(created_at: :desc)
+    else
+      current_user.assigned_orders.includes(:customer).order(created_at: :desc)
+    end
+
+    # Active/Inactive filter
+    if params[:active] == 'inactive'
+      @orders = @orders.where(active: false)
+    elsif params[:active] == 'all'
+      @orders = @orders.unscoped.where(id: @orders.all_orders.select(:id))
+    else
+      # Default to active orders (either params[:active] == 'active' or not present)
+      @orders = @orders.where(active: true)
+    end
 
     # Search filter
     if params[:search].present?
@@ -24,6 +41,11 @@ class OrdersController < ApplicationController
       @orders = @orders.where(customer_id: params[:customer_id])
     end
 
+    # Tailor filter
+    if params[:tailor_id].present? && current_user.owner?
+      @orders = @orders.where(tailor_id: params[:tailor_id])
+    end
+
     if params[:date_range].present?
       case params[:date_range]
       when 'last_week'
@@ -45,7 +67,7 @@ class OrdersController < ApplicationController
   end
 
   def show
-    @order = current_shop.orders.includes(:customer, line_items: { images_attachments: :blob }).find(params[:id])
+    @order = find_order
   end
 
   def new
@@ -53,6 +75,7 @@ class OrdersController < ApplicationController
     @order.customer_id = params[:customer_id] if params[:customer_id].present?
     @order.line_items.build
     @customers = current_shop.customers
+    @tailors = current_shop.tailors
     @measurement_types = current_shop.measurement_types
   end
 
@@ -63,44 +86,128 @@ class OrdersController < ApplicationController
       redirect_to @order, notice: 'Order was successfully created.'
     else
       @customers = current_shop.customers
-      @measurement_types = MeasurementType.all
+      @tailors = current_shop.tailors
+      @measurement_types = current_shop.measurement_types
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
-    @order = current_shop.orders.includes(:line_items, :customer).find(params[:id])
+    @order = find_order
+    
+    # Only owners can edit orders fully
+    unless current_user.owner?
+      redirect_to order_path(@order), alert: t('errors.not_authorized') unless @order.tailor_id == current_user.id
+    end
+    
     if @order.line_items.empty?
       @order.line_items.build
     end
     @customers = current_shop.customers
+    @tailors = current_shop.tailors
     @measurement_types = current_shop.measurement_types
   end
 
   def update
-    @order = current_shop.orders.find(params[:id])
-
-    if @order.update(order_params)
-      redirect_to @order, notice: 'Order was successfully updated.'
+    @order = find_order
+    if current_user.owner?
+      # Owner can update everything
+      if @order.update(order_params)
+        redirect_to @order, notice: 'Order was successfully updated.'
+      else
+        @customers = current_shop.customers
+        @tailors = current_shop.tailors
+        @measurement_types = current_shop.measurement_types
+        render :edit, status: :unprocessable_entity
+      end
     else
-      @customers = current_shop.customers
-      @measurement_types = current_shop.measurement_types
-      render :edit, status: :unprocessable_entity
+      # Tailors can only update status
+      if @order.tailor_id != current_user.id
+        redirect_to orders_path, alert: t('errors.not_authorized')
+        return
+      end
+      
+      # Log the parameters for debugging
+      Rails.logger.info("Tailor update params: #{params.inspect}")
+      
+      # Only allow status updates for tailors
+      allowed_statuses = ['in_progress', 'completed', 'pending']
+      if !allowed_statuses.include?(params[:order][:status]) && params[:order][:status].present?
+        redirect_to @order, alert: t('errors.invalid_status')
+        return
+      end
+      
+      # Process line items status updates
+      if params[:order][:line_items_attributes].present?
+        params[:order][:line_items_attributes].each do |_, line_item_params|
+          if line_item_params[:status].present?
+            # Convert status to string for comparison
+            status_str = line_item_params[:status].to_s
+            unless ['in_progress', 'completed'].include?(status_str)
+              redirect_to @order, alert: t('errors.invalid_line_item_status')
+              return
+            end
+          end
+        end
+      end
+      
+      # Create a filtered params hash for tailors
+      tailor_params = params.require(:order).permit(
+        :status,
+        line_items_attributes: [:id, :status, :_destroy]
+      )
+      
+      # Process each line item separately to ensure status is updated correctly
+      success = true
+      
+      # First update the order status
+      if tailor_params[:status].present?
+        success = @order.update(status: tailor_params[:status]) && success
+      end
+      
+      # Then update each line item status
+      if tailor_params[:line_items_attributes].present?
+        tailor_params[:line_items_attributes].each do |_, line_item_params|
+          if line_item_params[:id].present? && line_item_params[:status].present?
+            line_item = @order.line_items.find(line_item_params[:id])
+            success = line_item.update(status: line_item_params[:status]) && success
+          end
+        end
+      end
+      
+      if success
+        redirect_to @order, notice: 'Order status was successfully updated.'
+      else
+        @customers = current_shop.customers
+        @tailors = current_shop.tailors
+        @measurement_types = current_shop.measurement_types
+        render :edit, status: :unprocessable_entity
+      end
     end
   end
 
   def mark_complete
-    @order = current_shop.orders.find(params[:id])
+    @order = find_order
 
     begin
+      email_sent = false
+
       ActiveRecord::Base.transaction do
         @order.update!(status: :completed)
         @order.line_items.update_all(status: LineItem.statuses[:completed])
+
+        # Send email notification to customer if email is present
+        if @order.customer.email.present?
+          OrderMailer.order_completed(@order).deliver_now
+          email_sent = true
+        end
       end
 
+      message_key = email_sent ? 'order_completed' : 'order_completed_no_email'
+
       respond_to do |format|
-        format.json { render json: { status: 'success', message: 'Order marked as complete!' } }
-        format.html { redirect_to @order, notice: 'Order marked as complete!' }
+        format.json { render json: { status: 'success', message: t("notices.#{message_key}") } }
+        format.html { redirect_to @order, notice: t("notices.#{message_key}") }
       end
     rescue => e
       respond_to do |format|
@@ -111,7 +218,17 @@ class OrdersController < ApplicationController
   end
 
   def mark_delivered
-    @order = Order.find(params[:id])
+    @order = find_order
+    
+    # Only owners can mark as delivered
+    unless current_user.owner?
+      respond_to do |format|
+        format.json { render json: { status: :unauthorized, message: t('errors.not_authorized') } }
+        format.html { redirect_to @order, alert: t('errors.not_authorized') }
+      end
+      return
+    end
+    
     if @order.update(status: :delivered, delivered_at: Time.current)
       render json: { status: :ok, message: t('orders.notices.marked_delivered') }
     else
@@ -119,11 +236,39 @@ class OrdersController < ApplicationController
     end
   end
 
+  def print
+    @order = find_order
+    
+    # Only owners can print receipts
+    unless current_user.owner?
+      redirect_to orders_path, alert: t('errors.not_authorized')
+      return
+    end
+    
+    render layout: 'print'
+  end
+
   private
+  
+  def ensure_owner
+    unless current_user.owner?
+      redirect_to orders_path, alert: t('errors.not_authorized')
+    end
+  end
+
+  def find_order
+    if current_user.owner?
+      current_shop.orders.all_orders.includes(:customer, :tailor, line_items: { images_attachments: :blob }).find(params[:id])
+    else
+      # For tailors, we still need to include the customer but we'll limit what's displayed in the view
+      current_user.assigned_orders.all_orders.includes(:customer, line_items: { images_attachments: :blob }).find(params[:id])
+    end
+  end
 
   def order_params
     params.require(:order).permit(
       :customer_id,
+      :tailor_id,
       :total_price,
       :status,
       :delivery_date,

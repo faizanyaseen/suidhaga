@@ -1,4 +1,7 @@
 class CustomersController < ApplicationController
+  include SubscriptionChecker
+  include OwnerAuthorization
+
   before_action :set_customer, only: [:edit, :update, :show]
   before_action :set_measurement_types, only: [:new, :create, :edit, :update]
 

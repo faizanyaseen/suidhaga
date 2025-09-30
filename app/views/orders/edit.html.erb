@@ -11,6 +11,10 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
       <h2 class="card-title text-2xl font-bold">Edit Order</h2>
     </div>
-    <%= render 'form', order: @order %>
+    <% if current_user.owner? %>
+      <%= render 'form', order: @order %>
+    <% else %>
+      <%= render 'tailor_form' %>
+    <% end %>
   </div>
 </div>

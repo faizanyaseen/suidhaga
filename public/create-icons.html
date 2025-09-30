@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Valid PWA Icons</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; text-align: center; }
+    canvas { display: block; margin: 20px auto; border: 1px solid #ddd; }
+    .btn { padding: 10px 20px; background: #0066ff; color: white; border: none; cursor: pointer; margin: 10px; }
+    .success { color: green; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>PWA Icon Creator</h1>
+  <p>Click the button below to create valid icon files directly in your project.</p>
+
+  <button id="createBtn" class="btn">Create Valid Icons</button>
+  <div id="status"></div>
+
+  <h2>Preview:</h2>
+  <canvas id="canvas192" width="192" height="192"></canvas>
+  <canvas id="canvas512" width="512" height="512"></canvas>
+
+  <script>
+    document.getElementById('createBtn').addEventListener('click', function() {
+      const statusEl = document.getElementById('status');
+      statusEl.textContent = 'Creating icons...';
+
+      const canvas192 = document.getElementById('canvas192');
+      const ctx192 = canvas192.getContext('2d');
+
+      ctx192.fillStyle = '#4a86e8';
+      ctx192.fillRect(0, 0, 192, 192);
+      ctx192.fillStyle = 'white';
+      ctx192.font = 'bold 48px Arial';
+      ctx192.textAlign = 'center';
+      ctx192.textBaseline = 'middle';
+      ctx192.fillText('S', 96, 96);
+
+      const canvas512 = document.getElementById('canvas512');
+      const ctx512 = canvas512.getContext('2d');
+
+      ctx512.fillStyle = '#4a86e8';
+      ctx512.fillRect(0, 0, 512, 512);
+      ctx512.fillStyle = 'white';
+      ctx512.font = 'bold 128px Arial';
+      ctx512.textAlign = 'center';
+      ctx512.textBaseline = 'middle';
+      ctx512.fillText('S', 256, 256);
+
+      canvas192.toBlob(function(blob) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'icon-192x192.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        const a2 = document.createElement('a');
+        a2.href = url;
+        a2.download = 'tshirt_192.png';
+        document.body.appendChild(a2);
+        a2.click();
+        document.body.removeChild(a2);
+      });
+
+      canvas512.toBlob(function(blob) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'icon-512x512.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        const a2 = document.createElement('a');
+        a2.href = url;
+        a2.download = 'tshirt_512.png';
+        document.body.appendChild(a2);
+        a2.click();
+        document.body.removeChild(a2);
+
+        statusEl.innerHTML = '<span class="success">Icons created successfully!</span><br>Please upload these files to your <code>public/icons/</code> directory.';
+      });
+    });
+  </script>
+</body>
+</html>
