@@ -150,7 +150,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_01_120657) do
     t.bigint "shop_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "name"
     t.integer "role", default: 0
     t.string "username"
     t.string "phone"
