@@ -29,30 +29,10 @@ self.addEventListener('install', event => {
   );
 });
 
-self.addEventListener('fetch', event => {
+self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request).then(
-          response => {
-            if(!response || !response.ok) {
-              return response;
-            }
-            const responseToCache = response.clone();
-
-            caches.open(CACHE_NAME)
-              .then(cache => {
-                cache.put(event.request, responseToCache);
-              });
-
-            return response;
-          }
-        ).catch(error => {
-          console.error('Fetch failed:', error);
-        });
-      })
+    fetch(event.request).catch(error => {
+      console.error('Fetch failed:', error);
+    })
   );
 });

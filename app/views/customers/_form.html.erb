@@ -4,7 +4,6 @@
       <% if customer.errors.any? %>
         <div class="alert alert-error mb-4">
           <div>
-            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             <div>
               <h2 class="font-medium">
                 <%= t('errors.template.header', count: customer.errors.count, model: Customer.model_name.human.downcase) %>
@@ -21,19 +20,25 @@
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="form-control">
-          <%= f.label :first_name, t('activerecord.attributes.customer.first_name'), class: "label" %>
-          <%= f.text_field :first_name, class: "input input-bordered w-full", placeholder: t('placeholders.customer.first_name') %>
+          <%= required_label(f, :first_name, t('activerecord.attributes.customer.first_name'), class: "label") %>
+          <%= f.text_field :first_name, class: "input input-bordered w-full #{'input-error' if customer.errors[:first_name].any?}", placeholder: t('placeholders.customer.first_name') %>
+          <% if customer.errors[:first_name].any? %>
+            <div class="text-error text-sm mt-1"><%= customer.errors[:first_name].join(', ') %></div>
+          <% end %>
         </div>
         
         <div class="form-control">
-          <%= f.label :last_name, t('activerecord.attributes.customer.last_name'), class: "label" %>
-          <%= f.text_field :last_name, class: "input input-bordered w-full", placeholder: t('placeholders.customer.last_name') %>
+          <%= required_label(f, :last_name, t('activerecord.attributes.customer.last_name'), class: "label") %>
+          <%= f.text_field :last_name, class: "input input-bordered w-full #{'input-error' if customer.errors[:last_name].any?}", placeholder: t('placeholders.customer.last_name') %>
+          <% if customer.errors[:last_name].any? %>
+            <div class="text-error text-sm mt-1"><%= customer.errors[:last_name].join(', ') %></div>
+          <% end %>
         </div>
       </div>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         <div class="form-control">
-          <%= f.label :phone, t('activerecord.attributes.customer.phone'), class: "label" %>
+          <%= required_label(f, :phone, t('activerecord.attributes.customer.phone'), class: "label") %>
           <%= f.number_field :phone, class: "input input-bordered w-full #{'input-error' if customer.errors[:phone].any?}", placeholder: t('placeholders.customer.phone') %>
           <% if customer.errors[:phone].any? %>
             <div class="text-error text-sm mt-1"><%= customer.errors[:phone].join(', ') %></div>
@@ -41,7 +46,7 @@
         </div>
         
         <div class="form-control">
-          <%= f.label :email, t('activerecord.attributes.customer.email'), class: "label" %>
+          <%= required_label(f, :email, t('activerecord.attributes.customer.email'), class: "label") %>
           <%= f.email_field :email, class: "input input-bordered w-full #{'input-error' if customer.errors[:email].any?}", placeholder: t('placeholders.customer.email') %>
           <% if customer.errors[:email].any? %>
             <div class="text-error text-sm mt-1"><%= customer.errors[:email].join(', ') %></div>

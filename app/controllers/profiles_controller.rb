@@ -99,6 +99,6 @@ class ProfilesController < ApplicationController
   end
 
   def set_shop
-    @shop = Shop.first # or however you fetch the current shop
+    @shop = Shop.find(current_user.shop_id)
   end
-end 
+end

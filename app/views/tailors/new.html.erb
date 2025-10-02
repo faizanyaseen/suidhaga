@@ -37,29 +37,29 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="form-control">
-            <%= f.label :username, t('tailors.username'), class: "label" %>
+            <%= required_label(f, :username, t('tailors.username'), class: "label") %>
             <%= f.text_field :username, class: "input input-bordered w-full", required: true %>
           </div>
 
           <div class="form-control">
-            <%= f.label :phone, t('tailors.phone'), class: "label" %>
+            <%= required_label(f, :phone, t('tailors.phone'), class: "label") %>
             <%= f.text_field :phone, class: "input input-bordered w-full", required: true %>
           </div>
         </div>
 
         <div class="form-control">
-          <%= f.label :email, t('tailors.email'), class: "label" %>
+          <%= required_label(f, :email, t('tailors.email'), class: "label") %>
           <%= f.email_field :email, class: "input input-bordered w-full", required: true %>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="form-control">
-            <%= f.label :password, t('tailors.password'), class: "label" %>
+            <%= required_label(f, :password, t('tailors.password'), class: "label") %>
             <%= f.password_field :password, class: "input input-bordered w-full", required: true %>
           </div>
 
           <div class="form-control">
-            <%= f.label :password_confirmation, t('tailors.password_confirmation'), class: "label" %>
+            <%= required_label(f, :password_confirmation, t('tailors.password_confirmation'), class: "label") %>
             <%= f.password_field :password_confirmation, class: "input input-bordered w-full", required: true %>
           </div>
         </div>
