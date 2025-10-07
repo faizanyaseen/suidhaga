@@ -160,3 +160,10 @@ body {
   color: hsl(var(--bc) / 0.5);
   z-index: 10;
 }
+
+.site-logo img {
+  width: 171px;
+  height: 171px;
+  border-radius: 100%;
+  background: #d2d5d2;
+}

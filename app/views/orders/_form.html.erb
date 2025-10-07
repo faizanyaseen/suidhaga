@@ -4,24 +4,23 @@
       <% if @order.errors.any? %>
         <div class="alert alert-error mb-4">
           <div>
-            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <div>
+            <div class="flex items-center gap-2">
               <h2 class="font-medium">
                 <%= t('errors.template.header', count: @order.errors.count, model: Order.model_name.human.downcase) %>
               </h2>
-              <ul class="mt-2 list-disc list-inside text-sm">
-                <% @order.errors.full_messages.each do |message| %>
-                  <li><%= message %></li>
-                <% end %>
-              </ul>
             </div>
+            <ul class="mt-2 list-disc list-inside text-sm">
+              <% @order.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
           </div>
         </div>
       <% end %>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="form-control">
-          <%= f.label :customer_id, t('activerecord.models.customer'), class: "label" %>
+          <%= required_label(f, :customer_id, t('activerecord.models.customer'), class: "label") %>
           <%= f.collection_select :customer_id, @customers, :id, ->(c) { "#{c.first_name} #{c.last_name}" },
               { prompt: t('orders.select_customer') },
               {
@@ -34,7 +33,7 @@
         </div>
 
         <div class="form-control">
-          <%= f.label :delivery_date, t('orders.table.delivery_date'), class: "label" %>
+          <%= required_label(f, :delivery_date, t('orders.table.delivery_date'), class: "label") %>
           <%= f.date_field :delivery_date, class: "input input-bordered w-full", placeholder: t('placeholders.order.select_date'), required: true, data: { order_form_target: "dependentField" } %>
         </div>
       </div>
@@ -73,7 +72,7 @@
            data-nested-form-wrapper-class-value="line-item-fields"
            data-order-form-target="lineItemsSection">
         <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-medium"><%= t('orders.line_items.items') %></h3>
+          <h3 class="text-lg font-medium"><%= t('orders.line_items.items') %><span class="text-red-500">*</span></h3>
           <button type="button"
                   data-action="nested-form#add"
                   class="btn btn-primary btn-sm"

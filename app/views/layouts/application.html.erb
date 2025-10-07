@@ -69,9 +69,11 @@
           <!-- Flash Messages -->
           <% flash.each do |type, message| %>
             <% next if message.blank? %>
-            <div class="alert alert-<%= flash_type_to_class(type) %> shadow-lg mb-4 mx-4">
-              <div>
-                <%= flash_icon(type) %>
+            <div class="alert alert-<%= flash_type_to_class(type) %> shadow-lg mb-4 mx-4" data-controller="flash-message">
+              <div class="flex items-center gap-2 flex-1">
+                <button type="button" class="btn btn-sm btn-ghost btn-circle bg-base-100" data-action="click->flash-message#close">
+                  <%= flash_icon(type) %>
+                </button>
                 <span><%= message %></span>
               </div>
             </div>
@@ -89,7 +91,7 @@
          <% flash.each do |type, message| %>
            <% next if message.blank? %>
            <div class="alert alert-<%= flash_type_to_class(type) %> shadow-lg max-w-md mx-auto mt-4">
-             <div>
+             <div class="flex items-center gap-2 flex-1">
                <%= flash_icon(type) %>
                <span><%= message %></span>
              </div>

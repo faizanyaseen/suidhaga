@@ -63,4 +63,9 @@ module ApplicationHelper
       end
     end
   end
+
+  def required_label(form, field, text, options = {})
+    label_text =  "#{text} <span class='text-red-500'>*</span>".html_safe
+    form.label(field, label_text, options)
+  end
 end
