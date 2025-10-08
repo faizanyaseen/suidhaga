@@ -15,9 +15,10 @@ class TailorsController < ApplicationController
       )
     end
 
-    @tailor_limit = current_shop.tailor_limit
+    # @tailor_limit = current_shop.tailor_limit
     @remaining_slots = current_shop.remaining_tailor_slots
-    @limit_reached = current_shop.tailor_limit_reached?
+    # @limit_reached = current_shop.tailor_limit_reached?
+    @limit_reached = false
     
     # Calculate active orders count for each tailor
     @active_orders_count = {}
@@ -32,19 +33,22 @@ class TailorsController < ApplicationController
   end
 
   def new
-    if current_shop.tailor_limit_reached?
-      redirect_to tailors_path, alert: t('tailors.limit_reached', limit: current_shop.tailor_limit)
-    else
-      @tailor = User.new
-      @remaining_slots = current_shop.remaining_tailor_slots
-    end
+    # if current_shop.tailor_limit_reached?
+    #   redirect_to tailors_path, alert: t('tailors.limit_reached', limit: current_shop.tailor_limit)
+    # else
+    #   @tailor = User.new
+    #   @remaining_slots = current_shop.remaining_tailor_slots
+    # end
+
+    @tailor = User.new
+    @remaining_slots = current_shop.remaining_tailor_slots
   end
 
   def create
-    if current_shop.tailor_limit_reached?
-      redirect_to tailors_path, alert: t('tailors.limit_reached', limit: current_shop.tailor_limit)
-      return
-    end
+    # if current_shop.tailor_limit_reached?
+    #   redirect_to tailors_path, alert: t('tailors.limit_reached', limit: current_shop.tailor_limit)
+    #   return
+    # end
 
     @tailor = User.new(tailor_params)
     @tailor.role = :tailor

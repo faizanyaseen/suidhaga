@@ -7,6 +7,7 @@
           <span class="text-base-content/60 text-lg"></span>
         </h2>
         <div class="mt-1">
+          <!--
           <% if @remaining_slots > 0 %>
             <span class="text-sm text-success">
               <%= t('dashboard.stats.you_can_add_more_slots', count: @remaining_slots, limit: @tailor_limit) %>
@@ -15,7 +16,10 @@
             <span class="text-sm text-error">
               <%= t('tailors.no_slots_remaining', limit: @tailor_limit) %>
             </span>
-          <% end %>
+          <% end %> -->
+          <span class="text-sm text-success">
+            <%= t('tailors.unlimited_tailors') %>
+          </span>
         </div>
       </div>
       <% if !@limit_reached %>

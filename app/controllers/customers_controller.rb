@@ -1,5 +1,5 @@
 class CustomersController < ApplicationController
-  include SubscriptionChecker
+  # include SubscriptionChecker
   include OwnerAuthorization
 
   before_action :set_customer, only: [:edit, :update, :show]

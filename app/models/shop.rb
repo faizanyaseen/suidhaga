@@ -12,16 +12,19 @@ class Shop < ApplicationRecord
   validates :tailor_limit, numericality: { greater_than_or_equal_to: 0 }
 
   def tailor_limit_reached?
-    tailors.count >= tailor_limit
+    # tailors.count >= tailor_limit
+    false
   end
 
   def remaining_tailor_slots
-    [tailor_limit - tailors.count, 0].max
+    # [tailor_limit - tailors.count, 0].max
+    999999
   end
 
   private
 
   def set_default_tailor_limit
-    self.tailor_limit = 100
+    # self.tailor_limit = 100
+    self.tailor_limit = 999999
   end
 end

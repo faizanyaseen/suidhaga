@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  include SubscriptionChecker
+  # include SubscriptionChecker
   before_action :ensure_owner, only: [:new, :create]
 
   def index
